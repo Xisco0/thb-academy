@@ -1,18 +1,16 @@
-
 import { getFeaturedCourses, getUpcomingEvents, getWebsiteSettings } from '@/lib/queries/public';
-import { formatCurrency } from '@/lib/utils';
+import { formatCoursePrice } from '@/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { Music, ArrowRight, Calendar, MapPin, CheckCircle } from 'lucide-react';
-
+import { Music, ArrowRight, Calendar, MapPin, CheckCircle, Sparkles, BookOpen, Users, Award } from 'lucide-react';
+import { LevelBadge } from '@/components/ui/level-badge';
 
 export const metadata: Metadata = {
   title: 'Triumphant Harmony Brass | Music Academy in Lagos, Nigeria',
   description:
-    'Learn music at Triumphant Harmony Brass (THB) in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice. Founded by Taiwo Toyinbo.',
+    'Learn music at Triumphant Harmony Brass (THB) in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
 };
-
 
 export default async function HomePage() {
   const settings = await getWebsiteSettings();
@@ -21,32 +19,23 @@ export default async function HomePage() {
 
   const instruments = ['Trumpet', 'Saxophone', 'Keyboard', 'Guitar', 'Violin', 'Drums', 'Trombone', 'Voice'];
 
-
   const duplicatedInstruments = [...instruments, ...instruments, ...instruments];
-
-
 
   return (
     <main className="min-h-screen bg-navy-950 text-slate-100 overflow-x-hidden">
       {/* 1. Hero Section */}
-      <section id="hero" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center min-h-[90vh]">
-        {/* SEO Schema Injection */}
-        {/* <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
-      /> */}
-
+      <section id="hero" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center min-h-[90vh] bg-[#090e1a] hero-dark-section">
         {/* Background Image & Gradient Overlay */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-[#090e1a]">
           <Image
             src="/bg-images/image.png"
             alt="Triumphant Harmony Brass instrument collection on stage"
             fill
             priority
             sizes="100vw"
-            className="object-cover object-right"
+            className="object-cover object-right opacity-95"
           />
-          <div className="absolute inset-0 bg-linear-to-r from-navy-950 via-navy-950/85 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#090e1a] via-[#090e1a]/90 to-transparent z-10" />
         </div>
 
         {/* Decorative elements */}
@@ -60,11 +49,11 @@ export default async function HomePage() {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
               </svg>
-              <span>Welcome to Thb Music Academy</span>
+              <span>Welcome to THB Music Academy</span>
             </div>
 
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6 tracking-tight animate-slide-up">
-              Triumphant Harmony <span className="text-transparent bg-clip-text bg-linear-to-r from-gold to-yellow-400">Brass</span>
+              Triumphant Harmony <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold to-yellow-400">Brass</span>
             </h1>
 
             <p className="text-xl md:text-2xl text-slate-300 font-body mb-10 animate-slide-up" style={{ animationDelay: '100ms' }}>
@@ -75,14 +64,14 @@ export default async function HomePage() {
               <Link
                 href="/programs"
                 title="Explore Brass Music Programs"
-                className="w-full sm:w-auto text-center px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(var(--color-brand-600),0.3)] hover:shadow-[0_0_25px_rgba(var(--color-brand-500),0.5)] transform hover:-translate-y-1"
+                className="w-full sm:w-auto text-center px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(var(--color-brand-600),0.3)] hover:shadow-[0_0_25px_rgba(var(--color-brand-500),0.5)] transform hover:-translate-y-1"
               >
                 Explore Programs
               </Link>
               <Link
                 href="/register"
                 title="Get Started with Music Lessons"
-                className="w-full sm:w-auto text-center px-8 py-4 bg-navy-800 hover:bg-navy-700 border border-navy-600 text-white font-medium rounded-lg transition-all duration-300 hover:border-gold/50 transform hover:-translate-y-1"
+                className="w-full sm:w-auto text-center px-8 py-4 bg-navy-800 hover:bg-navy-700 border border-navy-600 text-white font-bold rounded-lg transition-all duration-300 hover:border-gold/50 transform hover:-translate-y-1"
               >
                 Get Started
               </Link>
@@ -91,8 +80,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* 2. Marquee Instrument Carousel */}
       <section className="py-6 border-y border-navy-800 bg-navy-900/60 backdrop-blur-md overflow-hidden relative">
-        {/* Inline styles for the keyframe animation so no client JS is needed */}
         <style>{`
         @keyframes marquee {
           0% { transform: translateX(0%); }
@@ -108,65 +97,109 @@ export default async function HomePage() {
         }
       `}</style>
 
-        {/* Edge gradient overlays for smooth visual fading */}
         <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-navy-950 to-transparent z-10 pointer-events-none" />
         <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-navy-950 to-transparent z-10 pointer-events-none" />
 
-        {/* Marquee Track */}
-        <div className="animate-marquee-server flex gap-4 py-2">
+        <div className="animate-marquee flex gap-4 py-2">
           {duplicatedInstruments.map((inst, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 shrink-0 px-5 py-2.5 rounded-full bg-navy-950/60 border border-navy-800 text-slate-200 text-sm font-semibold shadow-sm hover:border-gold/50 transition-colors"
+              className="flex items-center gap-2 shrink-0 px-5 py-2.5 rounded-full bg-navy-950/60 border border-navy-800 text-slate-200 text-sm font-semibold shadow-sm hover:border-amber-400/50 transition-colors"
             >
-              <Music className="w-4 h-4 text-brand-400" />
+              <Music className="w-4 h-4 text-amber-400" />
               <span>{inst}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 3. Founder & Leadership Spotlight */}
+      {/* 3. Academy Excellence & Core Pillars */}
       <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="bg-linear-to-r from-navy-900 via-navy-900/80 to-navy-950 border border-brand-500/30 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-5 flex justify-center">
-              <div className="relative w-full max-w-sm aspect-square rounded-3xl p-2 bg-linear-to-tr from-brand-500 via-amber-400 to-yellow-500 shadow-glow">
-                <div className="w-full h-full rounded-[22px] overflow-hidden relative bg-navy-950">
-                  <Image
-                    src="/images/founder.jpg"
-                    alt="Taiwo Toyinbo Founder"
-                    width={500}
-                    height={500}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
+        <div className="bg-gradient-to-r from-navy-900 via-navy-900/90 to-navy-950 border border-brand-500/30 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden space-y-12">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="text-brand-400 font-bold text-xs uppercase tracking-widest inline-flex items-center gap-1.5 px-3.5 py-1 bg-brand-500/10 border border-brand-500/20 rounded-full">
+              <Sparkles className="w-3.5 h-3.5 text-brand-400" />
+              The THB Academy Experience
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+              Empowering Musicians Through Practical Mastery
+            </h2>
+            <p className="text-navy-200 text-base sm:text-lg leading-relaxed">
+              We combine classical rigor, modern technique, and stage performance discipline to train well-rounded instrumentalists and vocalists.
+            </p>
+          </div>
+
+          {/* 4 Pillars Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-navy-950/80 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/40 transition-all group">
+              <div className="w-12 h-12 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform">
+                <Music className="w-6 h-6" />
+              </div>
+              <h3 className="font-heading text-lg font-bold text-white">Brass & Winds Mastery</h3>
+              <p className="text-navy-300 text-xs leading-relaxed">
+                Specialized embouchure techniques, breath support, and section control for trumpet, trombone, and saxophone.
+              </p>
+            </div>
+
+            <div className="bg-navy-950/80 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/40 transition-all group">
+              <div className="w-12 h-12 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <h3 className="font-heading text-lg font-bold text-white">Harmonic Sight-Reading</h3>
+              <p className="text-navy-300 text-xs leading-relaxed">
+                Comprehensive piano, keyboard, and guitar chord theory, scale application, and sight-reading fluency.
+              </p>
+            </div>
+
+            <div className="bg-navy-950/80 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/40 transition-all group">
+              <div className="w-12 h-12 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform">
+                <Users className="w-6 h-6" />
+              </div>
+              <h3 className="font-heading text-lg font-bold text-white">Rhythmic Precision</h3>
+              <p className="text-navy-300 text-xs leading-relaxed">
+                Practical timing, drum set coordination, and traditional African talking drum grooves for tight rhythm sections.
+              </p>
+            </div>
+
+            <div className="bg-navy-950/80 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/40 transition-all group">
+              <div className="w-12 h-12 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform">
+                <Award className="w-6 h-6" />
+              </div>
+              <h3 className="font-heading text-lg font-bold text-white">Vocal Excellence</h3>
+              <p className="text-navy-300 text-xs leading-relaxed">
+                Voice placement, pitch stamina, breathing control, and choir/solo performance arrangements.
+              </p>
+            </div>
+          </div>
+
+          {/* Bottom Stats & CTA */}
+          <div className="pt-6 border-t border-navy-800 flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 w-full sm:w-auto text-center sm:text-left">
+              <div>
+                <p className="font-heading text-2xl font-bold text-white">500+</p>
+                <p className="text-navy-400 text-xs font-semibold">Trained Musicians</p>
+              </div>
+              <div>
+                <p className="font-heading text-2xl font-bold text-brand-400">8+</p>
+                <p className="text-navy-400 text-xs font-semibold">Instrument Tracks</p>
+              </div>
+              <div>
+                <p className="font-heading text-2xl font-bold text-white">20+</p>
+                <p className="text-navy-400 text-xs font-semibold">Years Experience</p>
+              </div>
+              <div>
+                <p className="font-heading text-2xl font-bold text-brand-400">100%</p>
+                <p className="text-navy-400 text-xs font-semibold">Practical Focus</p>
               </div>
             </div>
 
-            <div className="lg:col-span-7 space-y-5 text-center lg:text-left">
-              <span className="text-brand-400 font-bold text-xs uppercase tracking-widest">
-                Academy Founder & Music Director
-              </span>
-              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-white">
-                Taiwo Toyinbo
-              </h2>
-              <p className="text-navy-200 text-base sm:text-lg leading-relaxed">
-                With over 20 years of experience in musical direction, Taiwo Toyinbo founded Triumphant Harmony Brass to raise a new standard of musical talent in Lagos, Nigeria.
-              </p>
-              <div className="p-4 rounded-xl bg-navy-950/80 border-l-4 border-brand-500 text-slate-200 italic font-heading text-sm sm:text-base">
-                &ldquo;Our vision is to empower musicians with true mastery, discipline, and practical performance confidence.&rdquo;
-              </div>
-              <div>
-                <Link
-                  href="/about"
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 text-navy-950 rounded-xl font-bold hover:bg-brand-400 transition-all shadow-md"
-                >
-                  <span>Learn More About Us</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
+            <Link
+              href="/about"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl transition-all shadow-glow text-sm shrink-0"
+            >
+              <span>Learn More About Our Academy</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
@@ -193,14 +226,12 @@ export default async function HomePage() {
                 {course.image_url ? (
                   <img src={course.image_url} alt={course.name} className="w-full h-full object-cover" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-navy-900 to-navy-950 p-6 text-center">
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-navy-900 to-navy-950 p-6 text-center">
                     <Music className="w-12 h-12 text-brand-500/40 mb-2" />
                   </div>
                 )}
-                <div className="absolute top-3 right-3">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-brand-500 text-navy-950 uppercase tracking-wider">
-                    {course.level || 'All Levels'}
-                  </span>
+                <div className="absolute top-3 right-3 z-10">
+                  <LevelBadge level={course.level} />
                 </div>
               </div>
 
@@ -216,7 +247,7 @@ export default async function HomePage() {
                   <div>
                     <p className="text-xs text-navy-400">Course Fee</p>
                     <p className="text-lg font-bold text-brand-400">
-                      {formatCurrency(course.price, course.currency)}
+                      {formatCoursePrice(course.price, course.currency)}
                     </p>
                   </div>
                   <Link
@@ -296,7 +327,7 @@ export default async function HomePage() {
 
       {/* 7. Bottom Registration CTA */}
       <section className="py-20 px-4 max-w-5xl mx-auto text-center">
-        <div className="bg-linear-to-r from-navy-900 via-navy-800 to-navy-900 border border-brand-500/30 rounded-3xl p-10 sm:p-16 space-y-6 shadow-2xl">
+        <div className="bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 border border-brand-500/30 rounded-3xl p-10 sm:p-16 space-y-6 shadow-2xl">
           <h2 className="font-heading text-3xl sm:text-5xl font-bold text-white">
             Ready to Begin Your Music Journey?
           </h2>
@@ -306,7 +337,7 @@ export default async function HomePage() {
           <div className="pt-4">
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-navy-950 font-bold px-10 py-4 rounded-xl transition-all shadow-glow text-lg"
+              className="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white font-bold px-10 py-4 rounded-xl transition-all shadow-glow text-lg"
             >
               <span>Register Now</span>
               <ArrowRight className="w-5 h-5" />

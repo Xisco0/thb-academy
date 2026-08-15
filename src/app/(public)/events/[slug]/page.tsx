@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import { getEventBySlug, getWebsiteSettings } from '@/lib/queries/public';
 import { eventSchema as eventJsonLd, JsonLd, breadcrumbSchema } from '@/lib/seo';
 import { formatDate, formatTime } from '@/lib/utils';
+import { Phone, MessageCircle } from 'lucide-react';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -31,8 +32,12 @@ export default async function EventDetailsPage({ params }: Props) {
     notFound();
   }
 
-  const eventDate = new Date(event.date);
-  const isPast = eventDate < new Date();
+  const startDate = new Date(event.date);
+  const now = new Date();
+  const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+  
+  const isOngoing = now >= startDate && now <= endDate;
+  const isPast = now > endDate;
 
   return (
     <>
@@ -48,45 +53,47 @@ export default async function EventDetailsPage({ params }: Props) {
       {/* Hero */}
       <section className="pt-32 pb-12 px-4 bg-navy-900 border-b border-navy-800/50">
         <div className="max-w-4xl mx-auto">
-          <nav className="text-sm text-navy-400 mb-6">
+          <nav className="text-sm text-navy-400 mb-6 flex items-center gap-2">
             <Link href="/" className="hover:text-brand-400 transition-colors">Home</Link>
-            <span className="mx-2">›</span>
+            <span>›</span>
             <Link href="/events" className="hover:text-brand-400 transition-colors">Events</Link>
-            <span className="mx-2">›</span>
-            <span className="text-navy-200">{event.title}</span>
+            <span>›</span>
+            <span className="text-navy-200 truncate">{event.title}</span>
           </nav>
 
           <div className="mb-4">
             <span
-              className={`inline-flex items-center px-3 py-1 text-xs font-semibold rounded-full border ${
-                isPast
+              className={`inline-flex items-center px-3.5 py-1 text-xs font-bold rounded-full border ${
+                isOngoing
+                  ? 'bg-green-500/20 text-green-400 border-green-500/40 animate-pulse'
+                  : isPast
                   ? 'bg-navy-700/50 text-navy-400 border-navy-600/50'
                   : 'bg-brand-500/10 text-brand-400 border-brand-500/20'
               }`}
             >
-              {isPast ? 'Completed' : 'Upcoming'}
+              {isOngoing ? '● Active & Ongoing Program' : isPast ? 'Completed' : 'Upcoming Event'}
             </span>
           </div>
 
-          <h1 className="font-heading text-4xl md:text-5xl text-white font-bold mb-8">
+          <h1 className="font-heading text-3xl md:text-5xl text-white font-bold mb-8 leading-tight">
             {event.title}
           </h1>
 
           <div className="grid sm:grid-cols-3 gap-6 bg-navy-800/80 p-6 rounded-xl border border-navy-700/50">
             <div>
-              <p className="text-sm text-navy-400 mb-1">Date</p>
-              <p className="text-white font-medium text-lg">{formatDate(event.date)}</p>
+              <p className="text-xs text-navy-400 font-semibold mb-1 uppercase tracking-wider">Start Date</p>
+              <p className="text-white font-bold text-lg">{formatDate(event.date)}</p>
             </div>
             <div>
-              <p className="text-sm text-navy-400 mb-1">Time</p>
-              <p className="text-white font-medium text-lg">
+              <p className="text-xs text-navy-400 font-semibold mb-1 uppercase tracking-wider">Daily Session Time</p>
+              <p className="text-white font-bold text-lg">
                 {event.start_time ? formatTime(event.start_time) : 'TBD'}
                 {event.end_time ? ` - ${formatTime(event.end_time)}` : ''}
               </p>
             </div>
             <div>
-              <p className="text-sm text-navy-400 mb-1">Location</p>
-              <p className="text-white font-medium text-lg">
+              <p className="text-xs text-navy-400 font-semibold mb-1 uppercase tracking-wider">Venue Location</p>
+              <p className="text-white font-bold text-lg">
                 {event.venue_name || 'TBD'}
               </p>
             </div>
@@ -96,51 +103,66 @@ export default async function EventDetailsPage({ params }: Props) {
 
       {/* Content */}
       <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto space-y-10">
           {event.banner_url && (
-            <div className="aspect-[21/9] w-full rounded-xl overflow-hidden bg-navy-900 border border-navy-800 mb-12">
+            <div className="w-full bg-navy-950 rounded-2xl overflow-hidden border border-navy-800 p-2 shadow-2xl flex justify-center">
               <img
                 src={event.banner_url}
                 alt={event.title}
-                className="w-full h-full object-cover"
+                className="max-h-[650px] w-auto h-auto object-contain rounded-xl"
               />
             </div>
           )}
 
           {event.description && (
-            <div className="text-navy-200 whitespace-pre-wrap leading-relaxed text-lg mb-8">
+            <div className="bg-navy-900/80 p-6 rounded-2xl border border-navy-800 text-navy-200 leading-relaxed text-lg">
               {event.description}
             </div>
           )}
 
           {event.detailed_content && (
-            <div className="text-navy-300 whitespace-pre-wrap leading-relaxed">
+            <div className="prose prose-invert max-w-none bg-navy-900/60 p-8 rounded-2xl border border-navy-800 text-navy-200 whitespace-pre-wrap leading-relaxed">
               {event.detailed_content}
             </div>
           )}
 
           {event.venue_address && (
-            <div className="mt-10 p-6 bg-navy-800/80 border border-navy-700/50 rounded-xl">
-              <h3 className="text-white font-semibold mb-2">Venue</h3>
-              <p className="text-navy-300">{event.venue_name}</p>
-              <p className="text-navy-400 text-sm">{event.venue_address}</p>
+            <div className="p-6 bg-navy-900/80 border border-navy-700/50 rounded-2xl space-y-2">
+              <h3 className="text-white font-bold text-lg">Venue & Address</h3>
+              <p className="text-brand-400 font-semibold">{event.venue_name}</p>
+              <p className="text-navy-300 text-sm">{event.venue_address}</p>
             </div>
           )}
 
           {!isPast && (
-            <div className="mt-16 text-center p-10 bg-navy-800/80 border border-brand-500/20 rounded-xl shadow-glow">
-              <h3 className="font-heading text-3xl text-white mb-4">
-                Join Us for this Event
-              </h3>
-              <p className="text-navy-400 mb-8 text-lg">
-                Mark your calendar and be part of this incredible musical experience.
-              </p>
-              <Link
-                href="/contact"
-                className="inline-block bg-brand-500 hover:bg-brand-400 text-navy-950 font-bold px-10 py-4 rounded-lg transition-colors hover:shadow-glow"
-              >
-                Contact Us to RSVP
-              </Link>
+            <div className="p-8 bg-gradient-to-br from-navy-900 to-navy-950 border border-brand-500/30 rounded-2xl shadow-glow text-center space-y-6">
+              <div>
+                <h3 className="font-heading text-3xl text-white font-bold mb-2">
+                  Register for this Free Impact Program
+                </h3>
+                <p className="text-navy-300 text-sm max-w-xl mx-auto">
+                  Limited slots available! First come, first served. Contact program coordinators directly to reserve your slot.
+                </p>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                <a
+                  href="tel:07038595356"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-glow cursor-pointer"
+                >
+                  <Phone className="w-5 h-5" />
+                  <span>Call: 070 3859 5356</span>
+                </a>
+                <a
+                  href="https://wa.me/2348077566475?text=Hello%2C%20I%20want%20to%20register%20for%20the%201-Month%20Free%20Music%20Training"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-green-600 hover:bg-green-500 text-white font-bold px-8 py-3.5 rounded-xl transition-all cursor-pointer"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  <span>WhatsApp: 0807 756 6475</span>
+                </a>
+              </div>
             </div>
           )}
         </div>

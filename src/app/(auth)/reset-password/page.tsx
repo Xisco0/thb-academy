@@ -84,7 +84,7 @@ export default function ResetPasswordPage() {
           <div className="pt-4">
             <Link
               href="/login"
-              className="inline-block px-6 py-2.5 bg-brand-500 text-navy-950 font-bold rounded-lg hover:bg-brand-400 transition-colors shadow-md"
+              className="inline-block px-6 py-2.5 bg-brand-500 text-white font-bold font-bold rounded-lg hover:bg-brand-400 transition-colors shadow-md"
             >
               Sign In Now
             </Link>
@@ -133,7 +133,7 @@ export default function ResetPasswordPage() {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-brand-500 hover:bg-brand-400 text-navy-950 font-bold py-3 rounded-xl transition-all shadow-glow"
+            className="w-full bg-brand-500 hover:bg-brand-400 text-white font-bold py-3 rounded-xl transition-all shadow-glow"
           >
             {isLoading ? 'Updating Password...' : 'Update Password'}
           </Button>

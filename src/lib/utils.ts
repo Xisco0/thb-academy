@@ -13,6 +13,10 @@ export function formatCurrency(amount: number, currency: string = 'NGN'): string
   }).format(amount);
 }
 
+export function formatCoursePrice(amount: number, currency: string = 'NGN'): string {
+  return `${formatCurrency(amount, currency)} / month`;
+}
+
 export function formatDate(date: string | Date, options?: Intl.DateTimeFormatOptions): string {
   return new Intl.DateTimeFormat('en-NG', {
     dateStyle: 'medium',

@@ -15,17 +15,29 @@ export async function getStudentEnrollments(studentId: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from('enrollments')
-    .select('*, course:courses(*, instrument:instruments(name)), instructor:instructors(first_name, last_name), venue:venues(name)')
+    .select('*, course:courses(*, instrument:instruments(name)), instructor:instructors(first_name, last_name), venue:venues(name), payments(status)')
     .eq('student_id', studentId)
+    .neq('status', 'cancelled')
+    .neq('status', 'rejected')
     .order('created_at', { ascending: false });
-  return data || [];
+
+  const valid = (data || []).filter((e: any) => {
+    if (e.status === 'cancelled' || e.status === 'rejected') return false;
+    if (Array.isArray(e.payments) && e.payments.length > 0) {
+      const isRejected = e.payments.some((p: any) => p.status === 'rejected');
+      if (isRejected && e.status !== 'active') return false;
+    }
+    return true;
+  });
+
+  return valid;
 }
 
 export async function getStudentPayments(studentId: string) {
   const supabase = await createClient();
   const { data } = await supabase
     .from('payments')
-    .select('*, enrollment:enrollments(*, course:courses(name))')
+    .select('*, enrollment:enrollments(*, course:courses(name, level))')
     .eq('student_id', studentId)
     .order('created_at', { ascending: false });
   return data || [];

@@ -72,7 +72,7 @@ export function DataTable<T extends Record<string, unknown>>({
             {createHref && (
               <Link
                 href={createHref}
-                className="inline-flex items-center px-4 py-2 bg-brand-500 text-navy-950 rounded-lg text-sm font-semibold hover:bg-brand-400 transition-colors"
+                className="inline-flex items-center px-4 py-2 bg-brand-500 text-white font-bold rounded-lg text-sm font-semibold hover:bg-brand-400 transition-colors"
               >
                 {createLabel}
               </Link>
