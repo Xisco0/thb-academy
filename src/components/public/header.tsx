@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 
 const navLinks = [
@@ -85,8 +86,9 @@ export function Header() {
             ))}
           </nav>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons & Theme Toggle */}
           <div className="hidden lg:flex items-center gap-3">
+            <ThemeToggle />
             <Link
               href="/login"
               className="px-4 py-2 text-sm font-semibold text-slate-200 hover:text-white transition-colors"
@@ -95,7 +97,7 @@ export function Header() {
             </Link>
             <Link
               href="/register"
-              className="px-5 py-2.5 bg-linear-to-r from-brand-500 to-amber-500 text-white rounded-xl text-sm font-bold hover:brightness-110 transition-all shadow-glow"
+              className="px-5 py-2.5 bg-gradient-to-r from-brand-500 to-amber-500 text-white font-bold rounded-xl text-sm hover:brightness-110 transition-all shadow-glow"
             >
               Get Started
             </Link>

@@ -100,7 +100,7 @@ export default function ForgotPasswordPage() {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-brand-500 hover:bg-brand-400 text-navy-950 font-bold py-3 rounded-xl transition-all shadow-glow"
+            className="w-full bg-brand-500 hover:bg-brand-400 text-white font-bold py-3 rounded-xl transition-all shadow-glow"
           >
             {isLoading ? 'Sending Reset Link...' : 'Send Recovery Link'}
           </Button>

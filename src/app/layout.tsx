@@ -1,12 +1,13 @@
 import type { Metadata } from 'next';
 import { Poppins, Inter } from 'next/font/google';
+import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 
 const titleFont = Poppins({
-  subsets: ["latin"],
-  weight: ["600"],
-  display: "swap",
-  variable: "--font-title",
+  subsets: ['latin'],
+  weight: ['600'],
+  display: 'swap',
+  variable: '--font-title',
 });
 
 const inter = Inter({
@@ -44,9 +45,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${titleFont.variable} ${inter.variable}`}>
-      <body className="min-h-screen bg-navy-950 text-navy-100 font-body antialiased">
-        {children}
+    <html lang="en" suppressHydrationWarning className={`${titleFont.variable} ${inter.variable}`}>
+      <body className="min-h-screen font-body antialiased transition-colors duration-300">
+        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -15,7 +15,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       {/* Header bar with fixed functional Back to Home link */}
       <header className="relative z-50 w-full p-6 max-w-7xl mx-auto flex justify-between items-center pointer-events-auto">
         <Link
-          href="/login"
+          href="/"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-navy-900/80 hover:bg-navy-800 border border-navy-700/60 text-navy-200 hover:text-brand-400 transition-all text-sm font-semibold shadow-md pointer-events-auto cursor-pointer"
         >
           <ArrowLeft className="w-4 h-4 text-brand-500" />

@@ -179,7 +179,7 @@ export default function AboutPage() {
           <div className="pt-2 flex flex-wrap justify-center gap-4">
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-navy-950 font-bold px-8 py-4 rounded-xl transition-all shadow-glow"
+              className="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white font-bold font-bold px-8 py-4 rounded-xl transition-all shadow-glow"
             >
               <span>Enroll Now</span>
               <ArrowRight className="w-5 h-5" />

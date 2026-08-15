@@ -106,6 +106,22 @@ export async function getCourseBySlug(slug: string): Promise<CourseWithRelations
   return data as CourseWithRelations | null;
 }
 
+export async function getSiblingCoursesByInstrument(instrumentId?: string | null): Promise<CourseWithRelations[]> {
+  if (!instrumentId) return [];
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('courses')
+    .select(`
+      *,
+      instrument:instruments(*),
+      instructor:instructors(*)
+    `)
+    .eq('instrument_id', instrumentId)
+    .eq('status', 'published')
+    .order('sort_order', { ascending: true });
+  return (data as CourseWithRelations[]) || [];
+}
+
 // ==========================================
 // Events
 // ==========================================

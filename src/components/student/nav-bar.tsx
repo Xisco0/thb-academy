@@ -4,28 +4,25 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
 import { LogOut, Menu, X, Bell } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+
+import { useSessionAuth } from '@/components/auth/session-inactivity-provider';
 
 export function NavBar({ user }: { user: any }) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
-  const supabase = createClient();
+  const { confirmLogout } = useSessionAuth();
 
   const links = [
     { name: 'Dashboard', href: '/student' },
     { name: 'Enrollments', href: '/student/enrollments' },
     { name: 'Payments', href: '/student/payments' },
-    { name: 'Schedule', href: '/student/schedule' },
     { name: 'Notifications', href: '/student/notifications' },
     { name: 'Profile', href: '/student/profile' },
   ];
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    router.push('/login');
+  const handleLogout = () => {
+    confirmLogout();
   };
 
   const name = user?.user_metadata?.first_name || user?.email || 'Student';

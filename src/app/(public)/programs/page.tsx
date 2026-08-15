@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getPublishedCourses } from '@/lib/queries/public';
-import { formatCurrency } from '@/lib/utils';
+import { formatCoursePrice } from '@/lib/utils';
 import { breadcrumbSchema, JsonLd } from '@/lib/seo';
+import { LevelBadge } from '@/components/ui/level-badge';
 
 export const metadata: Metadata = {
   title: 'Programs',
@@ -89,13 +90,7 @@ export default async function ProgramsPage() {
                         </div>
                       )}
                       {/* Level Badge */}
-                      <span
-                        className={`absolute top-3 right-3 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border ${
-                          levelColors[course.level] || levelColors.all_levels
-                        }`}
-                      >
-                        {levelLabels[course.level] || course.level}
-                      </span>
+                      <LevelBadge level={course.level} className="absolute top-3 right-3 z-10" />
                     </div>
 
                     {/* Content */}
@@ -120,7 +115,7 @@ export default async function ProgramsPage() {
                       {/* Footer */}
                       <div className="flex items-center justify-between pt-4 border-t border-navy-700/50 mt-auto">
                         <span className="text-brand-400 font-bold text-lg">
-                          {formatCurrency(course.price, course.currency)}
+                          {formatCoursePrice(course.price, course.currency)}
                         </span>
                         {course.duration && (
                           <span className="text-navy-500 text-sm">
@@ -149,7 +144,7 @@ export default async function ProgramsPage() {
           </p>
           <Link
             href="/register"
-            className="inline-flex items-center px-8 py-3 bg-brand-500 text-navy-950 rounded-lg font-semibold hover:bg-brand-400 transition-all duration-200 hover:shadow-glow"
+            className="inline-flex items-center px-8 py-3 bg-brand-500 text-white font-bold rounded-lg font-semibold hover:bg-brand-400 transition-all duration-200 hover:shadow-glow"
           >
             Get Started
             <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

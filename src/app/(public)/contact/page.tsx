@@ -190,7 +190,7 @@ export default async function ContactPage() {
 
               <button
                 type="button"
-                className="w-full px-5 py-3 bg-brand-500 text-navy-950 rounded-lg font-semibold hover:bg-brand-400 transition-all duration-200 hover:shadow-glow"
+                className="w-full px-5 py-3 bg-brand-500 text-white font-bold rounded-lg font-semibold hover:bg-brand-400 transition-all duration-200 hover:shadow-glow"
               >
                 Send Message
               </button>

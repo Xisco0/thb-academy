@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { getUser } from '@/lib/auth/session';
 import { NavBar } from '@/components/student/nav-bar';
+import { SessionInactivityProvider } from '@/components/auth/session-inactivity-provider';
 
 export default async function StudentLayout({
   children,
@@ -18,11 +19,13 @@ export default async function StudentLayout({
   }
 
   return (
-    <div className="min-h-screen bg-navy-950 text-slate-200">
-      <NavBar user={user} />
-      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        {children}
-      </main>
-    </div>
+    <SessionInactivityProvider>
+      <div className="min-h-screen bg-navy-950 text-slate-200">
+        <NavBar user={user} />
+        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+          {children}
+        </main>
+      </div>
+    </SessionInactivityProvider>
   );
 }
