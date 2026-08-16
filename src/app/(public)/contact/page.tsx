@@ -1,11 +1,41 @@
 import { Metadata } from 'next';
 import { getWebsiteSettings } from '@/lib/queries/public';
 import { getWhatsAppUrl } from '@/lib/utils';
+import { organizationSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
 
 export const metadata: Metadata = {
-  title: 'Contact Us',
+  title: 'Contact Us | Triumphant Harmony Brass Music Academy',
   description:
-    'Get in touch with Triumphant Harmony Brass music academy in Lagos, Nigeria. Reach us by phone, email, or WhatsApp.',
+    'Get in touch with Triumphant Harmony Brass Music Academy in Lagos, Nigeria. Contact us by phone (+234 703 859 5356), email, or WhatsApp.',
+  alternates: {
+    canonical: `${siteUrl}/contact`,
+  },
+  openGraph: {
+    title: 'Contact Us | Triumphant Harmony Brass Music Academy',
+    description:
+      'Reach out to THB Music Academy in Lagos, Nigeria for course enrollment, inquiries, and music director consultation.',
+    url: `${siteUrl}/contact`,
+    siteName: 'Triumphant Harmony Brass Music Academy',
+    locale: 'en_NG',
+    type: 'website',
+    images: [
+      {
+        url: `${siteUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Contact THB Music Academy',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact Us | Triumphant Harmony Brass Music Academy',
+    description:
+      'Get in touch with THB Music Academy in Lagos, Nigeria. Contact us by phone, email, or WhatsApp.',
+    images: [`${siteUrl}/images/logo.png`],
+  },
 };
 
 export default async function ContactPage() {
@@ -13,6 +43,14 @@ export default async function ContactPage() {
 
   return (
     <main className="min-h-screen bg-navy-950 text-white pt-24 pb-16">
+      <JsonLd data={organizationSchema(settings)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Contact', url: '/contact' },
+        ])}
+      />
+
       {/* Hero */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16 text-center">
         <p className="text-brand-400 font-medium text-sm uppercase tracking-wider mb-3">
@@ -67,7 +105,7 @@ export default async function ContactPage() {
                       {settings.phone}
                     </a>
                   ) : (
-                    'Phone number coming soon'
+                    '+234 703 859 5356'
                   )}
                 </p>
               </div>
@@ -84,7 +122,7 @@ export default async function ContactPage() {
                       {settings.email}
                     </a>
                   ) : (
-                    'Email coming soon'
+                    'info@thbacademy.org'
                   )}
                 </p>
               </div>
@@ -96,7 +134,7 @@ export default async function ContactPage() {
                 </svg>
                 <h3 className="font-semibold text-lg mb-2 text-white">Business Hours</h3>
                 <p className="text-navy-300 text-sm">
-                  {settings?.business_hours || 'Monday - Friday, 9am - 6pm'}
+                  {settings?.business_hours || 'Monday - Saturday, 9am - 6pm'}
                 </p>
               </div>
             </div>

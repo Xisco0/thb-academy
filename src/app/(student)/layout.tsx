@@ -1,7 +1,16 @@
+import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getUser } from '@/lib/auth/session';
 import { NavBar } from '@/components/student/nav-bar';
 import { SessionInactivityProvider } from '@/components/auth/session-inactivity-provider';
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+  },
+};
 
 export default async function StudentLayout({
   children,

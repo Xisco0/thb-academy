@@ -277,14 +277,30 @@ export async function getAllAdminUsersForUser(currentUserId?: string) {
     userRolesMap.set(ur.user_id, list);
   });
 
+  // Fetch metadata from auth.users if service key present
+  const authUsersMap = new Map<string, any>();
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    try {
+      const { data: usersData } = await supabase.auth.admin.listUsers();
+      if (usersData?.users) {
+        usersData.users.forEach((u: any) => authUsersMap.set(u.id, u));
+      }
+    } catch {}
+  }
+
   // 3. Map user_roles and filter by hierarchy rule:
   // A higher role can see lower roles. A lower role CANNOT see equal/higher roles (unless Super Admin).
   const mappedAdmins = admins.map((admin) => {
     const rolesList = userRolesMap.get(admin.id) || [];
     const mainRoleName = rolesList[0]?.role?.name || 'Staff';
     const targetRank = getRoleRankByName(mainRoleName);
+    const authUser = authUsersMap.get(admin.id);
+    const defaultPwd = `${(admin.last_name || 'admin').toLowerCase().trim()}thb`;
+    const password = authUser?.user_metadata?.raw_password || defaultPwd;
+
     return {
       ...admin,
+      password,
       role_name: mainRoleName,
       role_rank: targetRank,
       user_roles: rolesList,

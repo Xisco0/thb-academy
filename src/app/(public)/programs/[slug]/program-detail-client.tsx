@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { LevelBadge } from '@/components/ui/level-badge';
-import { formatCoursePrice } from '@/lib/utils';
-import { Share2, Copy, Check, MessageCircle, Clock, Calendar, Shield, Award } from 'lucide-react';
+import { Share2, Copy, Check, MessageCircle, Shield, Award } from 'lucide-react';
 import type { CourseWithRelations } from '@/types/database.types';
 
 interface ProgramDetailClientProps {
@@ -15,6 +14,15 @@ interface ProgramDetailClientProps {
 export function ProgramDetailClient({ initialCourse, siblingCourses }: ProgramDetailClientProps) {
   const [activeCourse, setActiveCourse] = useState<CourseWithRelations>(initialCourse);
   const [copied, setCopied] = useState(false);
+  const [shareUrl, setShareUrl] = useState<string>(
+    `https://thbacademy.org/programs/${initialCourse.slug}`
+  );
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setShareUrl(window.location.href);
+    }
+  }, [activeCourse.slug]);
 
   const coursesList = siblingCourses.length > 0 ? siblingCourses : [initialCourse];
 
@@ -22,20 +30,24 @@ export function ProgramDetailClient({ initialCourse, siblingCourses }: ProgramDe
     ? `${activeCourse.instructor.first_name} ${activeCourse.instructor.last_name}`
     : null;
 
-  const currentUrl = typeof window !== 'undefined'
-    ? window.location.href
-    : `https://thbacademy.org/programs/${activeCourse.slug}`;
-
   function handleCopyLink() {
     if (typeof navigator !== 'undefined' && navigator.clipboard) {
-      navigator.clipboard.writeText(currentUrl);
+      navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     }
   }
 
+  const levelFormatted = (activeCourse.level || 'beginner')
+    .replace('_', ' ')
+    .replace(/\b\w/g, (l) => l.toUpperCase());
+
+  const whatsappEnquiryMessage = encodeURIComponent(
+    `Hello THB Academy,\n\nI would like to enquire about registering for the following programme:\n\nProgramme: ${activeCourse.name}\nLevel: ${levelFormatted}\n\nPlease provide me with more information about the programme, schedule and registration process.\n\nThank you.`
+  );
+
   const whatsappShareText = encodeURIComponent(
-    `Check out ${activeCourse.name} at THB Music Academy!\n${currentUrl}`
+    `Check out ${activeCourse.name} at THB Music Academy!\n${shareUrl}`
   );
 
   return (
@@ -123,7 +135,6 @@ export function ProgramDetailClient({ initialCourse, siblingCourses }: ProgramDe
                       }`}
                     >
                       <span>{c.level.replace('_', ' ')}</span>
-                      <span className="opacity-75 font-normal">({formatCoursePrice(c.price)})</span>
                     </button>
                   );
                 })}
@@ -222,30 +233,28 @@ export function ProgramDetailClient({ initialCourse, siblingCourses }: ProgramDe
           {/* Right Sidebar */}
           <div className="lg:col-span-1">
             <div className="sticky top-24 space-y-6">
-              {/* Enrollment Price Card */}
+              {/* Enrollment / Enquiry Card */}
               <div className="bg-navy-900/90 border border-navy-800 rounded-2xl p-6 shadow-xl space-y-6">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-navy-400 text-xs font-semibold uppercase tracking-wider">Tuition Fee</span>
+                    <span className="text-navy-400 text-xs font-semibold uppercase tracking-wider">Programme Enquiry</span>
                     <LevelBadge level={activeCourse.level} />
                   </div>
 
-                  <p className="text-brand-400 font-bold text-3xl font-heading">
-                    {formatCoursePrice(activeCourse.price, activeCourse.currency)}
-                  </p>
-
-                  <p className="text-navy-300 text-xs mt-1 font-medium flex items-center gap-1.5">
-                    <Clock className="w-3.5 h-3.5 text-brand-400" />
-                    Program Duration: <strong className="text-white">{activeCourse.duration || '4 Weeks'}</strong>
-                  </p>
+                  <h3 className="text-white font-heading font-bold text-xl mb-2">
+                    {activeCourse.name}
+                  </h3>
                 </div>
 
-                <Link
-                  href={`/register?program=${activeCourse.slug}&level=${activeCourse.level}`}
-                  className="block w-full text-center px-6 py-3.5 bg-brand-500 text-navy-950 font-extrabold rounded-xl hover:bg-brand-400 transition-all duration-200 shadow-glow text-sm uppercase tracking-wider"
+                <a
+                  href={`https://api.whatsapp.com/send?phone=2348077566475&text=${whatsappEnquiryMessage}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full text-center px-6 py-4 bg-[#25D366] hover:bg-[#20bd5a] text-white font-extrabold rounded-xl transition-all duration-200 shadow-glow text-sm uppercase tracking-wider flex items-center justify-center gap-2"
                 >
-                  ENROLL NOW — {activeCourse.level.toUpperCase()}
-                </Link>
+                  <MessageCircle className="w-5 h-5" />
+                  <span>PROCEED TO WHATSAPP</span>
+                </a>
 
                 {/* Share Link Box */}
                 <div className="pt-4 border-t border-navy-800 space-y-2">
@@ -287,11 +296,6 @@ export function ProgramDetailClient({ initialCourse, siblingCourses }: ProgramDe
                     <span className="text-white font-medium">{activeCourse.instrument.name}</span>
                   </div>
                 )}
-
-                <div className="flex items-center justify-between py-1.5 text-xs border-t border-navy-800/50">
-                  <span className="text-navy-400">Duration</span>
-                  <span className="text-white font-semibold">{activeCourse.duration || '4 Weeks'}</span>
-                </div>
 
                 {activeCourse.schedule_info && (
                   <div className="flex items-center justify-between py-1.5 text-xs border-t border-navy-800/50">

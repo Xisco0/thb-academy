@@ -3,10 +3,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Search, Plus, Edit2, ShieldCheck, X, Loader2, AlertCircle, Shield, User, Info } from 'lucide-react';
+import { Search, Plus, Edit2, ShieldCheck, X, Loader2, AlertCircle, Shield, User, Eye, EyeOff } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { formatDate } from '@/lib/utils';
-import { createAdminUserAction, toggleAdminStatusAction, updateAdminUserAction } from '@/lib/actions/admin-actions';
+import {
+  createAdminUserAction,
+  toggleAdminStatusAction,
+  updateAdminUserAction,
+} from '@/lib/actions/admin-actions';
 import { getRoleRankByName } from '@/lib/utils/roles';
 
 interface AdminUserProps {
@@ -16,6 +20,7 @@ interface AdminUserProps {
   email: string;
   phone?: string;
   address?: string;
+  password?: string;
   is_active: boolean;
   created_at: string;
   role_name?: string;
@@ -49,10 +54,11 @@ export function AdminsClient({
   const [actionLoadingId, setActionLoadingId] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   // Filter role options caller is allowed to assign
   const assignableRoles = roles.filter((r) => {
-    if (currentUser.role_rank >= 100) return true; // Super Admin can assign any role
+    if (currentUser.role_rank >= 100) return true;
     const rank = getRoleRankByName(r.name);
     return rank <= currentUser.role_rank;
   });
@@ -63,6 +69,7 @@ export function AdminsClient({
     email: '',
     phone: '',
     address: '',
+    password: '',
     role_id: assignableRoles[0]?.id || roles[0]?.id || '',
   });
 
@@ -82,6 +89,7 @@ export function AdminsClient({
       email: '',
       phone: '',
       address: '',
+      password: '',
       role_id: assignableRoles[0]?.id || roles[0]?.id || '',
     });
     setErrorMsg('');
@@ -89,123 +97,117 @@ export function AdminsClient({
     setIsAddOpen(true);
   }
 
-  function openEditModal(admin: AdminUserProps) {
-    setEditingItem(admin);
-    const assignedRoleId = admin.user_roles?.[0]?.role_id || assignableRoles[0]?.id || roles[0]?.id || '';
+  function openEditModal(item: AdminUserProps) {
+    setEditingItem(item);
+    const existingRoleId = item.user_roles?.[0]?.role_id || assignableRoles[0]?.id || '';
+    const defaultPassword = item.password || `${(item.last_name || '').toLowerCase().trim()}thb`;
     setForm({
-      first_name: admin.first_name || '',
-      last_name: admin.last_name || '',
-      email: admin.email || '',
-      phone: admin.phone || '',
-      address: admin.address || '',
-      role_id: assignedRoleId,
+      first_name: item.first_name || '',
+      last_name: item.last_name || '',
+      email: item.email || '',
+      phone: item.phone || '',
+      address: item.address || '',
+      password: defaultPassword,
+      role_id: existingRoleId,
     });
     setErrorMsg('');
     setSuccessMsg('');
+    setIsAddOpen(false);
   }
 
-  async function handleToggleStatus(profileId: string, nextStatus: boolean) {
-    setActionLoadingId(profileId);
+  async function handleToggleStatus(id: string, newStatus: boolean) {
+    setActionLoadingId(id);
     setErrorMsg('');
-    const res = await toggleAdminStatusAction(profileId, nextStatus);
-    setActionLoadingId(null);
-
-    if (!res.success) {
-      setErrorMsg(res.error || 'Action failed.');
-    } else {
-      router.refresh();
+    setSuccessMsg('');
+    try {
+      const res = await toggleAdminStatusAction(id, newStatus);
+      if (res.success) {
+        setSuccessMsg(res.message || 'Action completed successfully.');
+        router.refresh();
+      } else {
+        setErrorMsg(res.error || 'Failed to update admin status.');
+      }
+    } catch {
+      setErrorMsg('Error performing admin status update.');
+    } finally {
+      setActionLoadingId(null);
     }
   }
 
-  async function handleAddSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
-    if (form.phone && form.phone.trim()) {
-      if (/[a-zA-Z]/.test(form.phone) || form.phone.replace(/\D/g, '').length !== 11) {
-        setErrorMsg('Phone number must be exactly 11 digits containing numbers only (e.g. 08144326123).');
-        return;
-      }
-    }
-
     setLoading(true);
     setErrorMsg('');
     setSuccessMsg('');
 
-    const res = await createAdminUserAction(form);
-    setLoading(false);
-
-    if (!res.success) {
-      setErrorMsg(res.error || 'Failed to create admin user.');
-    } else {
-      setSuccessMsg(res.message || 'Admin account created!');
-      setTimeout(() => {
-        setIsAddOpen(false);
-        router.refresh();
-      }, 1500);
-    }
-  }
-
-  async function handleEditSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!editingItem) return;
-
-    if (form.phone && form.phone.trim()) {
-      if (/[a-zA-Z]/.test(form.phone) || form.phone.replace(/\D/g, '').length !== 11) {
-        setErrorMsg('Phone number must be exactly 11 digits containing numbers only (e.g. 08144326123).');
-        return;
+    try {
+      if (editingItem) {
+        const res = await updateAdminUserAction(editingItem.id, form);
+        if (res.success) {
+          setSuccessMsg(res.message || 'Admin updated successfully.');
+          setEditingItem(null);
+          router.refresh();
+        } else {
+          setErrorMsg(res.error || 'Failed to update admin.');
+        }
+      } else {
+        const res = await createAdminUserAction(form);
+        if (res.success) {
+          setSuccessMsg(res.message || 'Admin created successfully');
+          setIsAddOpen(false);
+          router.refresh();
+        } else {
+          setErrorMsg(res.error || 'Failed to create admin.');
+        }
       }
-    }
-
-    setLoading(true);
-    setErrorMsg('');
-    setSuccessMsg('');
-
-    const res = await updateAdminUserAction(editingItem.id, form);
-    setLoading(false);
-
-    if (!res.success) {
-      setErrorMsg(res.error || 'Failed to update admin profile.');
-    } else {
-      setSuccessMsg(res.message || 'Admin profile updated successfully!');
-      setTimeout(() => {
-        setEditingItem(null);
-        router.refresh();
-      }, 1200);
+    } catch {
+      setErrorMsg('An unexpected error occurred.');
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
     <div className="space-y-6">
-      {/* Notice Banner explaining self-profile exclusion and scope */}
-      <div className="bg-navy-900/90 border border-brand-500/30 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-lg">
-        <div className="flex items-start gap-3">
-          <div className="p-2 bg-brand-500/20 text-brand-400 rounded-xl shrink-0 mt-0.5 sm:mt-0">
-            <Info className="w-5 h-5" />
+      {/* Role Context Bar */}
+      <div className="bg-navy-900/90 border border-navy-800 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400 shrink-0">
+            <User className="w-5 h-5" />
           </div>
           <div>
-            <h4 className="text-sm font-bold text-white flex items-center gap-2">
-              Hierarchical Admin Scope — Logged in as <span className="text-brand-400">{currentUser.first_name} {currentUser.last_name}</span> ({currentUser.role_name})
-            </h4>
+            <div className="flex items-center gap-2">
+              <span className="text-white font-bold text-sm">Your Account: {currentUser.first_name} {currentUser.last_name}</span>
+              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                {currentUser.role_name}
+              </span>
+            </div>
             <p className="text-xs text-navy-300 mt-0.5">
-              This list shows other administrators you are authorized to view and manage. Your own account profile is managed separately under <Link href="/admin/profile" className="text-brand-400 font-bold underline hover:text-brand-300">My Profile</Link>.
+              Email: <span className="text-white font-mono">{currentUser.email}</span>
             </p>
           </div>
         </div>
 
         <Link
           href="/admin/profile"
-          className="px-4 py-2 bg-navy-800 border border-navy-700 hover:bg-navy-700 text-brand-300 hover:text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 shrink-0"
+          className="px-4 py-2 bg-navy-950 hover:bg-navy-800 border border-navy-700 text-brand-300 rounded-xl text-xs font-bold transition-colors"
         >
-          <User className="w-4 h-4" />
           <span>My Profile</span>
         </Link>
       </div>
 
-      {/* Global Error Banner */}
+      {/* Global Messages */}
       {errorMsg && !isAddOpen && !editingItem && (
         <div className="p-4 bg-red-500/15 border border-red-500/30 rounded-2xl text-red-300 text-sm flex items-center gap-3 animate-fade-in">
           <AlertCircle className="w-5 h-5 shrink-0" />
           <span>{errorMsg}</span>
+        </div>
+      )}
+
+      {successMsg && !isAddOpen && !editingItem && (
+        <div className="p-4 bg-emerald-500/15 border border-emerald-500/30 rounded-2xl text-emerald-300 text-sm flex items-center gap-3 animate-fade-in">
+          <ShieldCheck className="w-5 h-5 shrink-0" />
+          <span>{successMsg}</span>
         </div>
       )}
 
@@ -279,21 +281,21 @@ export function AdminsClient({
                           <>
                             <button
                               onClick={() => openEditModal(a)}
-                              className="px-3 py-1 rounded-lg text-xs font-bold transition-colors inline-flex items-center gap-1 bg-navy-800 text-brand-300 border border-navy-700 hover:bg-navy-700 hover:text-white"
+                              className="px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors inline-flex items-center gap-1.5 bg-navy-800 text-brand-300 border border-navy-700 hover:bg-navy-700 hover:text-white cursor-pointer"
                             >
-                              <Edit2 className="w-3 h-3" />
+                              <Edit2 className="w-3.5 h-3.5" />
                               <span>Edit</span>
                             </button>
                             <button
                               onClick={() => handleToggleStatus(a.id, !a.is_active)}
                               disabled={actionLoadingId === a.id}
-                              className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors inline-flex items-center gap-1 ${
+                              className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-colors inline-flex items-center gap-1.5 cursor-pointer ${
                                 a.is_active
-                                  ? 'bg-red-500/20 text-red-300 border border-red-500/30 hover:bg-red-500/30'
+                                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30 hover:bg-amber-500/30'
                                   : 'bg-green-500/20 text-green-300 border border-green-500/30 hover:bg-green-500/30'
                               }`}
                             >
-                              {actionLoadingId === a.id && <Loader2 className="w-3 h-3 animate-spin" />}
+                              {actionLoadingId === a.id && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                               <span>{a.is_active ? 'Suspend' : 'Activate'}</span>
                             </button>
                           </>
@@ -318,12 +320,18 @@ export function AdminsClient({
               <h3 className="font-heading text-lg font-bold text-white">
                 {editingItem ? `Edit Admin Profile — ${editingItem.first_name} ${editingItem.last_name}` : 'Create Admin Account'}
               </h3>
-              <button onClick={() => { setIsAddOpen(false); setEditingItem(null); }} className="text-navy-400 hover:text-white p-1 rounded-lg">
+              <button
+                onClick={() => {
+                  setIsAddOpen(false);
+                  setEditingItem(null);
+                }}
+                className="p-1.5 text-navy-400 hover:text-white rounded-lg transition-colors cursor-pointer"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={editingItem ? handleEditSubmit : handleAddSubmit} className="p-6 space-y-4 overflow-y-auto flex-1">
+            <form onSubmit={handleSubmit} className="px-6 py-4 space-y-4 overflow-y-auto flex-1">
               {errorMsg && (
                 <div className="p-3.5 bg-red-500/15 border border-red-500/30 rounded-xl text-red-300 text-xs flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
@@ -331,80 +339,120 @@ export function AdminsClient({
                 </div>
               )}
 
-              {successMsg && (
-                <div className="p-3.5 bg-emerald-500/15 border border-emerald-500/30 rounded-xl text-emerald-300 text-xs flex items-center gap-2">
-                  <Shield className="w-4 h-4 shrink-0" />
-                  <span>{successMsg}</span>
-                </div>
-              )}
-
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">First Name *</label>
-                  <input type="text" required value={form.first_name} onChange={(e) => setForm({ ...form, first_name: e.target.value })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500" placeholder="Segun" />
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-navy-200">First Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={form.first_name}
+                    onChange={(e) => setForm({ ...form, first_name: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                    placeholder="Francis"
+                  />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Surname / Last Name *</label>
-                  <input type="text" required value={form.last_name} onChange={(e) => setForm({ ...form, last_name: e.target.value })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500" placeholder="Bayo" />
+
+                <div className="space-y-1.5">
+                  <label className="text-xs font-bold text-navy-200">Last Name *</label>
+                  <input
+                    type="text"
+                    required
+                    value={form.last_name}
+                    onChange={(e) => setForm({ ...form, last_name: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                    placeholder="Bamirin"
+                  />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1 flex items-center justify-between">
-                  <span>Email Address</span>
-                  {editingItem && <span className="text-[10px] text-navy-400 font-normal">(Email cannot be changed)</span>}
-                </label>
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-navy-200">Email Address *</label>
                 <input
                   type="email"
                   required
                   disabled={!!editingItem}
                   value={form.email}
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  className={`w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500 ${editingItem ? 'opacity-60 cursor-not-allowed' : ''}`}
-                  placeholder="admin@thb.org"
+                  className="w-full px-3.5 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500 disabled:opacity-60"
+                  placeholder="admin@thbacademy.org"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Phone Number (11 digits)</label>
+              {/* Password View & Edit Field */}
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-navy-200">
+                    {editingItem ? 'Account Password' : 'Password (Default: surname + thb)'}
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="text-[11px] text-brand-400 hover:text-brand-300 font-semibold flex items-center gap-1 cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    <span>{showPassword ? 'Hide' : 'Show Password'}</span>
+                  </button>
+                </div>
+                <div className="relative">
                   <input
-                    type="text"
-                    maxLength={11}
-                    value={form.phone}
-                    onChange={(e) => setForm({ ...form, phone: e.target.value.replace(/\D/g, '').slice(0, 11) })}
-                    className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
-                    placeholder="08144326123"
+                    type={showPassword ? 'text' : 'password'}
+                    value={form.password}
+                    onChange={(e) => setForm({ ...form, password: e.target.value })}
+                    className="w-full px-3.5 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500 font-mono tracking-wider"
+                    placeholder={editingItem ? 'Enter new password or keep existing' : 'e.g. bamirinthb'}
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Assigned Role</label>
-                  <select value={form.role_id} onChange={(e) => setForm({ ...form, role_id: e.target.value })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500">
-                    {assignableRoles.map((r) => (
-                      <option key={r.id} value={r.id}>{r.name}</option>
-                    ))}
-                  </select>
-                </div>
+                <p className="text-[11px] text-navy-400">
+                  {editingItem ? 'You can view or update this admin person’s login password directly.' : 'Default password format is surname + thb (e.g. bamirinthb).'}
+                </p>
               </div>
 
-              <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1">Residential Address</label>
-                <textarea
-                  rows={2}
-                  value={form.address}
-                  onChange={(e) => setForm({ ...form, address: e.target.value })}
-                  className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
-                  placeholder="Enter residential address"
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-navy-200">Phone Number (11 digits)</label>
+                <input
+                  type="text"
+                  maxLength={11}
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  className="w-full px-3.5 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500 font-mono"
+                  placeholder="08144326123"
                 />
               </div>
 
-              <div className="flex justify-end gap-3 pt-4 border-t border-navy-800">
-                <button type="button" onClick={() => { setIsAddOpen(false); setEditingItem(null); }} className="px-4 py-2 bg-navy-800 hover:bg-navy-700 text-white rounded-xl text-sm font-semibold">
+              <div className="space-y-1.5">
+                <label className="text-xs font-bold text-navy-200">Assign Administrative Role *</label>
+                <select
+                  value={form.role_id}
+                  onChange={(e) => setForm({ ...form, role_id: e.target.value })}
+                  className="w-full px-3.5 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                >
+                  {assignableRoles.map((r) => (
+                    <option key={r.id} value={r.id}>
+                      {r.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="pt-4 border-t border-navy-800 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAddOpen(false);
+                    setEditingItem(null);
+                  }}
+                  className="px-4 py-2 bg-navy-950 text-navy-300 hover:text-white rounded-xl text-xs font-bold border border-navy-700 cursor-pointer"
+                >
                   Cancel
                 </button>
-                <button type="submit" disabled={loading} className="px-5 py-2 bg-brand-500 hover:bg-brand-400 text-white rounded-xl text-sm font-bold flex items-center gap-2">
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-glow flex items-center gap-2 cursor-pointer"
+                >
                   {loading && <Loader2 className="w-4 h-4 animate-spin" />}
-                  <span>{editingItem ? 'Save Changes' : 'Create Account'}</span>
+                  <span>{editingItem ? 'Save Changes' : 'Create Admin Account'}</span>
                 </button>
               </div>
             </form>
