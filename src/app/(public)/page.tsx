@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${siteUrl}/images/logo.png`,
+        url: `${siteUrl}/images/image.png`,
         width: 1200,
         height: 630,
         alt: 'Triumphant Harmony Brass Music Academy Logo',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     title: 'Triumphant Harmony Brass | Premier Music Academy in Lagos, Nigeria',
     description:
       'Premier music education institution in Lagos, Nigeria. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
-    images: [`${siteUrl}/images/logo.png`],
+    images: [`${siteUrl}/images/image.png`],
   },
 };
 
