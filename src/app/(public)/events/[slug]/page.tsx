@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
 
-  let imageUrl = `${baseUrl}/images/thb-academy-banner.png`;
+  let imageUrl = `${baseUrl}/images/image.png`;
   if (event.banner_url && event.banner_url.trim()) {
     const rawImage = event.banner_url.trim();
     if (rawImage.startsWith('http://') || rawImage.startsWith('https://')) {

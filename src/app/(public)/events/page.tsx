@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${siteUrl}/images/logo.png`,
+        url: `${siteUrl}/images/image.png`,
         width: 1200,
         height: 630,
         alt: 'THB Music Academy Events',
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Events, Recitals & Masterclasses | Triumphant Harmony Brass',
     description: 'Upcoming recitals, concerts, and masterclasses at Triumphant Harmony Brass Academy.',
-    images: [`${siteUrl}/images/logo.png`],
+    images: [`${siteUrl}/images/image.png`],
   },
 };
 

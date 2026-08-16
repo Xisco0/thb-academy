@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${siteUrl}/images/founder.jpg`,
+        url: `${siteUrl}/images/image.png`,
         width: 1200,
         height: 630,
         alt: 'Taiwo Toyinbo — Founder & Music Director',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: 'About Us | Triumphant Harmony Brass Music Academy',
     description:
       'Learn about THB Music Academy in Lagos, Nigeria. Founded by Music Director Taiwo Toyinbo.',
-    images: [`${siteUrl}/images/founder.jpg`],
+    images: [`${siteUrl}/images/image.png`],
   },
 };
 

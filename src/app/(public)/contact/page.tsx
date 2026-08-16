@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${siteUrl}/images/logo.png`,
+        url: `${siteUrl}/images/image.png`,
         width: 1200,
         height: 630,
         alt: 'Contact THB Music Academy',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     title: 'Contact Us | Triumphant Harmony Brass Music Academy',
     description:
       'Get in touch with THB Music Academy in Lagos, Nigeria. Contact us by phone, email, or WhatsApp.',
-    images: [`${siteUrl}/images/logo.png`],
+    images: [`${siteUrl}/images/image.png`],
   },
 };
 
