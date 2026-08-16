@@ -1,29 +1,44 @@
 import type { Course, Event, WebsiteSettings } from '@/types/database.types';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+
+function toAbsoluteUrl(url: string | null | undefined): string | undefined {
+  if (!url || !url.trim()) return undefined;
+  const trimmed = url.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+  return `${SITE_URL}${trimmed.startsWith('/') ? '' : '/'}${trimmed}`;
+}
 
 // ==========================================
-// JSON-LD Structured Data
+// JSON-LD Structured Data Generators
 // ==========================================
 
 export function organizationSchema(settings: WebsiteSettings | null) {
+  const logoUrl = toAbsoluteUrl(settings?.logo_url) || `${SITE_URL}/images/logo.png`;
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'MusicSchool',
-    name: settings?.academy_name || 'Triumphant Harmony Brass',
-    alternateName: settings?.academy_short_name || 'THB',
+    '@type': ['EducationalOrganization', 'MusicSchool'],
+    name: settings?.academy_name || 'Triumphant Harmony Brass Music Academy',
+    alternateName: settings?.academy_short_name || 'THB Academy',
     description:
-      settings?.tagline || 'The sound of victory, The heart of harmony.',
+      settings?.tagline || 'Premier music academy in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
     url: SITE_URL,
-    logo: settings?.logo_url || `${SITE_URL}/logo.png`,
-    telephone: settings?.phone || undefined,
-    email: settings?.email || undefined,
+    logo: logoUrl,
+    image: logoUrl,
+    telephone: settings?.phone || '+234 703 859 5356',
+    email: settings?.email || 'info@thbacademy.org',
     address: {
       '@type': 'PostalAddress',
-      streetAddress: settings?.address || undefined,
+      streetAddress: settings?.address || 'Lagos, Nigeria',
       addressLocality: settings?.city || 'Lagos',
-      addressRegion: settings?.state || 'Lagos',
+      addressRegion: settings?.state || 'Lagos State',
       addressCountry: settings?.country || 'NG',
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '6.5244',
+      longitude: '3.3792',
     },
     sameAs: [
       settings?.facebook_url,
@@ -36,6 +51,8 @@ export function organizationSchema(settings: WebsiteSettings | null) {
 }
 
 export function courseSchema(course: Course, settings: WebsiteSettings | null) {
+  const courseImage = toAbsoluteUrl(course.image_url) || `${SITE_URL}/images/logo.png`;
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Course',
@@ -43,7 +60,7 @@ export function courseSchema(course: Course, settings: WebsiteSettings | null) {
     description: course.description || course.name,
     provider: {
       '@type': 'MusicSchool',
-      name: settings?.academy_name || 'Triumphant Harmony Brass',
+      name: settings?.academy_name || 'Triumphant Harmony Brass Music Academy',
       url: SITE_URL,
     },
     url: `${SITE_URL}/programs/${course.slug}`,
@@ -55,7 +72,7 @@ export function courseSchema(course: Course, settings: WebsiteSettings | null) {
       priceCurrency: course.currency || 'NGN',
       availability: 'https://schema.org/InStock',
     },
-    image: course.image_url || undefined,
+    image: courseImage,
   };
 }
 
@@ -67,6 +84,8 @@ export function eventSchema(event: Event, settings: WebsiteSettings | null) {
     ? `${event.date}T${event.end_time}`
     : undefined;
 
+  const eventImage = toAbsoluteUrl(event.banner_url) || `${SITE_URL}/images/logo.png`;
+
   return {
     '@context': 'https://schema.org',
     '@type': 'MusicEvent',
@@ -75,25 +94,40 @@ export function eventSchema(event: Event, settings: WebsiteSettings | null) {
     startDate,
     endDate,
     url: `${SITE_URL}/events/${event.slug}`,
-    image: event.banner_url || undefined,
+    image: eventImage,
     location: {
       '@type': 'Place',
       name: event.venue_name || settings?.academy_name || 'Triumphant Harmony Brass',
       address: {
         '@type': 'PostalAddress',
-        streetAddress: event.venue_address || settings?.address || undefined,
+        streetAddress: event.venue_address || settings?.address || 'Lagos, Nigeria',
         addressLocality: settings?.city || 'Lagos',
         addressCountry: 'NG',
       },
     },
     organizer: {
       '@type': 'MusicSchool',
-      name: settings?.academy_name || 'Triumphant Harmony Brass',
+      name: settings?.academy_name || 'Triumphant Harmony Brass Music Academy',
       url: SITE_URL,
     },
     eventStatus: new Date(event.date) >= new Date()
       ? 'https://schema.org/EventScheduled'
-      : 'https://schema.org/EventMovedOnline',
+      : 'https://schema.org/EventCompleted',
+  };
+}
+
+export function faqPageSchema(faqs: { question: string; answer: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer,
+      },
+    })),
   };
 }
 
@@ -105,7 +139,7 @@ export function breadcrumbSchema(items: { name: string; url: string }[]) {
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: `${SITE_URL}${item.url}`,
+      item: `${SITE_URL}${item.url.startsWith('/') ? '' : '/'}${item.url}`,
     })),
   };
 }

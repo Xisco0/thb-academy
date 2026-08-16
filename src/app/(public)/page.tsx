@@ -6,10 +6,41 @@ import type { Metadata } from 'next';
 import { Music, ArrowRight, Calendar, MapPin, CheckCircle, Sparkles, BookOpen, Users, Award } from 'lucide-react';
 import { LevelBadge } from '@/components/ui/level-badge';
 
+import { organizationSchema, JsonLd } from '@/lib/seo';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+
 export const metadata: Metadata = {
-  title: 'Triumphant Harmony Brass | Music Academy in Lagos, Nigeria',
+  title: 'Triumphant Harmony Brass | Premier Music Academy in Lagos, Nigeria',
   description:
-    'Learn music at Triumphant Harmony Brass (THB) in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
+    'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
+  alternates: {
+    canonical: siteUrl,
+  },
+  openGraph: {
+    title: 'Triumphant Harmony Brass | Premier Music Academy in Lagos, Nigeria',
+    description:
+      'Premier music education institution in Lagos, Nigeria. Classical rigor, modern technique, and practical performance training under Taiwo Toyinbo & faculty.',
+    url: siteUrl,
+    siteName: 'Triumphant Harmony Brass Music Academy',
+    locale: 'en_NG',
+    type: 'website',
+    images: [
+      {
+        url: `${siteUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Triumphant Harmony Brass Music Academy Logo',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Triumphant Harmony Brass | Premier Music Academy in Lagos, Nigeria',
+    description:
+      'Premier music education institution in Lagos, Nigeria. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
+    images: [`${siteUrl}/images/logo.png`],
+  },
 };
 
 export default async function HomePage() {
@@ -23,6 +54,7 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-screen bg-navy-950 text-slate-100 overflow-x-hidden">
+      <JsonLd data={organizationSchema(settings)} />
       {/* 1. Hero Section */}
       <section id="hero" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center min-h-[90vh] bg-[#090e1a] hero-dark-section">
         {/* Background Image & Gradient Overlay */}
@@ -244,15 +276,10 @@ export default async function HomePage() {
                 </div>
 
                 <div className="pt-4 border-t border-navy-800 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-navy-400">Course Fee</p>
-                    <p className="text-lg font-bold text-brand-400">
-                      {formatCoursePrice(course.price, course.currency)}
-                    </p>
-                  </div>
+                  <span className="text-xs text-navy-400 font-semibold">Practical Training Track</span>
                   <Link
                     href={`/programs/${course.slug}`}
-                    className="px-4 py-2 bg-navy-950 hover:bg-navy-800 border border-navy-700 text-white rounded-lg text-xs font-bold transition-colors"
+                    className="px-4 py-2 bg-brand-500/10 hover:bg-brand-500 text-brand-400 hover:text-white border border-brand-500/30 rounded-xl text-xs font-bold transition-all"
                   >
                     View Program
                   </Link>
@@ -282,22 +309,37 @@ export default async function HomePage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {upcomingEvents.map((ev: any) => (
-              <div key={ev.id} className="bg-navy-900/80 border border-navy-700/60 rounded-2xl p-6 space-y-4 hover:border-brand-500/40 transition-all shadow-xl">
-                <div className="flex items-center gap-2 text-xs text-brand-400 font-bold">
-                  <Calendar className="w-4 h-4" />
-                  <span>{new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                </div>
-                <h3 className="font-heading text-lg font-bold text-white">{ev.title}</h3>
-                <p className="text-navy-300 text-xs line-clamp-2">{ev.description}</p>
-                {ev.venue_name && (
-                  <div className="flex items-center gap-2 text-xs text-navy-400 pt-2 border-t border-navy-800">
-                    <MapPin className="w-3.5 h-3.5 text-brand-500 shrink-0" />
-                    <span className="truncate">{ev.venue_name}</span>
+            {upcomingEvents.map((ev: any) => {
+              const bannerSrc = ev.banner_url || '/images/thb-academy-banner.png';
+              return (
+                <Link
+                  key={ev.id}
+                  href={`/events/${ev.slug}`}
+                  className="group bg-navy-900/80 border border-navy-700/60 rounded-2xl overflow-hidden hover:border-brand-500/40 hover:-translate-y-1 transition-all shadow-xl flex flex-col"
+                >
+                  <div className="h-44 bg-navy-950 relative overflow-hidden border-b border-navy-800">
+                    <img src={bannerSrc} alt={ev.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                )}
-              </div>
-            ))}
+                  <div className="p-6 flex-1 flex flex-col justify-between space-y-3">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-xs text-brand-400 font-bold">
+                        <Calendar className="w-4 h-4" />
+                        <span>{new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                      </div>
+                      <h3 className="font-heading text-lg font-bold text-white group-hover:text-brand-300 transition-colors">{ev.title}</h3>
+                      <p className="text-navy-300 text-xs line-clamp-2 leading-relaxed">{ev.description}</p>
+                    </div>
+
+                    {ev.venue_name && (
+                      <div className="flex items-center gap-2 text-xs text-navy-400 pt-3 border-t border-navy-800">
+                        <MapPin className="w-3.5 h-3.5 text-brand-500 shrink-0" />
+                        <span className="truncate">{ev.venue_name}</span>
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </section>
       )}

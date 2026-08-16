@@ -2,11 +2,39 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import { cn, formatTime } from '@/lib/utils';
 import { getPublishedEvents } from '@/lib/queries/public';
+import { breadcrumbSchema, JsonLd } from '@/lib/seo';
 import type { Event } from '@/types/database.types';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+
 export const metadata: Metadata = {
-  title: 'Events & Performances | THB Academy',
-  description: 'Join us for upcoming recitals, concerts, and masterclasses at Triumphant Harmony Brass Academy.',
+  title: 'Events, Recitals & Masterclasses | Triumphant Harmony Brass',
+  description: 'Join us for upcoming music recitals, concerts, and brass masterclasses at Triumphant Harmony Brass Music Academy in Lagos, Nigeria.',
+  alternates: {
+    canonical: `${siteUrl}/events`,
+  },
+  openGraph: {
+    title: 'Events, Recitals & Masterclasses | Triumphant Harmony Brass',
+    description: 'Experience live music recitals, community impact programs, and brass masterclasses at THB Music Academy.',
+    url: `${siteUrl}/events`,
+    siteName: 'Triumphant Harmony Brass Music Academy',
+    locale: 'en_NG',
+    type: 'website',
+    images: [
+      {
+        url: `${siteUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'THB Music Academy Events',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Events, Recitals & Masterclasses | Triumphant Harmony Brass',
+    description: 'Upcoming recitals, concerts, and masterclasses at Triumphant Harmony Brass Academy.',
+    images: [`${siteUrl}/images/logo.png`],
+  },
 };
 
 export default async function EventsPage() {
@@ -29,6 +57,13 @@ export default async function EventsPage() {
 
   return (
     <main className="min-h-screen bg-navy-950 text-slate-300">
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'Events', url: '/events' },
+        ])}
+      />
+
       <section className="pt-32 pb-16 px-4 bg-gradient-to-b from-navy-950 to-navy-900">
         <div className="max-w-6xl mx-auto text-center space-y-4">
           <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-brand-500/10 border border-brand-500/20 text-brand-400 uppercase tracking-widest">
@@ -101,7 +136,7 @@ function EventCard({ event }: { event: Event }) {
     >
       {event.banner_url ? (
         <div className="aspect-video w-full overflow-hidden bg-navy-900 relative">
-          <img src={event.banner_url} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+          <img src={event.banner_url} alt={`${event.title} Banner`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         </div>
       ) : (
         <div className="h-2 bg-brand-500 w-full" />

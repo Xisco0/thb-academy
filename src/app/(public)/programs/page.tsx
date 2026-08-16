@@ -5,24 +5,39 @@ import { formatCoursePrice } from '@/lib/utils';
 import { breadcrumbSchema, JsonLd } from '@/lib/seo';
 import { LevelBadge } from '@/components/ui/level-badge';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+
 export const metadata: Metadata = {
-  title: 'Programs',
+  title: 'Music Programs & Courses | Triumphant Harmony Brass',
   description:
-    'Explore music programs at Triumphant Harmony Brass. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, voice, and more.',
-};
-
-const levelColors: Record<string, string> = {
-  beginner: 'bg-green-500/15 text-green-400 border-green-500/25',
-  intermediate: 'bg-blue-500/15 text-blue-400 border-blue-500/25',
-  advanced: 'bg-purple-500/15 text-purple-400 border-purple-500/25',
-  all_levels: 'bg-brand-500/15 text-brand-400 border-brand-500/25',
-};
-
-const levelLabels: Record<string, string> = {
-  beginner: 'Beginner',
-  intermediate: 'Intermediate',
-  advanced: 'Advanced',
-  all_levels: 'All Levels',
+    'Explore music training programs at Triumphant Harmony Brass. Professional courses in keyboard, guitar, trumpet, saxophone, violin, drums, voice, and brass performance.',
+  alternates: {
+    canonical: `${siteUrl}/programs`,
+  },
+  openGraph: {
+    title: 'Music Programs & Courses | Triumphant Harmony Brass',
+    description:
+      'Discover beginner, intermediate, and advanced music courses at THB Academy in Lagos, Nigeria.',
+    url: `${siteUrl}/programs`,
+    siteName: 'Triumphant Harmony Brass Music Academy',
+    locale: 'en_NG',
+    type: 'website',
+    images: [
+      {
+        url: `${siteUrl}/images/logo.png`,
+        width: 1200,
+        height: 630,
+        alt: 'THB Music Academy Programs',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Music Programs & Courses | Triumphant Harmony Brass',
+    description:
+      'Professional music instruction in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
+    images: [`${siteUrl}/images/logo.png`],
+  },
 };
 
 export default async function ProgramsPage() {
@@ -81,7 +96,7 @@ export default async function ProgramsPage() {
                       {course.image_url ? (
                         <img
                           src={course.image_url}
-                          alt={course.name}
+                          alt={`${course.name} Banner`}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
@@ -114,14 +129,7 @@ export default async function ProgramsPage() {
 
                       {/* Footer */}
                       <div className="flex items-center justify-between pt-4 border-t border-navy-700/50 mt-auto">
-                        <span className="text-brand-400 font-bold text-lg">
-                          {formatCoursePrice(course.price, course.currency)}
-                        </span>
-                        {course.duration && (
-                          <span className="text-navy-500 text-sm">
-                            {course.duration}
-                          </span>
-                        )}
+                        <span className="text-brand-400 font-bold text-xs uppercase tracking-wider">View Details & Enquire &rarr;</span>
                       </div>
                     </div>
                   </article>

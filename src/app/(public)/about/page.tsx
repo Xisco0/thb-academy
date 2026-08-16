@@ -2,16 +2,57 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Award, Music, Target, ShieldCheck, Heart, ArrowRight } from 'lucide-react';
+import { getWebsiteSettings } from '@/lib/queries/public';
+import { organizationSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
 
 export const metadata: Metadata = {
-  title: 'About Us | Triumphant Harmony Brass',
+  title: 'About Us | Triumphant Harmony Brass Music Academy',
   description:
-    'Learn about Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Founded by Music Director Taiwo Toyinbo.',
+    'Learn about Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Founded by Music Director Taiwo Toyinbo. Empowering musicians through practical mastery.',
+  alternates: {
+    canonical: `${siteUrl}/about`,
+  },
+  openGraph: {
+    title: 'About Us | Triumphant Harmony Brass Music Academy',
+    description:
+      'Lagos premier music education institution dedicated to developing world-class musicians through disciplined instruction, personal mentorship, and performance excellence.',
+    url: `${siteUrl}/about`,
+    siteName: 'Triumphant Harmony Brass Music Academy',
+    locale: 'en_NG',
+    type: 'website',
+    images: [
+      {
+        url: `${siteUrl}/images/founder.jpg`,
+        width: 1200,
+        height: 630,
+        alt: 'Taiwo Toyinbo — Founder & Music Director',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Us | Triumphant Harmony Brass Music Academy',
+    description:
+      'Learn about THB Music Academy in Lagos, Nigeria. Founded by Music Director Taiwo Toyinbo.',
+    images: [`${siteUrl}/images/founder.jpg`],
+  },
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const settings = await getWebsiteSettings();
+
   return (
     <main className="min-h-screen bg-navy-950 text-slate-100 pt-24 pb-16">
+      <JsonLd data={organizationSchema(settings)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: 'Home', url: '/' },
+          { name: 'About', url: '/about' },
+        ])}
+      />
+
       {/* Hero Section */}
       <section className="relative py-16 md:py-24 px-4 overflow-hidden border-b border-navy-800/80">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-navy-950 to-navy-950 -z-10" />

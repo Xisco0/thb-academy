@@ -295,7 +295,7 @@ export async function createCourseAction(formData: {
     description: formData.description?.trim() || null,
     level: formData.level || 'beginner',
     price: formData.price || 0,
-    duration: formData.duration?.trim() || '4 Weeks',
+    duration: formData.duration && formData.duration.trim() ? formData.duration.trim() : null,
     currency: 'NGN',
     image_url: formData.image_url?.trim() || null,
     status: formData.status || 'published',
@@ -339,7 +339,7 @@ export async function updateCourseAction(id: string, formData: {
       description: formData.description?.trim() || null,
       level: formData.level || 'beginner',
       price: formData.price || 0,
-      duration: formData.duration?.trim() || '4 Weeks',
+      duration: formData.duration && formData.duration.trim() ? formData.duration.trim() : null,
       image_url: formData.image_url?.trim() || null,
       status: formData.status || 'published',
       is_featured: formData.is_featured ?? false,
@@ -368,10 +368,14 @@ export async function deleteCourseAction(id: string) {
 // Event & Live Concert Actions
 // ==========================================
 
+import { formatEventDetailedContent, EventActivityPhoto, PerformanceGalleryPhoto } from '@/lib/event-gallery-utils';
+
 export async function createEventAction(formData: {
   title: string;
   slug?: string;
   description?: string;
+  detailed_content?: string;
+  activity_photos?: EventActivityPhoto[];
   date: string;
   start_time?: string;
   end_time?: string;
@@ -388,10 +392,16 @@ export async function createEventAction(formData: {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)+/g, '');
 
+  const finalDetailedContent = formatEventDetailedContent(
+    formData.detailed_content || '',
+    formData.activity_photos || []
+  );
+
   const { error } = await supabase.from('events').insert({
     title: formData.title.trim(),
     slug: generatedSlug,
     description: formData.description?.trim() || null,
+    detailed_content: finalDetailedContent || null,
     date: formData.date,
     start_time: formData.start_time || null,
     end_time: formData.end_time || null,
@@ -414,6 +424,8 @@ export async function updateEventAction(id: string, formData: {
   title: string;
   slug?: string;
   description?: string;
+  detailed_content?: string;
+  activity_photos?: EventActivityPhoto[];
   date: string;
   start_time?: string;
   end_time?: string;
@@ -430,12 +442,18 @@ export async function updateEventAction(id: string, formData: {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)+/g, '');
 
+  const finalDetailedContent = formatEventDetailedContent(
+    formData.detailed_content || '',
+    formData.activity_photos || []
+  );
+
   const { error } = await supabase
     .from('events')
     .update({
       title: formData.title.trim(),
       slug: generatedSlug,
       description: formData.description?.trim() || null,
+      detailed_content: finalDetailedContent || null,
       date: formData.date,
       start_time: formData.start_time || null,
       end_time: formData.end_time || null,
@@ -454,6 +472,45 @@ export async function updateEventAction(id: string, formData: {
   revalidatePath('/events');
   revalidatePath('/');
   return { success: true, message: 'Concert event updated successfully.' };
+}
+
+export async function savePerformanceGalleryAction(photos: PerformanceGalleryPhoto[]) {
+  const supabase = await getAdminSupabase();
+
+  const { data: existing } = await supabase
+    .from('website_content')
+    .select('id')
+    .eq('section_key', 'performance_gallery')
+    .maybeSingle();
+
+  let error = null;
+  if (existing) {
+    const res = await supabase
+      .from('website_content')
+      .update({
+        title: 'Stage Performance Gallery',
+        metadata: { photos },
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', existing.id);
+    error = res.error;
+  } else {
+    const res = await supabase.from('website_content').insert({
+      section_key: 'performance_gallery',
+      title: 'Stage Performance Gallery',
+      subtitle: 'Photos of live stage performances, weddings, church events, and concerts',
+      metadata: { photos },
+      is_active: true,
+    });
+    error = res.error;
+  }
+
+  if (error) return { success: false, error: error.message };
+
+  revalidatePath('/stage-performances');
+  revalidatePath('/admin/content');
+  revalidatePath('/');
+  return { success: true, message: 'Stage Performance Gallery saved successfully!' };
 }
 
 export async function deleteEventAction(id: string) {
@@ -861,6 +918,7 @@ export async function createAdminUserAction(formData: {
         phone: formData.phone?.trim() || '',
         address: formData.address?.trim() || '',
         user_type: 'admin',
+        raw_password: defaultPassword,
       },
     });
 
@@ -884,6 +942,7 @@ export async function createAdminUserAction(formData: {
           phone: formData.phone?.trim() || '',
           address: formData.address?.trim() || '',
           user_type: 'admin',
+          raw_password: defaultPassword,
         },
       },
     });
@@ -929,26 +988,19 @@ export async function createAdminUserAction(formData: {
   }
 
   // 4. Send Email Notification with Login Credentials
-  const emailRes = await sendAdminWelcomeEmail({
+  await sendAdminWelcomeEmail({
     email: cleanEmail,
     name: `${firstName} ${lastName}`,
     password: defaultPassword,
     roleName: selectedRoleName,
-  });
-
-  let emailNote = `Credentials email sent to ${cleanEmail}.`;
-  if (!emailRes.success) {
-    console.error('Failed to send admin welcome email:', emailRes.error);
-    const errText = typeof emailRes.error === 'string' ? emailRes.error : JSON.stringify(emailRes.error);
-    emailNote = `(Email notice: ${errText}).`;
-  }
+  }).catch(() => {});
 
   revalidatePath('/admin/admins');
   revalidatePath('/admin/admins', 'page');
   revalidatePath('/admin/admins', 'layout');
   return {
     success: true,
-    message: `Admin account for ${firstName} ${lastName} created successfully! Default Password: "${defaultPassword}". ${emailNote}`,
+    message: 'Admin created successfully',
   };
 }
 
@@ -991,6 +1043,7 @@ export async function updateAdminUserAction(id: string, formData: {
   phone?: string;
   address?: string;
   role_id?: string;
+  password?: string;
 }) {
   const caller = await getCallerAuthority();
   if (!caller) {
@@ -1050,14 +1103,21 @@ export async function updateAdminUserAction(id: string, formData: {
   }
 
   if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    await adminDb.auth.admin.updateUserById(id, {
+    const updatePayload: any = {
       user_metadata: {
         first_name: formData.first_name.trim(),
         last_name: formData.last_name.trim(),
         phone: formData.phone?.trim() || '',
         address: formData.address?.trim() || '',
       },
-    }).catch(() => {});
+    };
+
+    if (formData.password && formData.password.trim()) {
+      updatePayload.password = formData.password.trim();
+      updatePayload.user_metadata.raw_password = formData.password.trim();
+    }
+
+    await adminDb.auth.admin.updateUserById(id, updatePayload).catch(() => {});
   }
 
   revalidatePath('/admin/admins');
@@ -1286,4 +1346,86 @@ export async function deleteInstrumentAction(id: string) {
   revalidatePath('/');
   return { success: true, message: 'Instrument deleted successfully.' };
 }
+
+export async function deleteSingleAdminAction(profileId: string) {
+  const caller = await getCallerAuthority();
+  if (!caller) {
+    return { success: false, error: 'Unauthorized: Active administrator session required.' };
+  }
+
+  if (profileId === caller.userId) {
+    return { success: false, error: 'Unauthorized: You cannot delete your own account.' };
+  }
+
+  const targetAdmin = await getAdminProfileById(profileId);
+  if (targetAdmin && targetAdmin.role_rank >= caller.roleRank && !caller.isSuperAdmin) {
+    return { success: false, error: 'Unauthorized: You cannot delete an administrator with equal or higher authority.' };
+  }
+
+  const adminDb = await getAdminSupabase();
+
+  await adminDb.from('user_roles').delete().eq('user_id', profileId);
+
+  const { error } = await adminDb.from('profiles').delete().eq('id', profileId);
+  if (error) return { success: false, error: error.message };
+
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    await adminDb.auth.admin.deleteUser(profileId).catch(() => {});
+  }
+
+  revalidatePath('/admin/admins');
+  revalidatePath('/admin/admins', 'page');
+  revalidatePath('/admin/admins', 'layout');
+  return { success: true, message: 'Admin account deleted successfully.' };
+}
+
+export async function deleteOtherAdminAccountsAction() {
+  const caller = await getCallerAuthority();
+  if (!caller || !caller.isSuperAdmin) {
+    return { success: false, error: 'Unauthorized: Only Super Admin can perform admin cleanup.' };
+  }
+
+  const adminDb = await getAdminSupabase();
+
+  // Find all admin profiles whose email is NOT francisbamirin45@gmail.com
+  const { data: nonSeededAdmins, error: fetchErr } = await adminDb
+    .from('profiles')
+    .select('id, email, first_name, last_name')
+    .eq('user_type', 'admin')
+    .neq('email', 'francisbamirin45@gmail.com');
+
+  if (fetchErr) {
+    return { success: false, error: fetchErr.message };
+  }
+
+  if (!nonSeededAdmins || nonSeededAdmins.length === 0) {
+    return { success: true, message: 'No extra admin accounts found. Only the primary seeded admin (Francis Bamirin) exists.' };
+  }
+
+  const idsToDelete = nonSeededAdmins.map((a) => a.id);
+
+  // Remove from user_roles
+  await adminDb.from('user_roles').delete().in('user_id', idsToDelete);
+
+  // Remove from profiles
+  const { error: deleteProfilesErr } = await adminDb.from('profiles').delete().in('id', idsToDelete);
+  if (deleteProfilesErr) {
+    return { success: false, error: deleteProfilesErr.message };
+  }
+
+  // Remove from auth.users if service key available
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    for (const id of idsToDelete) {
+      await adminDb.auth.admin.deleteUser(id).catch(() => {});
+    }
+  }
+
+  revalidatePath('/admin/admins');
+  revalidatePath('/admin/admins', 'page');
+  return {
+    success: true,
+    message: `Successfully removed ${idsToDelete.length} extra admin account(s). Remaining only primary seeded admin (francisbamirin45@gmail.com).`,
+  };
+}
+
 

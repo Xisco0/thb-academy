@@ -5,6 +5,8 @@ import { getEventBySlug, getWebsiteSettings } from '@/lib/queries/public';
 import { eventSchema as eventJsonLd, JsonLd, breadcrumbSchema } from '@/lib/seo';
 import { formatDate, formatTime } from '@/lib/utils';
 import { Phone, MessageCircle } from 'lucide-react';
+import { parseEventActivityPhotos } from '@/lib/event-gallery-utils';
+import { EventActivityGallery } from './event-gallery-client';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -15,9 +17,53 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const event = await getEventBySlug(slug);
   if (!event) return { title: 'Event Not Found' };
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+
+  let imageUrl = `${baseUrl}/images/thb-academy-banner.png`;
+  if (event.banner_url && event.banner_url.trim()) {
+    const rawImage = event.banner_url.trim();
+    if (rawImage.startsWith('http://') || rawImage.startsWith('https://')) {
+      imageUrl = rawImage;
+    } else {
+      imageUrl = `${baseUrl}${rawImage.startsWith('/') ? '' : '/'}${rawImage}`;
+    }
+  }
+
+  const pageTitle = event.seo_title || `${event.title} | THB Academy`;
+  const socialDescription =
+    event.seo_description ||
+    event.description ||
+    `Join us for ${event.title} at Triumphant Harmony Brass Music Academy.`;
+  const canonicalUrl = `${baseUrl}/events/${event.slug}`;
+
   return {
-    title: event.seo_title || event.title,
-    description: event.seo_description || event.description || `${event.title} at Triumphant Harmony Brass`,
+    title: pageTitle,
+    description: socialDescription,
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title: pageTitle,
+      description: socialDescription,
+      url: canonicalUrl,
+      siteName: 'Triumphant Harmony Brass Music Academy',
+      locale: 'en_NG',
+      type: 'website',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: `${event.title} Banner`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: pageTitle,
+      description: socialDescription,
+      images: [imageUrl],
+    },
   };
 }
 
@@ -31,6 +77,8 @@ export default async function EventDetailsPage({ params }: Props) {
   if (!event) {
     notFound();
   }
+
+  const { cleanContent, photos } = parseEventActivityPhotos(event.detailed_content || null);
 
   const startDate = new Date(event.date);
   const now = new Date();
@@ -108,7 +156,7 @@ export default async function EventDetailsPage({ params }: Props) {
             <div className="w-full bg-navy-950 rounded-2xl overflow-hidden border border-navy-800 p-2 shadow-2xl flex justify-center">
               <img
                 src={event.banner_url}
-                alt={event.title}
+                alt={`${event.title} Banner`}
                 className="max-h-[650px] w-auto h-auto object-contain rounded-xl"
               />
             </div>
@@ -120,11 +168,14 @@ export default async function EventDetailsPage({ params }: Props) {
             </div>
           )}
 
-          {event.detailed_content && (
+          {cleanContent && (
             <div className="prose prose-invert max-w-none bg-navy-900/60 p-8 rounded-2xl border border-navy-800 text-navy-200 whitespace-pre-wrap leading-relaxed">
-              {event.detailed_content}
+              {cleanContent}
             </div>
           )}
+
+          {/* Event Activities & Photos Gallery */}
+          <EventActivityGallery photos={photos} />
 
           {event.venue_address && (
             <div className="p-6 bg-navy-900/80 border border-navy-700/50 rounded-2xl space-y-2">
