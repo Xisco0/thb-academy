@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${siteUrl}/images/logo.png`,
+        url: `${siteUrl}/images/image.png`,
         width: 1200,
         height: 630,
         alt: 'THB Music Academy Programs',
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: 'Music Programs & Courses | Triumphant Harmony Brass',
     description:
       'Professional music instruction in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
-    images: [`${siteUrl}/images/logo.png`],
+    images: [`${siteUrl}/images/image.png`],
   },
 };
 

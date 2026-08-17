@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: `${siteUrl}/images/thb-academy-banner.png`,
+        url: `${siteUrl}/images/image.png`,
         width: 1200,
         height: 630,
         alt: 'THB Academy Stage & Event Performance Services',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     title: 'Stage & Event Performances | Triumphant Harmony Brass',
     description:
       'Book professional live musicians, brass ensembles, keyboardists, saxophonists, vocalists, and bands for your events.',
-    images: [`${siteUrl}/images/thb-academy-banner.png`],
+    images: [`${siteUrl}/images/image.png`],
   },
 };
 

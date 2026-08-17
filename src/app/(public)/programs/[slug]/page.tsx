@@ -15,8 +15,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
 
-  // Resolve OpenGraph image URL: Use course image if available, fallback to website logo
-  let imageUrl = `${baseUrl}/images/logo.png`;
+  // Resolve OpenGraph image URL: Use course image if available, fallback to global image.png
+  let imageUrl = `${baseUrl}/images/image.png`;
   if (course.image_url && course.image_url.trim()) {
     const rawImage = course.image_url.trim();
     if (rawImage.startsWith('http://') || rawImage.startsWith('https://')) {
