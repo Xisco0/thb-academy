@@ -8,7 +8,7 @@ import { LevelBadge } from '@/components/ui/level-badge';
 const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
-  title: 'Music Programs & Courses | Triumphant Harmony Brass',
+  title: 'Music Programs & Courses in Lagos',
   description:
     'Explore music training programs at Triumphant Harmony Brass. Professional courses in keyboard, guitar, trumpet, saxophone, violin, drums, voice, and brass performance.',
   alternates: {

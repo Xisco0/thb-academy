@@ -22,11 +22,11 @@ const siteUrl = 'https://www.thbacademy.org';
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    template: '%s | Triumphant Harmony Brass',
+    template: '%s | THB Academy',
     default: 'Triumphant Harmony Brass | Music Academy in Lagos, Nigeria',
   },
   description:
-    'Learn music at Triumphant Harmony Brass (THB), a premier music academy in Lagos, Nigeria. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
+    'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
   openGraph: {
     locale: 'en_NG',
     type: 'website',
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     title: 'Triumphant Harmony Brass | Music Academy in Lagos, Nigeria',
     description:
-      'Learn music at Triumphant Harmony Brass (THB), a premier music academy in Lagos, Nigeria. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
+      'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
     images: [
       {
         url: `${siteUrl}/images/image.png`,
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Triumphant Harmony Brass | Music Academy in Lagos, Nigeria',
     description:
-      'Learn music at Triumphant Harmony Brass (THB), a premier music academy in Lagos, Nigeria.',
+      'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria.',
     images: [`${siteUrl}/images/image.png`],
   },
   robots: {

@@ -6,7 +6,7 @@ import { organizationSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
 const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
-  title: 'Contact Us | Triumphant Harmony Brass Music Academy',
+  title: 'Contact Us | Music Academy Lagos',
   description:
     'Get in touch with Triumphant Harmony Brass Music Academy in Lagos, Nigeria. Contact us by phone (+234 703 859 5356), email, or WhatsApp.',
   alternates: {

@@ -15,17 +15,18 @@ function toAbsoluteUrl(url: string | null | undefined): string | undefined {
 
 export function organizationSchema(settings: WebsiteSettings | null) {
   const logoUrl = toAbsoluteUrl(settings?.logo_url) || `${SITE_URL}/images/logo.png`;
+  const heroImage = `${SITE_URL}/images/image.png`;
 
   return {
     '@context': 'https://schema.org',
     '@type': ['EducationalOrganization', 'MusicSchool'],
-    name: settings?.academy_name || 'Triumphant Harmony Brass Music Academy',
+    name: settings?.academy_name || 'Triumphant Harmony Brass',
     alternateName: settings?.academy_short_name || 'THB Academy',
     description:
-      settings?.tagline || 'Premier music academy in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
+      settings?.tagline || 'Premier music academy and live music performance provider in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
     url: SITE_URL,
     logo: logoUrl,
-    image: logoUrl,
+    image: heroImage,
     telephone: settings?.phone || '+234 703 859 5356',
     email: settings?.email || 'info@thbacademy.org',
     address: {
@@ -51,7 +52,7 @@ export function organizationSchema(settings: WebsiteSettings | null) {
 }
 
 export function courseSchema(course: Course, settings: WebsiteSettings | null) {
-  const courseImage = toAbsoluteUrl(course.image_url) || `${SITE_URL}/images/logo.png`;
+  const courseImage = toAbsoluteUrl(course.image_url) || `${SITE_URL}/images/image.png`;
 
   return {
     '@context': 'https://schema.org',
@@ -68,7 +69,7 @@ export function courseSchema(course: Course, settings: WebsiteSettings | null) {
     educationalLevel: course.level === 'all_levels' ? 'Beginner to Advanced' : course.level,
     offers: {
       '@type': 'Offer',
-      price: course.price,
+      price: course.price || '0',
       priceCurrency: course.currency || 'NGN',
       availability: 'https://schema.org/InStock',
     },
@@ -84,7 +85,7 @@ export function eventSchema(event: Event, settings: WebsiteSettings | null) {
     ? `${event.date}T${event.end_time}`
     : undefined;
 
-  const eventImage = toAbsoluteUrl(event.banner_url) || `${SITE_URL}/images/logo.png`;
+  const eventImage = toAbsoluteUrl(event.banner_url) || `${SITE_URL}/images/image.png`;
 
   return {
     '@context': 'https://schema.org',
@@ -113,6 +114,28 @@ export function eventSchema(event: Event, settings: WebsiteSettings | null) {
     eventStatus: new Date(event.date) >= new Date()
       ? 'https://schema.org/EventScheduled'
       : 'https://schema.org/EventCompleted',
+  };
+}
+
+export function stagePerformanceServiceSchema(settings: WebsiteSettings | null) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: 'Live Music & Event Performance Services',
+    provider: {
+      '@type': 'MusicSchool',
+      name: settings?.academy_name || 'Triumphant Harmony Brass',
+      url: SITE_URL,
+      telephone: settings?.phone || '+234 703 859 5356',
+    },
+    areaServed: {
+      '@type': 'AdministrativeArea',
+      name: 'Lagos, Nigeria',
+    },
+    description:
+      'Professional live music performance services in Lagos, Nigeria. Booking for wedding ceremonies, church services, corporate galas, private concerts, and special events.',
+    url: `${SITE_URL}/stage-performances`,
+    image: `${SITE_URL}/images/image.png`,
   };
 }
 
