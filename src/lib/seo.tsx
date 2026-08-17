@@ -1,6 +1,6 @@
 import type { Course, Event, WebsiteSettings } from '@/types/database.types';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+const SITE_URL = 'https://www.thbacademy.org';
 
 function toAbsoluteUrl(url: string | null | undefined): string | undefined {
   if (!url || !url.trim()) return undefined;

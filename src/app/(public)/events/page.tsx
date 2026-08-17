@@ -5,7 +5,7 @@ import { getPublishedEvents } from '@/lib/queries/public';
 import { breadcrumbSchema, JsonLd } from '@/lib/seo';
 import type { Event } from '@/types/database.types';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
   title: 'Events, Recitals & Masterclasses | Triumphant Harmony Brass',

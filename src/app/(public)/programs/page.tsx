@@ -5,7 +5,7 @@ import { formatCoursePrice } from '@/lib/utils';
 import { breadcrumbSchema, JsonLd } from '@/lib/seo';
 import { LevelBadge } from '@/components/ui/level-badge';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
   title: 'Music Programs & Courses | Triumphant Harmony Brass',

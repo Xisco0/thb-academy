@@ -4,7 +4,7 @@ import { organizationSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
 import { StagePerformancesClient } from './stage-performances-client';
 import { PerformanceGalleryPhoto } from '@/lib/event-gallery-utils';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
   title: 'Stage & Event Performances | Triumphant Harmony Brass',
