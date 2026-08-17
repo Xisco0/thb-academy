@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const event = await getEventBySlug(slug);
   if (!event) return { title: 'Event Not Found' };
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+  const baseUrl = 'https://www.thbacademy.org';
 
   let imageUrl = `${baseUrl}/images/image.png`;
   if (event.banner_url && event.banner_url.trim()) {

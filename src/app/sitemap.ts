@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { getAllCourseSlugs, getAllEventSlugs } from '@/lib/queries/public';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+  const siteUrl = 'https://www.thbacademy.org';
 
   const staticPages: MetadataRoute.Sitemap = [
     {

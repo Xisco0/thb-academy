@@ -13,9 +13,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const course = await getCourseBySlug(slug);
   if (!course) return { title: 'Program Not Found' };
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+  const baseUrl = 'https://www.thbacademy.org';
 
-  // Resolve OpenGraph image URL: Use course image if available, fallback to global image.png
+  // Resolve OpenGraph image URL: Use course banner if available, fallback to global image.png
   let imageUrl = `${baseUrl}/images/image.png`;
   if (course.image_url && course.image_url.trim()) {
     const rawImage = course.image_url.trim();

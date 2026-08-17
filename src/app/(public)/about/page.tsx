@@ -5,7 +5,7 @@ import { Award, Music, Target, ShieldCheck, Heart, ArrowRight } from 'lucide-rea
 import { getWebsiteSettings } from '@/lib/queries/public';
 import { organizationSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
   title: 'About Us | Triumphant Harmony Brass Music Academy',
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
         url: `${siteUrl}/images/image.png`,
         width: 1200,
         height: 630,
-        alt: 'Taiwo Toyinbo — Founder & Music Director',
+        alt: 'About THB Music Academy',
       },
     ],
   },

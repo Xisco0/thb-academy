@@ -3,12 +3,12 @@ import { formatCoursePrice } from '@/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { Music, ArrowRight, Calendar, MapPin, CheckCircle, Sparkles, BookOpen, Users, Award } from 'lucide-react';
+import { Music, ArrowRight, Calendar, MapPin, CheckCircle, Sparkles, BookOpen, Users, Award, ChevronRight } from 'lucide-react';
 import { LevelBadge } from '@/components/ui/level-badge';
 
 import { organizationSchema, JsonLd } from '@/lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
   title: 'Triumphant Harmony Brass | Premier Music Academy in Lagos, Nigeria',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
         url: `${siteUrl}/images/image.png`,
         width: 1200,
         height: 630,
-        alt: 'Triumphant Harmony Brass Music Academy Logo',
+        alt: 'Triumphant Harmony Brass Music Academy',
       },
     ],
   },
@@ -93,13 +93,16 @@ export default async function HomePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-start gap-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
+            
               <Link
                 href="/programs"
                 title="Explore Brass Music Programs"
-                className="w-full sm:w-auto text-center px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(var(--color-brand-600),0.3)] hover:shadow-[0_0_25px_rgba(var(--color-brand-500),0.5)] transform hover:-translate-y-1"
+                className="w-full sm:w-auto text-center flex items-center justify-center gap-2 px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(var(--color-brand-600),0.3)] hover:shadow-[0_0_25px_rgba(var(--color-brand-500),0.5)] transform hover:-translate-y-1"
               >
-                Explore Programs
+                <span>Explore Programs </span> <ArrowRight/>
+                
               </Link>
+              
               <Link
                 href="/register"
                 title="Get Started with Music Lessons"

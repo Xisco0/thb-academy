@@ -3,7 +3,7 @@ import { getWebsiteSettings } from '@/lib/queries/public';
 import { getWhatsAppUrl } from '@/lib/utils';
 import { organizationSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://thbacademy.org';
+const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
   title: 'Contact Us | Triumphant Harmony Brass Music Academy',
