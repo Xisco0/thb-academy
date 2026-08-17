@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getAllCourseSlugs, getAllEventSlugs } from '@/lib/queries/public';
+import { getAllCourseEntriesForSitemap, getAllEventEntriesForSitemap } from '@/lib/queries/public';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteUrl = 'https://www.thbacademy.org';
@@ -43,18 +43,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ];
 
-  const courseSlugs = await getAllCourseSlugs();
-  const coursePages: MetadataRoute.Sitemap = courseSlugs.map((slug) => ({
-    url: `${siteUrl}/programs/${slug}`,
-    lastModified: new Date(),
+  const courseEntries = await getAllCourseEntriesForSitemap();
+  const coursePages: MetadataRoute.Sitemap = courseEntries.map((course) => ({
+    url: `${siteUrl}/programs/${course.slug}`,
+    lastModified: course.updated_at ? new Date(course.updated_at) : new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.85,
   }));
 
-  const eventSlugs = await getAllEventSlugs();
-  const eventPages: MetadataRoute.Sitemap = eventSlugs.map((slug) => ({
-    url: `${siteUrl}/events/${slug}`,
-    lastModified: new Date(),
+  const eventEntries = await getAllEventEntriesForSitemap();
+  const eventPages: MetadataRoute.Sitemap = eventEntries.map((event) => ({
+    url: `${siteUrl}/events/${event.slug}`,
+    lastModified: event.updated_at ? new Date(event.updated_at) : new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.75,
   }));

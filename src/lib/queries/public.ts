@@ -20,7 +20,7 @@ export async function getWebsiteSettings(): Promise<WebsiteSettings | null> {
     .from('website_settings')
     .select('*')
     .single();
-  return data;
+  return data as WebsiteSettings | null;
 }
 
 export async function getWebsiteContent(sectionKey: string): Promise<WebsiteContent | null> {
@@ -31,7 +31,7 @@ export async function getWebsiteContent(sectionKey: string): Promise<WebsiteCont
     .eq('section_key', sectionKey)
     .eq('is_active', true)
     .single();
-  return data;
+  return data as WebsiteContent | null;
 }
 
 export async function getAllWebsiteContent(): Promise<WebsiteContent[]> {
@@ -40,7 +40,7 @@ export async function getAllWebsiteContent(): Promise<WebsiteContent[]> {
     .from('website_content')
     .select('*')
     .eq('is_active', true);
-  return data || [];
+  return (data as WebsiteContent[]) || [];
 }
 
 // ==========================================
@@ -54,7 +54,7 @@ export async function getActiveInstruments(): Promise<Instrument[]> {
     .select('*')
     .eq('is_active', true)
     .order('sort_order', { ascending: true });
-  return data || [];
+  return (data as Instrument[]) || [];
 }
 
 // ==========================================
@@ -67,12 +67,11 @@ export async function getPublishedCourses(): Promise<CourseWithRelations[]> {
     .from('courses')
     .select(`
       *,
-      instrument:instruments(*),
-      instructor:instructors(*)
+      instrument:instruments(*)
     `)
     .eq('status', 'published')
     .order('sort_order', { ascending: true });
-  return (data as CourseWithRelations[]) || [];
+  return (data as unknown as CourseWithRelations[]) || [];
 }
 
 export async function getFeaturedCourses(): Promise<CourseWithRelations[]> {
@@ -80,15 +79,25 @@ export async function getFeaturedCourses(): Promise<CourseWithRelations[]> {
   const { data } = await supabase
     .from('courses')
     .select(`
-      *,
-      instrument:instruments(*),
-      instructor:instructors(*)
+      id,
+      name,
+      slug,
+      description,
+      image_url,
+      level,
+      price,
+      currency,
+      status,
+      is_featured,
+      sort_order,
+      instrument_id,
+      instrument:instruments(*)
     `)
     .eq('status', 'published')
     .eq('is_featured', true)
     .order('sort_order', { ascending: true })
     .limit(6);
-  return (data as CourseWithRelations[]) || [];
+  return (data as unknown as CourseWithRelations[]) || [];
 }
 
 export async function getCourseBySlug(slug: string): Promise<CourseWithRelations | null> {
@@ -103,7 +112,31 @@ export async function getCourseBySlug(slug: string): Promise<CourseWithRelations
     .eq('slug', slug)
     .eq('status', 'published')
     .single();
-  return data as CourseWithRelations | null;
+  return data as unknown as CourseWithRelations | null;
+}
+
+export async function getSiblingCoursesByInstrument(instrumentId?: string | null): Promise<CourseWithRelations[]> {
+  if (!instrumentId) return [];
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from('courses')
+    .select(`
+      id,
+      name,
+      slug,
+      description,
+      image_url,
+      level,
+      price,
+      currency,
+      status,
+      instrument_id,
+      instrument:instruments(*)
+    `)
+    .eq('instrument_id', instrumentId)
+    .eq('status', 'published')
+    .order('sort_order', { ascending: true });
+  return (data as unknown as CourseWithRelations[]) || [];
 }
 
 export async function getSiblingCoursesByInstrument(instrumentId?: string | null): Promise<CourseWithRelations[]> {
@@ -130,10 +163,10 @@ export async function getPublishedEvents(): Promise<Event[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from('events')
-    .select('*')
+    .select('id, title, slug, description, date, start_time, end_time, venue_name, venue_address, banner_url, status, seo_title, seo_description')
     .eq('status', 'published')
     .order('date', { ascending: true });
-  return data || [];
+  return (data as unknown as Event[]) || [];
 }
 
 export async function getUpcomingEvents(limit: number = 3): Promise<Event[]> {
@@ -141,12 +174,12 @@ export async function getUpcomingEvents(limit: number = 3): Promise<Event[]> {
   const today = new Date().toISOString().split('T')[0];
   const { data } = await supabase
     .from('events')
-    .select('*')
+    .select('id, title, slug, description, date, start_time, end_time, venue_name, venue_address, banner_url, status')
     .eq('status', 'published')
     .gte('date', today)
     .order('date', { ascending: true })
     .limit(limit);
-  return data || [];
+  return (data as unknown as Event[]) || [];
 }
 
 export async function getEventBySlug(slug: string): Promise<Event | null> {
@@ -157,7 +190,7 @@ export async function getEventBySlug(slug: string): Promise<Event | null> {
     .eq('slug', slug)
     .eq('status', 'published')
     .single();
-  return data;
+  return data as Event | null;
 }
 
 // ==========================================
@@ -171,7 +204,7 @@ export async function getActiveInstructors(): Promise<Instructor[]> {
     .select('*')
     .eq('is_active', true)
     .order('first_name', { ascending: true });
-  return data || [];
+  return (data as Instructor[]) || [];
 }
 
 // ==========================================
@@ -184,7 +217,7 @@ export async function getActiveVenues(): Promise<Venue[]> {
     .from('venues')
     .select('*')
     .eq('is_active', true);
-  return data || [];
+  return (data as Venue[]) || [];
 }
 
 export async function getDefaultVenue(): Promise<Venue | null> {
@@ -194,27 +227,37 @@ export async function getDefaultVenue(): Promise<Venue | null> {
     .select('*')
     .eq('is_default', true)
     .single();
-  return data;
+  return data as Venue | null;
 }
 
 // ==========================================
-// Course Slugs (for sitemap)
+// Sitemap Queries
 // ==========================================
 
-export async function getAllCourseSlugs(): Promise<string[]> {
+export async function getAllCourseEntriesForSitemap(): Promise<{ slug: string; updated_at?: string }[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from('courses')
-    .select('slug')
+    .select('slug, updated_at')
     .eq('status', 'published');
-  return data?.map(c => c.slug) || [];
+  return (data as { slug: string; updated_at?: string }[]) || [];
 }
 
-export async function getAllEventSlugs(): Promise<string[]> {
+export async function getAllEventEntriesForSitemap(): Promise<{ slug: string; updated_at?: string }[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from('events')
-    .select('slug')
+    .select('slug, updated_at')
     .eq('status', 'published');
-  return data?.map(e => e.slug) || [];
+  return (data as { slug: string; updated_at?: string }[]) || [];
+}
+
+export async function getAllCourseSlugs(): Promise<string[]> {
+  const entries = await getAllCourseEntriesForSitemap();
+  return entries.map(c => c.slug);
+}
+
+export async function getAllEventSlugs(): Promise<string[]> {
+  const entries = await getAllEventEntriesForSitemap();
+  return entries.map(e => e.slug);
 }

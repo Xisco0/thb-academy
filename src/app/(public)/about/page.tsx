@@ -8,7 +8,7 @@ import { organizationSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
 const siteUrl = 'https://www.thbacademy.org';
 
 export const metadata: Metadata = {
-  title: 'About Us | Triumphant Harmony Brass Music Academy',
+  title: 'About Us | Music Academy in Lagos',
   description:
     'Learn about Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Founded by Music Director Taiwo Toyinbo. Empowering musicians through practical mastery.',
   alternates: {
