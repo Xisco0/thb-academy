@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Poppins, Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
+import { Analytics } from "@vercel/analytics/next";
 
 const titleFont = Poppins({
   subsets: ['latin'],
@@ -67,6 +68,7 @@ export default function RootLayout({
       <body className="min-h-screen font-body antialiased transition-colors duration-300">
         <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
           {children}
+          <Analytics/>
         </ThemeProvider>
       </body>
     </html>
