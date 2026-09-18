@@ -1,13 +1,16 @@
 import 'server-only';
 import { Resend } from 'resend';
 
-const resendApiKey = process.env.RESEND_API_KEY;
-
-export const resend = resendApiKey ? new Resend(resendApiKey) : null;
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return null;
+  return new Resend(apiKey);
+}
 
 const SENDER_EMAIL = 'THB Music Academy <onboarding@resend.dev>';
 
 export async function sendWelcomeEmail({ email, name }: { email: string; name: string }) {
+  const resend = getResendClient();
   if (!resend) return { success: false, error: 'Resend API Key missing' };
   try {
     const { data, error } = await resend.emails.send({
@@ -53,6 +56,7 @@ export async function sendAdminWelcomeEmail({
   password: string;
   roleName?: string;
 }) {
+  const resend = getResendClient();
   if (!resend) return { success: false, error: 'Resend API Key missing' };
   try {
     const { data, error } = await resend.emails.send({
@@ -102,6 +106,7 @@ export async function sendPaymentSubmittedEmail({
   level?: string;
   amount: number;
 }) {
+  const resend = getResendClient();
   if (!resend) return { success: false, error: 'Resend API Key missing' };
   try {
     const { data, error } = await resend.emails.send({
@@ -146,6 +151,7 @@ export async function sendPaymentApprovedEmail({
   courseName: string;
   level?: string;
 }) {
+  const resend = getResendClient();
   if (!resend) return { success: false, error: 'Resend API Key missing' };
   try {
     const { data, error } = await resend.emails.send({
@@ -191,6 +197,7 @@ export async function sendPaymentRejectedEmail({
   level?: string;
   reason: string;
 }) {
+  const resend = getResendClient();
   if (!resend) return { success: false, error: 'Resend API Key missing' };
   try {
     const { data, error } = await resend.emails.send({
