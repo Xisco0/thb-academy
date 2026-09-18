@@ -57,9 +57,9 @@ export default async function HomePage() {
   return (
     <main className="min-h-screen bg-navy-950 text-slate-100 overflow-x-hidden">
       <JsonLd data={organizationSchema(settings)} />
-      {/* 1. Hero Section */}
-      <section id="hero" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center min-h-[90vh] bg-[#090e1a] hero-dark-section">
-        {/* Background Image & Gradient Overlay */}
+      {/* 1. Enhanced Hero Section */}
+      <section id="hero" className="relative pt-32 pb-24 lg:pt-44 lg:pb-32 overflow-hidden flex items-center min-h-[92vh] bg-[#090e1a] hero-dark-section">
+        {/* Background Image & Gradient Overlays */}
         <div className="absolute inset-0 z-0 bg-[#090e1a]">
           <Image
             src="/bg-images/image.png"
@@ -67,52 +67,139 @@ export default async function HomePage() {
             fill
             priority
             sizes="100vw"
-            className="object-cover object-right opacity-95"
+            className="object-cover object-right opacity-90 scale-105 transition-transform duration-1000 ease-out"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#090e1a] via-[#090e1a]/90 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#090e1a] via-[#090e1a]/95 to-[#090e1a]/70 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#090e1a] via-transparent to-[#090e1a]/80 z-10" />
         </div>
 
-        {/* Decorative elements */}
-        <div aria-hidden="true" className="absolute top-1/4 left-10 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl mix-blend-screen pointer-events-none animate-pulse z-10"></div>
-        <div aria-hidden="true" className="absolute bottom-1/4 right-10 w-80 h-80 bg-gold/5 rounded-full blur-3xl mix-blend-screen pointer-events-none animate-pulse delay-1000 z-10"></div>
+        {/* Decorative Ambient Lighting Spheres */}
+        <div aria-hidden="true" className="absolute top-1/4 left-10 w-96 h-96 bg-amber-500/15 rounded-full blur-[120px] pointer-events-none z-10 animate-pulse" />
+        <div aria-hidden="true" className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-10" />
 
-        {/* Left-Aligned Container */}
-        <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8 text-left">
-          <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-navy-800/80 border border-gold/30 text-gold text-sm font-medium mb-8 animate-fade-in shadow-[0_0_15px_rgba(212,152,42,0.15)]">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-              </svg>
-              <span>Welcome to THB Music Academy</span>
-            </div>
-
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-heading font-bold text-white mb-6 tracking-tight animate-slide-up">
-              Triumphant Harmony <span className="text-transparent bg-clip-text bg-gradient-to-r from-gold to-yellow-400">Brass</span>
-            </h1>
-
-            <p className="text-xl md:text-2xl text-slate-300 font-body mb-10 animate-slide-up" style={{ animationDelay: '100ms' }}>
-              {settings?.tagline || 'The sound of victory, The heart of harmony.'}
-            </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-start gap-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
+        {/* Container */}
+        <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
-              <Link
-                href="/programs"
-                title="Explore Brass Music Programs"
-                className="w-full sm:w-auto text-center flex items-center justify-center gap-2 px-8 py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-lg transition-all duration-300 shadow-[0_0_20px_rgba(var(--color-brand-600),0.3)] hover:shadow-[0_0_25px_rgba(var(--color-brand-500),0.5)] transform hover:-translate-y-1"
-              >
-                <span>Explore Programs </span> <ArrowRight/>
-                
-              </Link>
+            {/* Left Content Column */}
+            <div className="lg:col-span-7 text-left space-y-8">
               
-              <Link
-                href="/register"
-                title="Get Started with Music Lessons"
-                className="w-full sm:w-auto text-center px-8 py-4 bg-navy-800 hover:bg-navy-700 border border-navy-600 text-white font-bold rounded-lg transition-all duration-300 hover:border-gold/50 transform hover:-translate-y-1"
-              >
-                Get Started
-              </Link>
+              {/* Premier Institution Badge */}
+              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-navy-900/90 border border-amber-500/35 text-amber-400 text-xs sm:text-sm font-semibold tracking-wide shadow-[0_0_20px_rgba(245,158,11,0.18)] backdrop-blur-md animate-fade-in">
+                <span className="flex h-2 w-2 rounded-full bg-amber-400 animate-ping" />
+                <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>Premier Music Education Institution in Lagos, Nigeria</span>
+              </div>
+
+              {/* Main Headline */}
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white tracking-tight leading-[1.1] animate-slide-up">
+                Master the Art of Music with <br className="hidden sm:inline" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 drop-shadow-sm">
+                  Triumphant Harmony Brass
+                </span>
+              </h1>
+
+              {/* Tagline & Overview Description */}
+              <p className="text-lg sm:text-xl text-slate-300 font-body leading-relaxed max-w-2xl animate-slide-up" style={{ animationDelay: '100ms' }}>
+                {settings?.tagline ? (
+                  <span>{settings.tagline}</span>
+                ) : (
+                  <span>
+                    Empowering musicians through classical rigor, modern technique, and practical stage performance training under Music Director Taiwo Toyinbo & faculty.
+                  </span>
+                )}
+              </p>
+
+              {/* Action CTAs */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2 animate-slide-up" style={{ animationDelay: '200ms' }}>
+                <Link
+                  href="/programs"
+                  title="Explore Music Training Programs"
+                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-navy-950 font-extrabold rounded-xl transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.35)] hover:shadow-[0_0_35px_rgba(245,158,11,0.55)] transform hover:-translate-y-0.5 text-base cursor-pointer"
+                >
+                  <span>Explore Programs</span>
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+
+                <Link
+                  href="/register"
+                  title="Enroll in Lessons"
+                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-navy-900/80 hover:bg-navy-800 border border-navy-700/80 hover:border-amber-400/50 text-white font-bold rounded-xl transition-all duration-300 backdrop-blur-md transform hover:-translate-y-0.5 text-base cursor-pointer"
+                >
+                  <span>Enroll / Get Started</span>
+                  <ChevronRight className="w-4 h-4 text-amber-400" />
+                </Link>
+              </div>
+
+              {/* Trust Indicators Bar */}
+              <div className="pt-6 border-t border-navy-800/80 grid grid-cols-3 gap-4 max-w-xl text-left animate-slide-up" style={{ animationDelay: '300ms' }}>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-amber-400">500+</div>
+                  <div className="text-xs text-slate-400 font-medium mt-0.5">Students Trained</div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-amber-400">15+</div>
+                  <div className="text-xs text-slate-400 font-medium mt-0.5">Master Instructors</div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-amber-400">100%</div>
+                  <div className="text-xs text-slate-400 font-medium mt-0.5">Stage & Recital Focus</div>
+                </div>
+              </div>
+
             </div>
+
+            {/* Right Feature Showcase Grid Column */}
+            <div className="lg:col-span-5 relative">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                
+                {/* Feature Card 1 */}
+                <div className="p-6 bg-navy-900/70 backdrop-blur-md border border-navy-700/60 hover:border-amber-500/40 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Music className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <h3 className="text-base font-bold text-white font-heading">Brass & Woodwinds</h3>
+                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Trumpet, Saxophone, Trombone, French Horn & Ensemble training.
+                  </p>
+                </div>
+
+                {/* Feature Card 2 */}
+                <div className="p-6 bg-navy-900/70 backdrop-blur-md border border-navy-700/60 hover:border-amber-500/40 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <BookOpen className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <h3 className="text-base font-bold text-white font-heading">Keyboards & Strings</h3>
+                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Piano, Acoustic/Electric Guitar, Violin, Drums & Vocal Arts.
+                  </p>
+                </div>
+
+                {/* Feature Card 3 */}
+                <div className="p-6 bg-navy-900/70 backdrop-blur-md border border-navy-700/60 hover:border-amber-500/40 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Users className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <h3 className="text-base font-bold text-white font-heading">Live Performances</h3>
+                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Stage experience with recitals, concerts & live event bands in Lagos.
+                  </p>
+                </div>
+
+                {/* Feature Card 4 */}
+                <div className="p-6 bg-navy-900/70 backdrop-blur-md border border-navy-700/60 hover:border-amber-500/40 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1 group">
+                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                    <Award className="w-6 h-6 text-amber-400" />
+                  </div>
+                  <h3 className="text-base font-bold text-white font-heading">Mastery Certificate</h3>
+                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
+                    Structured graded curriculum for beginner, intermediate & advanced.
+                  </p>
+                </div>
+
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
