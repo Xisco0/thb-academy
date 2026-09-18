@@ -6,6 +6,8 @@ import { PerformanceGalleryPhoto } from '@/lib/event-gallery-utils';
 
 const siteUrl = 'https://www.thbacademy.org';
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: 'Live Music & Event Performances in Lagos | THB Academy',
   description:

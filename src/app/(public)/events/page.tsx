@@ -7,6 +7,8 @@ import type { Event } from '@/types/database.types';
 
 const siteUrl = 'https://www.thbacademy.org';
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: 'Events, Recitals & Masterclasses in Lagos',
   description: 'Join us for upcoming music recitals, concerts, and brass masterclasses at Triumphant Harmony Brass Music Academy in Lagos, Nigeria.',

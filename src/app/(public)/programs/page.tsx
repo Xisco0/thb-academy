@@ -7,6 +7,8 @@ import { LevelBadge } from '@/components/ui/level-badge';
 
 const siteUrl = 'https://www.thbacademy.org';
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: 'Music Programs & Courses in Lagos',
   description:

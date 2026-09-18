@@ -5,6 +5,8 @@ import { organizationSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
 
 const siteUrl = 'https://www.thbacademy.org';
 
+export const revalidate = 86400;
+
 export const metadata: Metadata = {
   title: 'Contact Us | Music Academy Lagos',
   description:

@@ -1,12 +1,20 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getEventBySlug, getWebsiteSettings } from '@/lib/queries/public';
+import { getEventBySlug, getWebsiteSettings, getAllEventSlugs } from '@/lib/queries/public';
 import { eventSchema as eventJsonLd, JsonLd, breadcrumbSchema } from '@/lib/seo';
 import { formatDate, formatTime } from '@/lib/utils';
 import { Phone, MessageCircle } from 'lucide-react';
 import { parseEventActivityPhotos } from '@/lib/event-gallery-utils';
 import { EventActivityGallery } from './event-gallery-client';
+
+export const revalidate = 3600;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const slugs = await getAllEventSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
 
 interface Props {
   params: Promise<{ slug: string }>;

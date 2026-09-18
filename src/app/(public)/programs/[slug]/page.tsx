@@ -1,8 +1,16 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getCourseBySlug, getWebsiteSettings, getSiblingCoursesByInstrument } from '@/lib/queries/public';
+import { getCourseBySlug, getWebsiteSettings, getSiblingCoursesByInstrument, getAllCourseSlugs } from '@/lib/queries/public';
 import { courseSchema, breadcrumbSchema, JsonLd } from '@/lib/seo';
 import { ProgramDetailClient } from './program-detail-client';
+
+export const revalidate = 3600;
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  const slugs = await getAllCourseSlugs();
+  return slugs.map((slug) => ({ slug }));
+}
 
 interface Props {
   params: Promise<{ slug: string }>;

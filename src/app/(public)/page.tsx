@@ -10,6 +10,8 @@ import { organizationSchema, JsonLd } from '@/lib/seo';
 
 const siteUrl = 'https://www.thbacademy.org';
 
+export const revalidate = 3600;
+
 export const metadata: Metadata = {
   title: 'Triumphant Harmony Brass | Premier Music Academy in Lagos, Nigeria',
   description:

@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { getPublishedCourses } from '@/lib/queries/public';
 import { RegisterClient } from './register-client';
 import type { Metadata } from 'next';
@@ -21,5 +22,9 @@ export default async function RegisterPage() {
     instrument: c.instrument ? { name: c.instrument.name } : undefined,
   }));
 
-  return <RegisterClient courses={formattedCourses} />;
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-navy-950 flex items-center justify-center text-white text-sm">Loading Registration...</div>}>
+      <RegisterClient courses={formattedCourses} />
+    </Suspense>
+  );
 }
