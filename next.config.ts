@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  env: {
+    VERCEL_BYPASS_FALLBACK_OVERSIZED_ERROR: '1',
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',

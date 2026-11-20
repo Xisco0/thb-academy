@@ -66,7 +66,13 @@ export const getAllWebsiteContent = unstable_cache(
         .from('website_content')
         .select('id, section_key, title, subtitle, body_content, is_active')
         .eq('is_active', true);
-      return (data as unknown as WebsiteContent[]) || [];
+      const items = (data as unknown as WebsiteContent[]) || [];
+      return items.map((item) => {
+        if (item.content && item.content.length > 50000) {
+          item.content = item.content.replace(/data:image\/[a-zA-Z+]+;base64,[A-Za-z0-9+/=]{10000,}/g, '/images/image.png');
+        }
+        return item;
+      });
     } catch (err) {
       console.error('getAllWebsiteContent error:', err);
       return [];
@@ -100,8 +106,42 @@ export const getActiveInstruments = unstable_cache(
 );
 
 // ==========================================
-// Courses
+// Courses & Base64 Payload Sanitizers
+// Prevents 2MB+ unstable_cache and 20MB+ ISR HTML blowups
 // ==========================================
+
+function sanitizeCourse<T extends Partial<CourseWithRelations> | null>(course: T): T {
+  if (!course) return course;
+
+  // Sanitize oversized base64 image_url
+  if (course.image_url && course.image_url.startsWith('data:image') && course.image_url.length > 50000) {
+    const instSlug = course.instrument?.slug || '';
+    if (instSlug.includes('brass') || instSlug.includes('trumpet') || instSlug.includes('horn')) {
+      course.image_url = '/images/programs-brass-v2.jpg';
+    } else if (instSlug.includes('keyboard') || instSlug.includes('piano')) {
+      course.image_url = '/images/programs-keyboards-v2.jpg';
+    } else {
+      course.image_url = '/images/image.png';
+    }
+  }
+
+  const sanitizeText = (str?: string | null): string | null | undefined => {
+    if (!str || typeof str !== 'string') return str;
+    if (str.length < 50000 && !str.includes('data:image/')) return str;
+    return str.replace(/data:image\/[a-zA-Z+]+;base64,[A-Za-z0-9+/=]{10000,}/g, '/images/image.png');
+  };
+
+  if (course.description) course.description = sanitizeText(course.description);
+  if (course.detailed_content) course.detailed_content = sanitizeText(course.detailed_content);
+  if (course.what_you_learn) course.what_you_learn = sanitizeText(course.what_you_learn);
+  if (course.who_can_join) course.who_can_join = sanitizeText(course.who_can_join);
+
+  return course;
+}
+
+function sanitizeCourses(courses: CourseWithRelations[]): CourseWithRelations[] {
+  return courses.map((c) => sanitizeCourse(c));
+}
 
 export const getPublishedCourses = unstable_cache(
   async (): Promise<CourseWithRelations[]> => {
@@ -128,7 +168,7 @@ export const getPublishedCourses = unstable_cache(
         `)
         .eq('status', 'published')
         .order('sort_order', { ascending: true });
-      return (data as unknown as CourseWithRelations[]) || [];
+      return sanitizeCourses((data as unknown as CourseWithRelations[]) || []);
     } catch (err) {
       console.error('getPublishedCourses error:', err);
       return [];
@@ -163,7 +203,7 @@ export const getFeaturedCourses = unstable_cache(
         .eq('is_featured', true)
         .order('sort_order', { ascending: true })
         .limit(6);
-      return (data as unknown as CourseWithRelations[]) || [];
+      return sanitizeCourses((data as unknown as CourseWithRelations[]) || []);
     } catch (err) {
       console.error('getFeaturedCourses error:', err);
       return [];
@@ -199,7 +239,7 @@ export const getCourseBySlug = (slug: string): Promise<CourseWithRelations | nul
         const { data, error } = await primaryQuery.maybeSingle();
 
         if (data && !error) {
-          return data as unknown as CourseWithRelations;
+          return sanitizeCourse(data as unknown as CourseWithRelations);
         }
 
         // 2. Resilient fallback without instructor join
@@ -218,7 +258,7 @@ export const getCourseBySlug = (slug: string): Promise<CourseWithRelations | nul
 
         const { data: fallbackData } = await fallbackQuery.maybeSingle();
         if (fallbackData) {
-          return fallbackData as unknown as CourseWithRelations;
+          return sanitizeCourse(fallbackData as unknown as CourseWithRelations);
         }
 
         // 3. Case-insensitive fallback
@@ -231,7 +271,7 @@ export const getCourseBySlug = (slug: string): Promise<CourseWithRelations | nul
           .ilike('slug', cleanSlug)
           .maybeSingle();
 
-        return (ilikeData as unknown as CourseWithRelations | null) || null;
+        return sanitizeCourse(ilikeData as unknown as CourseWithRelations | null);
       } catch (err) {
         console.error(`getCourseBySlug(${slug}) error:`, err);
         return null;
@@ -255,7 +295,7 @@ export const getSiblingCoursesByInstrument = (instrumentId?: string | null): Pro
           `)
           .eq('instrument_id', instrumentId)
           .order('sort_order', { ascending: true });
-        return (data as unknown as CourseWithRelations[]) || [];
+        return sanitizeCourses((data as unknown as CourseWithRelations[]) || []);
       } catch (err) {
         console.error('getSiblingCoursesByInstrument error:', err);
         return [];
