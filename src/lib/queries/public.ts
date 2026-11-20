@@ -178,33 +178,60 @@ export const getCourseBySlug = (slug: string): Promise<CourseWithRelations | nul
     async (): Promise<CourseWithRelations | null> => {
       try {
         const supabase = createPublicClient();
-        
-        // 1. Try full relation query with image_url for instructors
-        const { data, error } = await supabase
+        const cleanSlug = slug.trim();
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(cleanSlug);
+
+        // 1. Primary query by slug with full relations
+        let primaryQuery = supabase
           .from('courses')
           .select(`
             *,
             instrument:instruments(id, name, slug),
             instructor:instructors(id, first_name, last_name, image_url, bio)
-          `)
-          .or(`slug.eq.${slug},id.eq.${slug}`)
-          .maybeSingle();
+          `);
+
+        if (isUuid) {
+          primaryQuery = primaryQuery.or(`slug.eq.${cleanSlug},id.eq.${cleanSlug}`);
+        } else {
+          primaryQuery = primaryQuery.eq('slug', cleanSlug);
+        }
+
+        const { data, error } = await primaryQuery.maybeSingle();
 
         if (data && !error) {
           return data as unknown as CourseWithRelations;
         }
 
-        // 2. Resilient fallback: query without instructor if relationship fails
-        const { data: fallbackData } = await supabase
+        // 2. Resilient fallback without instructor join
+        let fallbackQuery = supabase
+          .from('courses')
+          .select(`
+            *,
+            instrument:instruments(id, name, slug)
+          `);
+
+        if (isUuid) {
+          fallbackQuery = fallbackQuery.or(`slug.eq.${cleanSlug},id.eq.${cleanSlug}`);
+        } else {
+          fallbackQuery = fallbackQuery.eq('slug', cleanSlug);
+        }
+
+        const { data: fallbackData } = await fallbackQuery.maybeSingle();
+        if (fallbackData) {
+          return fallbackData as unknown as CourseWithRelations;
+        }
+
+        // 3. Case-insensitive fallback
+        const { data: ilikeData } = await supabase
           .from('courses')
           .select(`
             *,
             instrument:instruments(id, name, slug)
           `)
-          .or(`slug.eq.${slug},id.eq.${slug}`)
+          .ilike('slug', cleanSlug)
           .maybeSingle();
 
-        return (fallbackData as unknown as CourseWithRelations | null) || null;
+        return (ilikeData as unknown as CourseWithRelations | null) || null;
       } catch (err) {
         console.error(`getCourseBySlug(${slug}) error:`, err);
         return null;
@@ -294,8 +321,7 @@ export const getEventBySlug = (slug: string): Promise<Event | null> =>
           .from('events')
           .select('id, title, slug, description, detailed_content, date, start_time, end_time, venue_id, venue_name, venue_address, banner_url, status, seo_title, seo_description')
           .eq('slug', slug)
-          .eq('status', 'published')
-          .single();
+          .maybeSingle();
 
         if (!data) return null;
 
@@ -329,7 +355,7 @@ export const getActiveInstructors = unstable_cache(
       const supabase = createPublicClient();
       const { data } = await supabase
         .from('instructors')
-        .select('id, first_name, last_name, bio, photo_url, is_active')
+        .select('id, first_name, last_name, bio, image_url, is_active')
         .eq('is_active', true)
         .order('first_name', { ascending: true });
       return (data as unknown as Instructor[]) || [];
