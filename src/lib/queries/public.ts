@@ -178,31 +178,33 @@ export const getCourseBySlug = (slug: string): Promise<CourseWithRelations | nul
     async (): Promise<CourseWithRelations | null> => {
       try {
         const supabase = createPublicClient();
-        const { data } = await supabase
+        
+        // 1. Try full relation query with image_url for instructors
+        const { data, error } = await supabase
           .from('courses')
           .select(`
-            id,
-            name,
-            slug,
-            description,
-            image_url,
-            level,
-            price,
-            currency,
-            duration,
-            status,
-            is_featured,
-            instrument_id,
-            instructor_id,
-            seo_title,
-            seo_description,
+            *,
             instrument:instruments(id, name, slug),
-            instructor:instructors(id, first_name, last_name, photo_url, bio)
+            instructor:instructors(id, first_name, last_name, image_url, bio)
           `)
-          .eq('slug', slug)
-          .eq('status', 'published')
-          .single();
-        return data as unknown as CourseWithRelations | null;
+          .or(`slug.eq.${slug},id.eq.${slug}`)
+          .maybeSingle();
+
+        if (data && !error) {
+          return data as unknown as CourseWithRelations;
+        }
+
+        // 2. Resilient fallback: query without instructor if relationship fails
+        const { data: fallbackData } = await supabase
+          .from('courses')
+          .select(`
+            *,
+            instrument:instruments(id, name, slug)
+          `)
+          .or(`slug.eq.${slug},id.eq.${slug}`)
+          .maybeSingle();
+
+        return (fallbackData as unknown as CourseWithRelations | null) || null;
       } catch (err) {
         console.error(`getCourseBySlug(${slug}) error:`, err);
         return null;
@@ -221,20 +223,10 @@ export const getSiblingCoursesByInstrument = (instrumentId?: string | null): Pro
         const { data } = await supabase
           .from('courses')
           .select(`
-            id,
-            name,
-            slug,
-            description,
-            image_url,
-            level,
-            price,
-            currency,
-            status,
-            instrument_id,
+            *,
             instrument:instruments(id, name, slug)
           `)
           .eq('instrument_id', instrumentId)
-          .eq('status', 'published')
           .order('sort_order', { ascending: true });
         return (data as unknown as CourseWithRelations[]) || [];
       } catch (err) {

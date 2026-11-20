@@ -17,7 +17,8 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
   const course = await getCourseBySlug(slug);
   if (!course) return { title: 'Program Not Found' };
 
@@ -74,7 +75,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProgramDetailPage({ params }: Props) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeURIComponent(rawSlug);
   const [course, settings] = await Promise.all([
     getCourseBySlug(slug),
     getWebsiteSettings(),
