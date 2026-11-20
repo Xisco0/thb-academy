@@ -16,7 +16,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     return (
       <div className="w-full">
         {label && (
-          <label htmlFor={textareaId} className="block text-sm font-medium text-navy-200 mb-1.5">
+          <label htmlFor={textareaId} className="block text-xs font-semibold text-[#142544] uppercase tracking-wider mb-1.5">
             {label}
           </label>
         )}
@@ -24,20 +24,20 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           ref={ref}
           id={textareaId}
           className={cn(
-            'w-full px-4 py-2.5 bg-navy-800 border rounded-lg text-navy-100 text-sm min-h-[100px] resize-y',
-            'placeholder:text-navy-400',
-            'transition-colors duration-200',
-            'focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500',
-            'disabled:opacity-50 disabled:cursor-not-allowed',
+            'w-full px-4 py-2.5 bg-white border rounded-xl text-[#17243A] text-sm',
+            'placeholder:text-[#8896AB]',
+            'transition-all duration-200 resize-y min-h-[100px]',
+            'focus:outline-none focus:ring-2 focus:ring-[#C58A19]/30 focus:border-[#C58A19]',
+            'disabled:opacity-50 disabled:bg-[#F8F7F4] disabled:cursor-not-allowed',
             error
-              ? 'border-red-500 focus:ring-red-500/50'
-              : 'border-navy-600 hover:border-navy-500',
+              ? 'border-[#C74646] focus:ring-[#C74646]/20 focus:border-[#C74646]'
+              : 'border-[#E7E5DF] hover:border-[#CBD5E1]',
             className
           )}
           {...props}
         />
-        {error && <p className="mt-1 text-sm text-red-400">{error}</p>}
-        {helperText && !error && <p className="mt-1 text-sm text-navy-400">{helperText}</p>}
+        {error && <p className="mt-1.5 text-xs text-[#C74646] font-medium">{error}</p>}
+        {helperText && !error && <p className="mt-1.5 text-xs text-[#647084]">{helperText}</p>}
       </div>
     );
   }

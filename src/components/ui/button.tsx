@@ -5,21 +5,23 @@ import { cn } from '@/lib/utils';
 
 const variants = {
   primary:
-    'bg-brand-500 text-white hover:bg-brand-400 active:bg-brand-600 font-bold shadow-glow',
+    'bg-[#142544] text-white hover:bg-[#243653] active:bg-[#0e1b32] font-semibold shadow-sm hover:shadow-md',
+  gold:
+    'bg-[#C58A19] text-white hover:bg-[#b07b14] active:bg-[#9a680c] font-semibold shadow-[0_2px_10px_rgba(197,138,25,0.25)] hover:shadow-[0_4px_16px_rgba(197,138,25,0.35)]',
   secondary:
-    'bg-navy-700 text-navy-100 border border-brand-500/30 hover:bg-navy-600 hover:border-brand-400/50',
+    'bg-[#F8F7F4] text-[#142544] border border-[#E7E5DF] hover:bg-[#F5F0E6] hover:border-[#d5d2c8] font-medium',
   outline:
-    'bg-transparent border border-brand-500 text-brand-400 hover:bg-brand-500/10 hover:text-brand-300',
+    'bg-transparent border border-[#C58A19] text-[#C58A19] hover:bg-[#F8EBCB]/40 hover:text-[#9a680c] font-medium',
   ghost:
-    'bg-transparent text-navy-200 hover:bg-navy-800 hover:text-white',
+    'bg-transparent text-[#17243A] hover:bg-[#F8F7F4] hover:text-[#142544] font-medium',
   danger:
-    'bg-red-600 text-white hover:bg-red-500 active:bg-red-700 font-semibold',
+    'bg-[#C74646] text-white hover:bg-[#b03a3a] active:bg-[#992f2f] font-semibold',
 };
 
 const sizes = {
-  sm: 'px-3 py-1.5 text-sm rounded-md gap-1.5',
-  md: 'px-5 py-2.5 text-sm rounded-lg gap-2',
-  lg: 'px-7 py-3 text-base rounded-lg gap-2.5',
+  sm: 'px-3.5 py-1.5 text-xs rounded-full gap-1.5',
+  md: 'px-5 py-2.5 text-sm rounded-full gap-2',
+  lg: 'px-7 py-3.5 text-base rounded-full gap-2.5',
 };
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -52,8 +54,8 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={disabled || isLoading}
         className={cn(
-          'inline-flex items-center justify-center font-medium transition-all duration-200',
-          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-navy-950',
+          'inline-flex items-center justify-center transition-all duration-200 cursor-pointer select-none',
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#C58A19] focus-visible:ring-offset-2 focus-visible:ring-offset-white',
           'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
           variants[variant],
           sizes[size],

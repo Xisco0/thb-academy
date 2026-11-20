@@ -30,7 +30,7 @@ export default async function AdminLayout({
 
   return (
     <SessionInactivityProvider>
-      <div className="min-h-screen bg-navy-950">
+      <div className="min-h-screen bg-[#F8F7F4] text-[#17243A]">
         <AdminSidebar
           user={{
             email: user.email,

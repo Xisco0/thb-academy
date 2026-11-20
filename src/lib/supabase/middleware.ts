@@ -6,9 +6,16 @@ export async function updateSession(request: NextRequest) {
     request,
   });
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !anonKey) {
+    return { user: null, supabaseResponse, supabase: null };
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    anonKey,
     {
       cookies: {
         getAll() {
@@ -27,10 +34,15 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  // Refresh session
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    // Refresh session
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  return { user, supabaseResponse, supabase };
+    return { user, supabaseResponse, supabase };
+  } catch (err) {
+    console.error('updateSession auth error:', err);
+    return { user: null, supabaseResponse, supabase };
+  }
 }

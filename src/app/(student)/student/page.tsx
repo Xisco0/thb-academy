@@ -3,7 +3,7 @@ import { getStudentProfile, getStudentEnrollments, getStudentPayments } from '@/
 import { formatCoursePrice, formatDate } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
-import { ArrowRight, BookOpen, CreditCard, Calendar, AlertTriangle } from 'lucide-react';
+import { ArrowRight, BookOpen, CreditCard, Calendar, AlertTriangle, Music, CheckCircle2 } from 'lucide-react';
 
 export const metadata = {
   title: 'Dashboard | Student Portal',
@@ -23,100 +23,146 @@ export default async function StudentDashboard() {
   const rejectedPayments = payments.filter((p: Record<string, any>) => p.status === 'rejected');
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-8">
+      {/* Welcome Banner */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-6 sm:p-8 rounded-3xl border border-[#E7E5DF] shadow-xs">
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight">Welcome back, {profile?.first_name || 'Student'}!</h1>
-          <p className="text-slate-400 mt-1">Here&apos;s what&apos;s happening with your musical journey.</p>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#C58A19] block mb-1">
+            Student Overview
+          </span>
+          <h1 className="font-heading text-2xl sm:text-3xl font-bold text-[#142544] tracking-tight">
+            Welcome back, {profile?.first_name || 'Student'}!
+          </h1>
+          <p className="text-[#647084] text-sm mt-1">
+            Here&apos;s a summary of your musical training, courses, and tuition status.
+          </p>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/programs" className="px-4 py-2 bg-navy-800 hover:bg-navy-700 text-white rounded-lg transition-colors border border-navy-700/50 text-sm font-medium">
+          <Link
+            href="/programs"
+            className="px-5 py-2.5 bg-[#F8F7F4] hover:bg-[#F5F0E6] text-[#142544] rounded-full transition-colors border border-[#E7E5DF] text-xs font-semibold"
+          >
             Explore Programs
           </Link>
-          <Link href="/student/payments" className="px-4 py-2 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-lg transition-colors text-sm">
-            My Payments & Receipts
+          <Link
+            href="/student/payments"
+            className="px-5 py-2.5 bg-[#C58A19] hover:bg-[#b07b14] text-white font-semibold rounded-full transition-all shadow-xs text-xs"
+          >
+            My Payments &amp; Receipts
           </Link>
         </div>
       </div>
 
       {/* Rejected Payment Alert Banner */}
       {rejectedPayments.map((p: any) => (
-        <div key={p.id} className="p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-start justify-between gap-4 text-xs">
+        <div
+          key={p.id}
+          className="p-4 bg-[#C74646]/10 border border-[#C74646]/30 rounded-2xl flex items-start justify-between gap-4 text-xs"
+        >
           <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-[#C74646] shrink-0 mt-0.5" />
             <div>
-              <p className="font-bold text-red-300">Payment Rejected — {p.enrollment?.course?.name || 'Program Payment'}</p>
-              <p className="text-navy-200 mt-0.5">Reason: {p.rejection_reason || 'Payment receipt unreadable.'}</p>
+              <p className="font-bold text-[#C74646]">Payment Verification Required &mdash; {p.enrollment?.course?.name || 'Program Payment'}</p>
+              <p className="text-[#142544] mt-0.5">Note: {p.rejection_reason || 'Payment receipt unclear.'}</p>
             </div>
           </div>
           <Link
             href="/student/payments"
-            className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white font-bold rounded-lg shrink-0 shadow-sm"
+            className="px-3.5 py-1.5 bg-[#C74646] hover:bg-[#b03a3a] text-white font-semibold rounded-full shrink-0 shadow-xs text-xs"
           >
             Resubmit Proof
           </Link>
         </div>
       ))}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-navy-800/80 rounded-xl p-5 border border-navy-700/50">
-          <div className="flex items-center gap-3 text-brand-400 mb-2">
-            <BookOpen className="w-5 h-5" />
-            <h3 className="font-semibold">Active Enrollments</h3>
+      {/* Key Metric Stats Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="bg-white rounded-2xl p-6 border border-[#E7E5DF] shadow-xs">
+          <div className="flex items-center gap-3 text-[#142544] mb-3">
+            <div className="w-10 h-10 rounded-xl bg-[#F8EBCB] text-[#C58A19] flex items-center justify-center">
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <h3 className="font-semibold text-sm">Active Enrollments</h3>
           </div>
-          <p className="text-3xl font-bold text-white">{activeEnrollments}</p>
+          <p className="font-heading text-3xl font-extrabold text-[#142544]">{activeEnrollments}</p>
+          <p className="text-xs text-[#647084] mt-1">Course tracks in progress</p>
         </div>
-        <div className="bg-navy-800/80 rounded-xl p-5 border border-navy-700/50">
-          <div className="flex items-center gap-3 text-emerald-400 mb-2">
-            <CreditCard className="w-5 h-5" />
-            <h3 className="font-semibold">Total Verified Payments</h3>
+
+        <div className="bg-white rounded-2xl p-6 border border-[#E7E5DF] shadow-xs">
+          <div className="flex items-center gap-3 text-[#142544] mb-3">
+            <div className="w-10 h-10 rounded-xl bg-[#23845B]/15 text-[#23845B] flex items-center justify-center">
+              <CreditCard className="w-5 h-5" />
+            </div>
+            <h3 className="font-semibold text-sm">Verified Tuition</h3>
           </div>
-          <p className="text-3xl font-bold text-white">{formatCoursePrice(totalPayments)}</p>
+          <p className="font-heading text-3xl font-extrabold text-[#142544]">{formatCoursePrice(totalPayments)}</p>
+          <p className="text-xs text-[#647084] mt-1">Approved payment records</p>
         </div>
-        <div className="bg-navy-800/80 rounded-xl p-5 border border-navy-700/50">
-          <div className="flex items-center gap-3 text-amber-400 mb-2">
-            <Calendar className="w-5 h-5" />
-            <h3 className="font-semibold">Pending Payments</h3>
+
+        <div className="bg-white rounded-2xl p-6 border border-[#E7E5DF] shadow-xs">
+          <div className="flex items-center gap-3 text-[#142544] mb-3">
+            <div className="w-10 h-10 rounded-xl bg-[#C58A19]/15 text-[#C58A19] flex items-center justify-center">
+              <Calendar className="w-5 h-5" />
+            </div>
+            <h3 className="font-semibold text-sm">Pending Verifications</h3>
           </div>
-          <p className="text-3xl font-bold text-white">{pendingPayments}</p>
+          <p className="font-heading text-3xl font-extrabold text-[#142544]">{pendingPayments}</p>
+          <p className="text-xs text-[#647084] mt-1">Awaiting admin review</p>
         </div>
       </div>
 
-      <div className="bg-navy-800/80 rounded-xl border border-navy-700/50 overflow-hidden">
-        <div className="p-5 border-b border-navy-700/50 flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-white">Recent Enrollments</h2>
-          <Link href="/student/enrollments" className="text-brand-400 hover:text-brand-300 text-sm font-medium flex items-center gap-1">
-            View all <ArrowRight className="w-4 h-4" />
+      {/* Recent Enrollments Table / Card */}
+      <div className="bg-white rounded-2xl border border-[#E7E5DF] overflow-hidden shadow-xs">
+        <div className="p-6 border-b border-[#E7E5DF] flex items-center justify-between">
+          <h2 className="font-heading text-xl font-bold text-[#142544]">Recent Enrollments</h2>
+          <Link
+            href="/student/enrollments"
+            className="text-xs font-semibold text-[#C58A19] hover:text-[#9A680C] flex items-center gap-1 transition-colors"
+          >
+            <span>View all courses</span>
+            <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-        <div className="divide-y divide-navy-700/50">
-          {enrollments.slice(0, 5).map((enrollment: Record<string, any>) => (
-            <div key={enrollment.id} className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h3 className="font-medium text-lg text-white">{enrollment.course?.name || 'Music Course'}</h3>
-                <p className="text-sm text-slate-400">
-                  {enrollment.course?.instrument?.name} • Enrolled on {formatDate(enrollment.created_at)}
-                </p>
+
+        <div className="divide-y divide-[#E7E5DF]">
+          {enrollments.length === 0 ? (
+            <div className="p-8 text-center text-[#647084] text-sm">
+              You have not enrolled in any programs yet.
+              <div className="mt-3">
+                <Link
+                  href="/programs"
+                  className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#142544] text-white rounded-full text-xs font-semibold"
+                >
+                  <span>Browse Programs</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
               </div>
-              <div className="flex items-center gap-4">
-                <Badge variant={
-                  enrollment.status === 'active' ? 'default' : 
-                  enrollment.status === 'pending' ? 'info' : 'danger'
-                }>
-                  {enrollment.status}
-                </Badge>
-                {enrollment.status === 'pending' && (
-                  <Link href="/student/payments" className="text-brand-400 hover:text-brand-300 text-sm font-medium px-3 py-1.5 rounded-lg bg-brand-500/10 hover:bg-brand-500/20 transition-colors">
-                    Upload Payment Proof
+            </div>
+          ) : (
+            enrollments.slice(0, 5).map((enrollment: Record<string, any>) => (
+              <div key={enrollment.id} className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-[#F8F7F4]/50 transition-colors">
+                <div className="space-y-1">
+                  <h3 className="font-heading font-bold text-base text-[#142544]">
+                    {enrollment.course?.name || 'Music Course'}
+                  </h3>
+                  <p className="text-xs text-[#647084]">
+                    {enrollment.course?.instrument?.name && `${enrollment.course.instrument.name} • `}
+                    Enrolled on {formatDate(enrollment.created_at)}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Badge variant={enrollment.status === 'active' ? 'success' : 'default'}>
+                    {enrollment.status.toUpperCase()}
+                  </Badge>
+                  <Link
+                    href={`/programs/${enrollment.course?.slug || ''}`}
+                    className="text-xs font-semibold text-[#142544] hover:text-[#C58A19] transition-colors"
+                  >
+                    Details &rarr;
                   </Link>
-                )}
+                </div>
               </div>
-            </div>
-          ))}
-          {enrollments.length === 0 && (
-            <div className="p-8 text-center text-slate-400">
-              You don&apos;t have any enrollments yet.
-            </div>
+            ))
           )}
         </div>
       </div>

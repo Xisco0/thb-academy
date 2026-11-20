@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { Search } from 'lucide-react';
 
 export interface Column<T> {
   key: string;
@@ -29,7 +30,7 @@ export function DataTable<T extends Record<string, unknown>>({
   columns,
   data,
   keyField = 'id',
-  searchPlaceholder = 'Search...',
+  searchPlaceholder = 'Search records...',
   searchFields = [],
   emptyTitle = 'No data found',
   emptyDescription = 'Get started by creating a new entry.',
@@ -49,45 +50,48 @@ export function DataTable<T extends Record<string, unknown>>({
     : data;
 
   return (
-    <div>
+    <div className="space-y-4">
       {/* Search Bar */}
       {searchFields.length > 0 && (
-        <div className="mb-4">
+        <div className="relative max-w-sm">
+          <Search className="w-4 h-4 text-[#8896AB] absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             placeholder={searchPlaceholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full max-w-sm px-4 py-2.5 bg-navy-800 border border-navy-700/50 rounded-lg text-navy-100 text-sm placeholder:text-navy-400 focus:outline-none focus:ring-2 focus:ring-brand-500/50 focus:border-brand-500"
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E7E5DF] rounded-xl text-[#142544] text-sm placeholder:text-[#8896AB] focus:outline-none focus:ring-1 focus:ring-[#C58A19] focus:border-[#C58A19] shadow-sm transition-all"
           />
         </div>
       )}
 
       {/* Table */}
-      <div className="bg-navy-800/50 border border-navy-700/30 rounded-xl overflow-hidden">
+      <div className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden shadow-sm">
         {filtered.length === 0 ? (
-          <div className="py-16 text-center">
-            <p className="text-lg font-semibold text-navy-200 mb-1">{emptyTitle}</p>
-            <p className="text-navy-400 text-sm mb-6">{emptyDescription}</p>
+          <div className="py-16 text-center space-y-3">
+            <p className="text-base font-bold text-[#142544] font-heading">{emptyTitle}</p>
+            <p className="text-[#647084] text-xs max-w-sm mx-auto">{emptyDescription}</p>
             {createHref && (
-              <Link
-                href={createHref}
-                className="inline-flex items-center px-4 py-2 bg-brand-500 text-white font-bold rounded-lg text-sm font-semibold hover:bg-brand-400 transition-colors"
-              >
-                {createLabel}
-              </Link>
+              <div className="pt-2">
+                <Link
+                  href={createHref}
+                  className="inline-flex items-center px-5 py-2.5 bg-[#C58A19] text-white font-semibold rounded-full text-xs hover:bg-[#A37013] transition-all shadow-sm"
+                >
+                  {createLabel}
+                </Link>
+              </div>
             )}
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-navy-700/30">
+                <tr className="bg-[#F8F7F4] border-b border-[#E7E5DF]">
                   {columns.map((col) => (
                     <th
                       key={col.key}
                       className={cn(
-                        'px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-navy-400',
+                        'px-6 py-3.5 text-left text-xs font-semibold uppercase tracking-wider text-[#647084]',
                         col.className
                       )}
                     >
@@ -96,7 +100,7 @@ export function DataTable<T extends Record<string, unknown>>({
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-navy-700/20">
+              <tbody className="divide-y divide-[#E7E5DF]">
                 {filtered.map((item) => (
                   <tr
                     key={String(item[keyField])}
@@ -104,12 +108,12 @@ export function DataTable<T extends Record<string, unknown>>({
                     className={cn(
                       'transition-colors',
                       onRowClick
-                        ? 'cursor-pointer hover:bg-navy-700/30'
-                        : 'hover:bg-navy-800/30'
+                        ? 'cursor-pointer hover:bg-[#F8F7F4]/80'
+                        : 'hover:bg-[#F8F7F4]/50'
                     )}
                   >
                     {columns.map((col) => (
-                      <td key={col.key} className={cn('px-6 py-4 text-sm text-navy-200', col.className)}>
+                      <td key={col.key} className={cn('px-6 py-4 text-sm text-[#142544]', col.className)}>
                         {col.render ? col.render(item) : String(item[col.key] ?? '')}
                       </td>
                     ))}
@@ -123,7 +127,7 @@ export function DataTable<T extends Record<string, unknown>>({
 
       {/* Count */}
       {filtered.length > 0 && (
-        <p className="text-navy-500 text-xs mt-3">
+        <p className="text-[#8896AB] text-xs">
           Showing {filtered.length} of {data.length} {data.length === 1 ? 'record' : 'records'}
         </p>
       )}

@@ -4,9 +4,9 @@ import { RegisterClient } from './register-client';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Student Registration & Program Enrollment',
+  title: 'Student Registration & Program Enrollment | THB Academy',
   description:
-    'Enroll in professional music training programs at Triumphant Harmony Brass Music Academy. Register for keyboard, trumpet, guitar, saxophone, drums, voice, and violin lessons.',
+    'Enroll in professional music training programs at Triumphant Harmony Brass Music Academy. Register for trumpet, keyboard, guitar, saxophone, drums, voice, and violin lessons.',
 };
 
 export default async function RegisterPage() {
@@ -23,7 +23,7 @@ export default async function RegisterPage() {
   }));
 
   return (
-    <Suspense fallback={<div className="min-h-screen bg-navy-950 flex items-center justify-center text-white text-sm">Loading Registration...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#F8F7F4] flex items-center justify-center text-[#142544] text-sm">Loading Registration...</div>}>
       <RegisterClient courses={formattedCourses} />
     </Suspense>
   );

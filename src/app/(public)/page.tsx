@@ -3,9 +3,24 @@ import { formatCoursePrice } from '@/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
-import { Music, ArrowRight, Calendar, MapPin, CheckCircle, Sparkles, BookOpen, Users, Award, ChevronRight } from 'lucide-react';
+import {
+  Music,
+  ArrowRight,
+  Calendar,
+  MapPin,
+  CheckCircle2,
+  Sparkles,
+  BookOpen,
+  Users,
+  Award,
+  ChevronRight,
+  Play,
+  Trophy,
+  Star,
+  GraduationCap,
+  Volume2,
+} from 'lucide-react';
 import { LevelBadge } from '@/components/ui/level-badge';
-
 import { organizationSchema, JsonLd } from '@/lib/seo';
 
 const siteUrl = 'https://www.thbacademy.org';
@@ -15,14 +30,14 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: 'Triumphant Harmony Brass | Premier Music Academy in Lagos, Nigeria',
   description:
-    'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
+    'Discover, learn, and perform music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
   alternates: {
     canonical: siteUrl,
   },
   openGraph: {
     title: 'Triumphant Harmony Brass | Premier Music Academy in Lagos, Nigeria',
     description:
-      'Premier music education institution in Lagos, Nigeria. Classical rigor, modern technique, and practical performance training under Taiwo Toyinbo & faculty.',
+      'Premier music education institution in Lagos, Nigeria. Classical rigor, modern technique, and practical stage performance training under Taiwo Toyinbo & faculty.',
     url: siteUrl,
     siteName: 'Triumphant Harmony Brass Music Academy',
     locale: 'en_NG',
@@ -50,431 +65,715 @@ export default async function HomePage() {
   const featuredCourses = await getFeaturedCourses();
   const upcomingEvents = await getUpcomingEvents(3);
 
-  const instruments = ['Trumpet', 'Saxophone', 'Keyboard', 'Guitar', 'Violin', 'Drums', 'Trombone', 'Voice'];
-
+  const instruments = [
+    'Trumpet',
+    'Saxophone',
+    'Keyboard & Piano',
+    'Acoustic Guitar',
+    'Violin',
+    'Drums & Percussion',
+    'Trombone',
+    'Vocal Arts',
+    'French Horn',
+  ];
   const duplicatedInstruments = [...instruments, ...instruments, ...instruments];
 
   return (
-    <main className="min-h-screen bg-navy-950 text-slate-100 overflow-x-hidden">
+    <main className="min-h-screen bg-white text-[#17243A] overflow-x-hidden pt-20 lg:pt-24">
       <JsonLd data={organizationSchema(settings)} />
-      {/* 1. Enhanced Hero Section */}
-      <section id="hero" className="relative pt-32 pb-24 lg:pt-44 lg:pb-32 overflow-hidden flex items-center min-h-[92vh] bg-[#090e1a] hero-dark-section">
-        {/* Background Image & Gradient Overlays */}
-        <div className="absolute inset-0 z-0 bg-[#090e1a]">
-          <Image
-            src="/bg-images/image.png"
-            alt="Triumphant Harmony Brass instrument collection on stage"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-right opacity-90 scale-105 transition-transform duration-1000 ease-out"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#090e1a] via-[#090e1a]/95 to-[#090e1a]/70 z-10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#090e1a] via-transparent to-[#090e1a]/80 z-10" />
-        </div>
 
-        {/* Decorative Ambient Lighting Spheres */}
-        <div aria-hidden="true" className="absolute top-1/4 left-10 w-96 h-96 bg-amber-500/15 rounded-full blur-[120px] pointer-events-none z-10 animate-pulse" />
-        <div aria-hidden="true" className="absolute bottom-10 right-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none z-10" />
+      {/* ========================================================
+          1. APPROVED EDITORIAL HERO SECTION
+          Recreated faithfully from the approved reference design
+          ======================================================== */}
+      <section className="relative bg-gradient-to-b from-[#F8F7F4]/80 via-white to-white overflow-hidden pb-12 lg:pb-16 pt-6 lg:pt-10">
+        {/* Subtle decorative gold/ambient glow */}
+        <div
+          aria-hidden="true"
+          className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-[#F8EBCB]/40 rounded-full blur-[140px] pointer-events-none -z-10"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute top-1/3 left-[-100px] w-[400px] h-[400px] bg-[#F5F0E6] rounded-full blur-[100px] pointer-events-none -z-10"
+        />
 
-        {/* Container */}
-        <div className="container relative z-20 mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
             
             {/* Left Content Column */}
-            <div className="lg:col-span-7 text-left space-y-8">
-              
-              {/* Premier Institution Badge */}
-              <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-navy-900/90 border border-amber-500/35 text-amber-400 text-xs sm:text-sm font-semibold tracking-wide shadow-[0_0_20px_rgba(245,158,11,0.18)] backdrop-blur-md animate-fade-in">
-                <span className="flex h-2 w-2 rounded-full bg-amber-400 animate-ping" />
-                <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>Premier Music Education Institution in Lagos, Nigeria</span>
+            <div className="lg:col-span-6 space-y-6 lg:space-y-8 text-left">
+              {/* Eyebrow with gold rule */}
+              <div className="inline-flex items-center gap-3">
+                <span className="text-[11px] sm:text-xs font-bold tracking-[0.22em] text-[#647084] uppercase">
+                  MUSIC &bull; TRAINING &bull; PERFORMANCE
+                </span>
+                <span className="h-[2px] w-12 bg-[#C58A19] inline-block rounded-full" />
               </div>
 
-              {/* Main Headline */}
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-heading font-extrabold text-white tracking-tight leading-[1.1] animate-slide-up">
-                Master the Art of Music with <br className="hidden sm:inline" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 drop-shadow-sm">
+              {/* Headline */}
+              <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#142544] tracking-tight leading-[1.12]">
+                Discover, Learn &amp; <br />
+                Perform Music with <br />
+                <span className="text-[#C58A19] font-normal italic drop-shadow-xs">
                   Triumphant Harmony Brass
                 </span>
               </h1>
 
-              {/* Tagline & Overview Description */}
-              <p className="text-lg sm:text-xl text-slate-300 font-body leading-relaxed max-w-2xl animate-slide-up" style={{ animationDelay: '100ms' }}>
+              {/* Tagline / Subhead */}
+              <p className="text-base sm:text-lg text-[#647084] leading-relaxed max-w-xl">
                 {settings?.tagline ? (
                   <span>{settings.tagline}</span>
                 ) : (
                   <span>
-                    Empowering musicians through classical rigor, modern technique, and practical stage performance training under Music Director Taiwo Toyinbo & faculty.
+                    A premier music academy in Lagos, Nigeria, empowering musicians through
+                    classical rigor, modern technique, and real stage performance training under
+                    Music Director Taiwo Toyinbo &amp; faculty.
                   </span>
                 )}
               </p>
 
-              {/* Action CTAs */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2 animate-slide-up" style={{ animationDelay: '200ms' }}>
+              {/* Hero Action Buttons */}
+              <div className="flex flex-wrap items-center gap-4 pt-2">
                 <Link
                   href="/programs"
-                  title="Explore Music Training Programs"
-                  className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-navy-950 font-extrabold rounded-xl transition-all duration-300 shadow-[0_0_30px_rgba(245,158,11,0.35)] hover:shadow-[0_0_35px_rgba(245,158,11,0.55)] transform hover:-translate-y-0.5 text-base cursor-pointer"
+                  className="inline-flex items-center gap-2.5 px-7 py-3.5 bg-[#142544] hover:bg-[#243653] active:bg-[#0e1b32] !text-white font-semibold rounded-full text-sm sm:text-base transition-all shadow-[0_4px_16px_rgba(20,37,68,0.18)] hover:shadow-[0_6px_22px_rgba(20,37,68,0.26)] transform hover:-translate-y-0.5"
                 >
-                  <span>Explore Programs</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <span className="!text-white font-semibold">Explore Our Programs</span>
+                  <ArrowRight className="w-4 h-4 !text-white" />
                 </Link>
 
-                <Link
-                  href="/register"
-                  title="Enroll in Lessons"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-navy-900/80 hover:bg-navy-800 border border-navy-700/80 hover:border-amber-400/50 text-white font-bold rounded-xl transition-all duration-300 backdrop-blur-md transform hover:-translate-y-0.5 text-base cursor-pointer"
+                <a
+                  href={settings?.youtube_url || '#programs'}
+                  target={settings?.youtube_url ? '_blank' : undefined}
+                  rel={settings?.youtube_url ? 'noopener noreferrer' : undefined}
+                  className="group inline-flex items-center gap-3 px-6 py-3.5 bg-white hover:bg-[#F8F7F4] text-[#142544] hover:text-[#C58A19] border border-[#E7E5DF] hover:border-[#C58A19]/40 font-semibold rounded-full text-sm sm:text-base transition-all shadow-xs"
                 >
-                  <span>Enroll / Get Started</span>
-                  <ChevronRight className="w-4 h-4 text-amber-400" />
-                </Link>
+                  <span className="relative flex items-center justify-center w-8 h-8 shrink-0">
+                    {/* Ripple ring 1 */}
+                    <span className="absolute inset-0 rounded-full bg-[#C58A19]/35 animate-ripple pointer-events-none" />
+                    {/* Ripple ring 2 (delayed wave) */}
+                    <span className="absolute inset-0 rounded-full bg-[#C58A19]/25 animate-ripple-delayed pointer-events-none" />
+                    {/* Solid core play button */}
+                    <span className="relative w-8 h-8 rounded-full bg-[#F8EBCB] text-[#C58A19] group-hover:bg-[#C58A19] group-hover:text-white flex items-center justify-center shadow-xs transition-colors duration-300">
+                      <Play className="w-3.5 h-3.5 fill-current ml-0.5 transition-transform duration-300 group-hover:scale-110" />
+                    </span>
+                  </span>
+                  <span>Watch Academy Video</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right Showcase Column (Approved Imagery with golden wave background) */}
+            <div className="lg:col-span-6 relative">
+              <div className="relative rounded-3xl overflow-hidden p-2 bg-gradient-to-tr from-[#F8EBCB]/80 via-white to-[#F5F0E6] shadow-[0_20px_50px_-15px_rgba(20,37,68,0.12)] border border-[#E7E5DF]">
+                <div className="relative aspect-[16/10] sm:aspect-[16/9] w-full rounded-2xl overflow-hidden bg-[#142544]">
+                  <Image
+                    src="/images/hero-musicians.jpg"
+                    alt="Musicians of Triumphant Harmony Brass playing trumpet, saxophone, and trombone"
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-center"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#142544]/20 via-transparent to-transparent pointer-events-none" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* ========================================================
+              HORIZONTALLY BRIDGING STATS CARD
+              Floating with soft shadow and verified figures
+              ======================================================== */}
+          <div className="mt-12 lg:mt-16 bg-white border border-[#E7E5DF] rounded-2xl sm:rounded-full p-4 sm:p-6 shadow-[0_12px_32px_-8px_rgba(20,37,68,0.08)] max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-[#E7E5DF]">
+              
+              {/* Stat 1 */}
+              <div className="flex items-center justify-center gap-3.5 px-4 pt-2 sm:pt-0">
+                <div className="w-12 h-12 rounded-full bg-[#F8EBCB] text-[#C58A19] flex items-center justify-center shrink-0">
+                  <Users className="w-6 h-6" />
+                </div>
+                <div>
+                  <div className="font-heading font-extrabold text-2xl sm:text-3xl text-[#142544] leading-tight">
+                    500+
+                  </div>
+                  <div className="text-xs sm:text-sm font-medium text-[#647084]">
+                    Students Trained
+                  </div>
+                </div>
               </div>
 
-              {/* Trust Indicators Bar */}
-              <div className="pt-6 border-t border-navy-800/80 grid grid-cols-3 gap-4 max-w-xl text-left animate-slide-up" style={{ animationDelay: '300ms' }}>
-                <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-amber-400">500+</div>
-                  <div className="text-xs text-slate-400 font-medium mt-0.5">Students Trained</div>
+              {/* Stat 2 */}
+              <div className="flex items-center justify-center gap-3.5 px-4 pt-4 sm:pt-0">
+                <div className="w-12 h-12 rounded-full bg-[#F8EBCB] text-[#C58A19] flex items-center justify-center shrink-0">
+                  <Trophy className="w-6 h-6" />
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-amber-400">15+</div>
-                  <div className="text-xs text-slate-400 font-medium mt-0.5">Master Instructors</div>
+                  <div className="font-heading font-extrabold text-2xl sm:text-3xl text-[#142544] leading-tight">
+                    10+
+                  </div>
+                  <div className="text-xs sm:text-sm font-medium text-[#647084]">
+                    Years of Excellence
+                  </div>
+                </div>
+              </div>
+
+              {/* Stat 3 */}
+              <div className="flex items-center justify-center gap-3.5 px-4 pt-4 sm:pt-0">
+                <div className="w-12 h-12 rounded-full bg-[#F8EBCB] text-[#C58A19] flex items-center justify-center shrink-0">
+                  <Music className="w-6 h-6" />
                 </div>
                 <div>
-                  <div className="text-2xl sm:text-3xl font-extrabold font-heading text-amber-400">100%</div>
-                  <div className="text-xs text-slate-400 font-medium mt-0.5">Stage & Recital Focus</div>
+                  <div className="font-heading font-extrabold text-2xl sm:text-3xl text-[#142544] leading-tight">
+                    50+
+                  </div>
+                  <div className="text-xs sm:text-sm font-medium text-[#647084]">
+                    Stage Performances
+                  </div>
                 </div>
               </div>
 
             </div>
+          </div>
 
-            {/* Right Feature Showcase Grid Column */}
-            <div className="lg:col-span-5 relative">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                
-                {/* Feature Card 1 */}
-                <div className="p-6 bg-navy-900/70 backdrop-blur-md border border-navy-700/60 hover:border-amber-500/40 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1 group">
-                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Music className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <h3 className="text-base font-bold text-white font-heading">Brass & Woodwinds</h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                    Trumpet, Saxophone, Trombone, French Horn & Ensemble training.
-                  </p>
-                </div>
+        </div>
+      </section>
 
-                {/* Feature Card 2 */}
-                <div className="p-6 bg-navy-900/70 backdrop-blur-md border border-navy-700/60 hover:border-amber-500/40 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1 group">
-                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <BookOpen className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <h3 className="text-base font-bold text-white font-heading">Keyboards & Strings</h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                    Piano, Acoustic/Electric Guitar, Violin, Drums & Vocal Arts.
-                  </p>
-                </div>
-
-                {/* Feature Card 3 */}
-                <div className="p-6 bg-navy-900/70 backdrop-blur-md border border-navy-700/60 hover:border-amber-500/40 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1 group">
-                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Users className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <h3 className="text-base font-bold text-white font-heading">Live Performances</h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                    Stage experience with recitals, concerts & live event bands in Lagos.
-                  </p>
-                </div>
-
-                {/* Feature Card 4 */}
-                <div className="p-6 bg-navy-900/70 backdrop-blur-md border border-navy-700/60 hover:border-amber-500/40 rounded-2xl shadow-xl transition-all duration-300 hover:-translate-y-1 group">
-                  <div className="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                    <Award className="w-6 h-6 text-amber-400" />
-                  </div>
-                  <h3 className="text-base font-bold text-white font-heading">Mastery Certificate</h3>
-                  <p className="text-xs text-slate-400 mt-1 leading-relaxed">
-                    Structured graded curriculum for beginner, intermediate & advanced.
-                  </p>
-                </div>
-
-              </div>
+      {/* ========================================================
+          2. APPROVED 4 PROGRAM CARDS SECTION
+          Exact photographic cards matching the approved visual layout
+          ======================================================== */}
+      <section className="py-14 lg:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header Row */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-10">
+            <div className="flex items-center gap-3">
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#142544]">
+                Our Programs
+              </h2>
+              <span className="h-[2px] w-12 bg-[#C58A19] inline-block rounded-full" />
             </div>
+            <Link
+              href="/programs"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#C58A19] hover:text-[#9A680C] transition-colors group"
+            >
+              <span>View All Programs</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          {/* 4 Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            {/* Card 1: Brass & Woodwinds */}
+            <Link
+              href="/programs?category=brass"
+              className="group bg-white rounded-2xl border border-[#E7E5DF] overflow-hidden shadow-[0_4px_16px_-4px_rgba(20,37,68,0.06)] hover:shadow-[0_16px_32px_-6px_rgba(20,37,68,0.12)] hover:border-[#C58A19]/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+            >
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#142544]">
+                <Image
+                  src="/images/programs-brass-v2.jpg"
+                  alt="Brass & Woodwinds instruments"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                <div className="space-y-2">
+                  <div className="w-10 h-10 rounded-xl bg-[#F8EBCB] text-[#C58A19] flex items-center justify-center">
+                    <Music className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-heading font-bold text-lg text-[#142544] group-hover:text-[#C58A19] transition-colors">
+                    Brass &amp; Woodwinds
+                  </h3>
+                  <p className="text-xs text-[#647084] leading-relaxed">
+                    Trumpet, Saxophone, Trombone, French Horn &amp; Ensemble training.
+                  </p>
+                </div>
+                <div className="pt-2 flex justify-end">
+                  <span className="w-8 h-8 rounded-full bg-[#F8F7F4] group-hover:bg-[#C58A19] group-hover:text-white text-[#142544] flex items-center justify-center transition-colors">
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+            {/* Card 2: Keyboards & Strings */}
+            <Link
+              href="/programs?category=strings"
+              className="group bg-white rounded-2xl border border-[#E7E5DF] overflow-hidden shadow-[0_4px_16px_-4px_rgba(20,37,68,0.06)] hover:shadow-[0_16px_32px_-6px_rgba(20,37,68,0.12)] hover:border-[#C58A19]/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+            >
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#142544]">
+                <Image
+                  src="/images/programs-keyboards-v2.jpg"
+                  alt="Piano and Keyboards training"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                <div className="space-y-2">
+                  <div className="w-10 h-10 rounded-xl bg-[#F8EBCB] text-[#C58A19] flex items-center justify-center">
+                    <BookOpen className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-heading font-bold text-lg text-[#142544] group-hover:text-[#C58A19] transition-colors">
+                    Keyboards &amp; Strings
+                  </h3>
+                  <p className="text-xs text-[#647084] leading-relaxed">
+                    Piano, Acoustic/Electric Guitar, Violin, Drums &amp; Vocal Arts.
+                  </p>
+                </div>
+                <div className="pt-2 flex justify-end">
+                  <span className="w-8 h-8 rounded-full bg-[#F8F7F4] group-hover:bg-[#C58A19] group-hover:text-white text-[#142544] flex items-center justify-center transition-colors">
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+            {/* Card 3: Live Performances */}
+            <Link
+              href="/stage-performances"
+              className="group bg-white rounded-2xl border border-[#E7E5DF] overflow-hidden shadow-[0_4px_16px_-4px_rgba(20,37,68,0.06)] hover:shadow-[0_16px_32px_-6px_rgba(20,37,68,0.12)] hover:border-[#C58A19]/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+            >
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#142544]">
+                <Image
+                  src="/images/programs-live-v2.jpg"
+                  alt="Live stage performances and concerts"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                <div className="space-y-2">
+                  <div className="w-10 h-10 rounded-xl bg-[#F8EBCB] text-[#C58A19] flex items-center justify-center">
+                    <Users className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-heading font-bold text-lg text-[#142544] group-hover:text-[#C58A19] transition-colors">
+                    Live Performances
+                  </h3>
+                  <p className="text-xs text-[#647084] leading-relaxed">
+                    Stage experience with recitals, concerts &amp; live event bands.
+                  </p>
+                </div>
+                <div className="pt-2 flex justify-end">
+                  <span className="w-8 h-8 rounded-full bg-[#F8F7F4] group-hover:bg-[#C58A19] group-hover:text-white text-[#142544] flex items-center justify-center transition-colors">
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+            {/* Card 4: Mastery Certificate */}
+            <Link
+              href="/programs"
+              className="group bg-white rounded-2xl border border-[#E7E5DF] overflow-hidden shadow-[0_4px_16px_-4px_rgba(20,37,68,0.06)] hover:shadow-[0_16px_32px_-6px_rgba(20,37,68,0.12)] hover:border-[#C58A19]/50 hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+            >
+              <div className="relative aspect-[16/9] w-full overflow-hidden bg-[#142544]">
+                <Image
+                  src="/images/programs-certificate-v2.jpg"
+                  alt="Academy certificate of mastery"
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+              <div className="p-5 flex-1 flex flex-col justify-between space-y-3">
+                <div className="space-y-2">
+                  <div className="w-10 h-10 rounded-xl bg-[#F8EBCB] text-[#C58A19] flex items-center justify-center">
+                    <Award className="w-5 h-5" />
+                  </div>
+                  <h3 className="font-heading font-bold text-lg text-[#142544] group-hover:text-[#C58A19] transition-colors">
+                    Mastery Certificate
+                  </h3>
+                  <p className="text-xs text-[#647084] leading-relaxed">
+                    Structured curriculum for beginner, intermediate &amp; advanced.
+                  </p>
+                </div>
+                <div className="pt-2 flex justify-end">
+                  <span className="w-8 h-8 rounded-full bg-[#F8F7F4] group-hover:bg-[#C58A19] group-hover:text-white text-[#142544] flex items-center justify-center transition-colors">
+                    <ArrowRight className="w-4 h-4" />
+                  </span>
+                </div>
+              </div>
+            </Link>
 
           </div>
         </div>
       </section>
 
-      {/* 2. Marquee Instrument Carousel */}
-      <section className="py-6 border-y border-navy-800 bg-navy-900/60 backdrop-blur-md overflow-hidden relative">
-        <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-33.33%); }
-        }
-        .animate-marquee-server {
-          display: flex;
-          width: max-content;
-          animation: marquee 20s linear infinite;
-        }
-        .animate-marquee-server:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+      {/* ========================================================
+          3. MARQUEE INSTRUMENT STRIP
+          Clean light luxury pill strip
+          ======================================================== */}
+      <section className="py-6 border-y border-[#E7E5DF] bg-[#F8F7F4] overflow-hidden relative">
+        <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-[#F8F7F4] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-[#F8F7F4] to-transparent z-10 pointer-events-none" />
 
-        <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-navy-950 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-navy-950 to-transparent z-10 pointer-events-none" />
-
-        <div className="animate-marquee flex gap-4 py-2">
+        <div className="animate-marquee flex gap-4 py-1">
           {duplicatedInstruments.map((inst, i) => (
             <div
               key={i}
-              className="flex items-center gap-2 shrink-0 px-5 py-2.5 rounded-full bg-navy-950/60 border border-navy-800 text-slate-200 text-sm font-semibold shadow-sm hover:border-amber-400/50 transition-colors"
+              className="flex items-center gap-2.5 shrink-0 px-5 py-2 rounded-full bg-white border border-[#E7E5DF] text-[#142544] text-xs sm:text-sm font-semibold shadow-xs hover:border-[#C58A19] transition-colors"
             >
-              <Music className="w-4 h-4 text-amber-400" />
+              <Music className="w-3.5 h-3.5 text-[#C58A19]" />
               <span>{inst}</span>
             </div>
           ))}
         </div>
       </section>
 
-      {/* 3. Academy Excellence & Core Pillars */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="bg-gradient-to-r from-navy-900 via-navy-900/90 to-navy-950 border border-brand-500/30 rounded-3xl p-8 sm:p-12 shadow-2xl relative overflow-hidden space-y-12">
-          <div className="text-center max-w-3xl mx-auto space-y-3">
-            <span className="text-brand-400 font-bold text-xs uppercase tracking-widest inline-flex items-center gap-1.5 px-3.5 py-1 bg-brand-500/10 border border-brand-500/20 rounded-full">
-              <Sparkles className="w-3.5 h-3.5 text-brand-400" />
+      {/* ========================================================
+          4. THE THB ACADEMY EXPERIENCE & 4 CORE PILLARS
+          ======================================================== */}
+      <section className="py-20 lg:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+          <div className="text-center max-w-3xl mx-auto space-y-4">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#F8EBCB] text-[#9A680C] text-xs font-bold uppercase tracking-widest">
+              <Sparkles className="w-3.5 h-3.5 text-[#C58A19]" />
               The THB Academy Experience
             </span>
-            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-white">
+            <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold text-[#142544]">
               Empowering Musicians Through Practical Mastery
             </h2>
-            <p className="text-navy-200 text-base sm:text-lg leading-relaxed">
-              We combine classical rigor, modern technique, and stage performance discipline to train well-rounded instrumentalists and vocalists.
+            <p className="text-base sm:text-lg text-[#647084] leading-relaxed">
+              We combine classical rigor, modern technique, and stage performance discipline to train
+              well-rounded instrumentalists and vocalists.
             </p>
           </div>
 
           {/* 4 Pillars Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-navy-950/80 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/40 transition-all group">
-              <div className="w-12 h-12 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform">
+            <div className="bg-[#F8F7F4] border border-[#E7E5DF] p-7 rounded-2xl space-y-4 hover:border-[#C58A19] hover:bg-white hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-xl bg-white border border-[#E7E5DF] text-[#C58A19] flex items-center justify-center group-hover:bg-[#142544] group-hover:text-white transition-colors shadow-xs">
                 <Music className="w-6 h-6" />
               </div>
-              <h3 className="font-heading text-lg font-bold text-white">Brass & Winds Mastery</h3>
-              <p className="text-navy-300 text-xs leading-relaxed">
+              <h3 className="font-heading text-lg font-bold text-[#142544]">
+                Brass &amp; Winds Mastery
+              </h3>
+              <p className="text-xs sm:text-sm text-[#647084] leading-relaxed">
                 Specialized embouchure techniques, breath support, and section control for trumpet, trombone, and saxophone.
               </p>
             </div>
 
-            <div className="bg-navy-950/80 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/40 transition-all group">
-              <div className="w-12 h-12 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform">
+            <div className="bg-[#F8F7F4] border border-[#E7E5DF] p-7 rounded-2xl space-y-4 hover:border-[#C58A19] hover:bg-white hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-xl bg-white border border-[#E7E5DF] text-[#C58A19] flex items-center justify-center group-hover:bg-[#142544] group-hover:text-white transition-colors shadow-xs">
                 <BookOpen className="w-6 h-6" />
               </div>
-              <h3 className="font-heading text-lg font-bold text-white">Harmonic Sight-Reading</h3>
-              <p className="text-navy-300 text-xs leading-relaxed">
+              <h3 className="font-heading text-lg font-bold text-[#142544]">
+                Harmonic Sight-Reading
+              </h3>
+              <p className="text-xs sm:text-sm text-[#647084] leading-relaxed">
                 Comprehensive piano, keyboard, and guitar chord theory, scale application, and sight-reading fluency.
               </p>
             </div>
 
-            <div className="bg-navy-950/80 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/40 transition-all group">
-              <div className="w-12 h-12 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform">
+            <div className="bg-[#F8F7F4] border border-[#E7E5DF] p-7 rounded-2xl space-y-4 hover:border-[#C58A19] hover:bg-white hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-xl bg-white border border-[#E7E5DF] text-[#C58A19] flex items-center justify-center group-hover:bg-[#142544] group-hover:text-white transition-colors shadow-xs">
                 <Users className="w-6 h-6" />
               </div>
-              <h3 className="font-heading text-lg font-bold text-white">Rhythmic Precision</h3>
-              <p className="text-navy-300 text-xs leading-relaxed">
+              <h3 className="font-heading text-lg font-bold text-[#142544]">
+                Rhythmic Precision
+              </h3>
+              <p className="text-xs sm:text-sm text-[#647084] leading-relaxed">
                 Practical timing, drum set coordination, and traditional African talking drum grooves for tight rhythm sections.
               </p>
             </div>
 
-            <div className="bg-navy-950/80 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/40 transition-all group">
-              <div className="w-12 h-12 rounded-xl bg-brand-500/15 border border-brand-500/30 flex items-center justify-center text-brand-400 group-hover:scale-110 transition-transform">
+            <div className="bg-[#F8F7F4] border border-[#E7E5DF] p-7 rounded-2xl space-y-4 hover:border-[#C58A19] hover:bg-white hover:shadow-lg transition-all duration-300 group">
+              <div className="w-12 h-12 rounded-xl bg-white border border-[#E7E5DF] text-[#C58A19] flex items-center justify-center group-hover:bg-[#142544] group-hover:text-white transition-colors shadow-xs">
                 <Award className="w-6 h-6" />
               </div>
-              <h3 className="font-heading text-lg font-bold text-white">Vocal Excellence</h3>
-              <p className="text-navy-300 text-xs leading-relaxed">
+              <h3 className="font-heading text-lg font-bold text-[#142544]">
+                Vocal Excellence
+              </h3>
+              <p className="text-xs sm:text-sm text-[#647084] leading-relaxed">
                 Voice placement, pitch stamina, breathing control, and choir/solo performance arrangements.
               </p>
             </div>
           </div>
+        </div>
+      </section>
 
-          {/* Bottom Stats & CTA */}
-          <div className="pt-6 border-t border-navy-800 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 w-full sm:w-auto text-center sm:text-left">
-              <div>
-                <p className="font-heading text-2xl font-bold text-white">500+</p>
-                <p className="text-navy-400 text-xs font-semibold">Trained Musicians</p>
-              </div>
-              <div>
-                <p className="font-heading text-2xl font-bold text-brand-400">8+</p>
-                <p className="text-navy-400 text-xs font-semibold">Instrument Tracks</p>
-              </div>
-              <div>
-                <p className="font-heading text-2xl font-bold text-white">20+</p>
-                <p className="text-navy-400 text-xs font-semibold">Years Experience</p>
-              </div>
-              <div>
-                <p className="font-heading text-2xl font-bold text-brand-400">100%</p>
-                <p className="text-navy-400 text-xs font-semibold">Practical Focus</p>
-              </div>
+      {/* ========================================================
+          5. FEATURED ACADEMY COURSES
+          Dynamic data from queries with luxury card treatment
+          ======================================================== */}
+      <section id="programs" className="py-20 lg:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+            <div className="space-y-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#C58A19]">
+                Structured Music Education
+              </span>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#142544]">
+                Featured Training Programs
+              </h2>
+              <p className="text-[#647084] text-sm sm:text-base max-w-xl">
+                Comprehensive practical courses designed for beginner, intermediate, and advanced musicians.
+              </p>
             </div>
-
             <Link
-              href="/about"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl transition-all shadow-glow text-sm shrink-0"
+              href="/programs"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-[#142544] hover:text-[#C58A19] transition-colors"
             >
-              <span>Learn More About Our Academy</span>
+              <span>Explore All Courses</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredCourses?.slice(0, 6).map((course: any) => (
+              <div
+                key={course.id}
+                className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden hover:border-[#C58A19]/50 hover:shadow-[0_16px_36px_-6px_rgba(20,37,68,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col"
+              >
+                {/* Course Image */}
+                <div className="h-48 bg-[#F8F7F4] relative overflow-hidden border-b border-[#E7E5DF]">
+                  {course.image_url ? (
+                    <img
+                      src={course.image_url}
+                      alt={course.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#F8F7F4] to-[#F5F0E6] p-6 text-center">
+                      <Music className="w-10 h-10 text-[#C58A19]/50 mb-2" />
+                      <span className="text-xs font-semibold text-[#647084]">THB Music Track</span>
+                    </div>
+                  )}
+                  <div className="absolute top-3.5 right-3.5 z-10">
+                    <LevelBadge level={course.level} />
+                  </div>
+                </div>
+
+                {/* Course Details */}
+                <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                  <div>
+                    {course.instrument?.name && (
+                      <span className="text-[11px] font-bold text-[#C58A19] uppercase tracking-wider block mb-1">
+                        {course.instrument.name}
+                      </span>
+                    )}
+                    <h3 className="font-heading text-xl font-bold text-[#142544] mb-2">
+                      {course.name}
+                    </h3>
+                    <p className="text-[#647084] text-xs sm:text-sm line-clamp-2 leading-relaxed">
+                      {course.description ||
+                        'Comprehensive practical course designed to build musical excellence and stage confidence.'}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-[#E7E5DF] flex items-center justify-between">
+                    <div>
+                      {course.price ? (
+                        <span className="font-heading font-bold text-base text-[#142544]">
+                          {formatCoursePrice(course.price, course.currency)}
+                        </span>
+                      ) : (
+                        <span className="text-xs font-semibold text-[#23845B]">Enrolling Now</span>
+                      )}
+                    </div>
+                    <Link
+                      href={`/programs/${course.slug}`}
+                      className="px-4 py-2 bg-[#F8F7F4] hover:bg-[#142544] text-[#142544] hover:text-white border border-[#E7E5DF] rounded-full text-xs font-semibold transition-all"
+                    >
+                      View Syllabus
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center pt-4">
+            <Link
+              href="/programs"
+              className="inline-flex items-center gap-2 px-8 py-3.5 bg-[#F8F7F4] hover:bg-[#F5F0E6] border border-[#E7E5DF] text-[#142544] font-semibold rounded-full text-sm transition-all shadow-xs"
+            >
+              <span>Browse Full Course Catalog</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 4. Featured Programs */}
-      <section id="programs" className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="text-brand-400 font-bold text-xs uppercase tracking-widest">Explore Programs</span>
-          <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white">
-            Featured Music Courses
-          </h2>
-          <p className="text-navy-200 text-base">
-            Professional instruction designed for beginners, intermediate performers, and advanced instrumentalists.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {featuredCourses?.slice(0, 6).map((course: any) => (
-            <div
-              key={course.id}
-              className="bg-navy-900/80 border border-navy-700/60 rounded-2xl overflow-hidden hover:border-brand-500/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col shadow-xl"
-            >
-              <div className="h-44 bg-navy-950 relative overflow-hidden border-b border-navy-800">
-                {course.image_url ? (
-                  <img src={course.image_url} alt={course.name} className="w-full h-full object-cover" />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-navy-900 to-navy-950 p-6 text-center">
-                    <Music className="w-12 h-12 text-brand-500/40 mb-2" />
-                  </div>
-                )}
-                <div className="absolute top-3 right-3 z-10">
-                  <LevelBadge level={course.level} />
-                </div>
-              </div>
-
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
-                <div>
-                  <h3 className="font-heading text-xl font-bold text-white mb-2">{course.name}</h3>
-                  <p className="text-navy-300 text-sm line-clamp-2 leading-relaxed">
-                    {course.description || 'Comprehensive practical course designed to build musical excellence.'}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-navy-800 flex items-center justify-between">
-                  <span className="text-xs text-navy-400 font-semibold">Practical Training Track</span>
-                  <Link
-                    href={`/programs/${course.slug}`}
-                    className="px-4 py-2 bg-brand-500/10 hover:bg-brand-500 text-brand-400 hover:text-white border border-brand-500/30 rounded-xl text-xs font-bold transition-all"
-                  >
-                    View Program
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <Link
-            href="/programs"
-            className="inline-flex items-center gap-2 px-8 py-3.5 bg-navy-900 hover:bg-navy-800 border border-navy-700 text-brand-400 font-bold rounded-xl transition-all"
-          >
-            <span>View All Academy Programs</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-      </section>
-
-      {/* 5. Upcoming Events */}
+      {/* ========================================================
+          7. UPCOMING EVENTS & LIVE RECITALS
+          Dynamic data from queries
+          ======================================================== */}
       {upcomingEvents && upcomingEvents.length > 0 && (
-        <section className="py-20 px-4 max-w-7xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-            <span className="text-brand-400 font-bold text-xs uppercase tracking-widest">Live Performances</span>
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white">Upcoming Events & Recitals</h2>
-          </div>
+        <section className="py-20 lg:py-24 bg-[#F8F7F4] border-t border-[#E7E5DF]">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div className="space-y-3">
+                <span className="text-xs font-bold uppercase tracking-widest text-[#C58A19]">
+                  Live Concerts &amp; Workshops
+                </span>
+                <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#142544]">
+                  Upcoming Academy Events
+                </h2>
+                <p className="text-[#647084] text-sm sm:text-base max-w-xl">
+                  Join our seasonal student recitals, brass masterclasses, and orchestral showcases across Lagos.
+                </p>
+              </div>
+              <Link
+                href="/events"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#142544] hover:text-[#C58A19] transition-colors"
+              >
+                <span>View Event Calendar</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {upcomingEvents.map((ev: any) => {
-              const bannerSrc = ev.banner_url || '/images/thb-academy-banner.png';
-              return (
-                <Link
-                  key={ev.id}
-                  href={`/events/${ev.slug}`}
-                  className="group bg-navy-900/80 border border-navy-700/60 rounded-2xl overflow-hidden hover:border-brand-500/40 hover:-translate-y-1 transition-all shadow-xl flex flex-col"
-                >
-                  <div className="h-44 bg-navy-950 relative overflow-hidden border-b border-navy-800">
-                    <img src={bannerSrc} alt={ev.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  </div>
-                  <div className="p-6 flex-1 flex flex-col justify-between space-y-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2 text-xs text-brand-400 font-bold">
-                        <Calendar className="w-4 h-4" />
-                        <span>{new Date(ev.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                      </div>
-                      <h3 className="font-heading text-lg font-bold text-white group-hover:text-brand-300 transition-colors">{ev.title}</h3>
-                      <p className="text-navy-300 text-xs line-clamp-2 leading-relaxed">{ev.description}</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {upcomingEvents.map((ev: any) => {
+                const bannerSrc = ev.banner_url || '/images/thb-academy-banner.png';
+                return (
+                  <Link
+                    key={ev.id}
+                    href={`/events/${ev.slug}`}
+                    className="group bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden hover:border-[#C58A19]/50 hover:shadow-[0_16px_32px_-6px_rgba(20,37,68,0.1)] hover:-translate-y-1 transition-all duration-300 flex flex-col"
+                  >
+                    <div className="h-44 bg-[#142544] relative overflow-hidden">
+                      <img
+                        src={bannerSrc}
+                        alt={ev.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
                     </div>
-
-                    {ev.venue_name && (
-                      <div className="flex items-center gap-2 text-xs text-navy-400 pt-3 border-t border-navy-800">
-                        <MapPin className="w-3.5 h-3.5 text-brand-500 shrink-0" />
-                        <span className="truncate">{ev.venue_name}</span>
+                    <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+                      <div className="space-y-2">
+                        <div className="inline-flex items-center gap-2 text-xs font-bold text-[#C58A19]">
+                          <Calendar className="w-4 h-4" />
+                          <span>
+                            {new Date(ev.date).toLocaleDateString('en-US', {
+                              month: 'long',
+                              day: 'numeric',
+                              year: 'numeric',
+                            })}
+                          </span>
+                        </div>
+                        <h3 className="font-heading text-lg font-bold text-[#142544] group-hover:text-[#C58A19] transition-colors">
+                          {ev.title}
+                        </h3>
+                        <p className="text-xs text-[#647084] line-clamp-2 leading-relaxed">
+                          {ev.description}
+                        </p>
                       </div>
-                    )}
-                  </div>
-                </Link>
-              );
-            })}
+
+                      {ev.venue_name && (
+                        <div className="flex items-center gap-2 text-xs text-[#647084] pt-3 border-t border-[#E7E5DF]">
+                          <MapPin className="w-3.5 h-3.5 text-[#C58A19] shrink-0" />
+                          <span className="truncate">{ev.venue_name}</span>
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </section>
       )}
 
-      {/* 6. Why Choose THB */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16 space-y-3">
-          <span className="text-brand-400 font-bold text-xs uppercase tracking-widest">Our Difference</span>
-          <h2 className="text-3xl sm:text-4xl font-heading font-bold text-white">Why Learn at THB Academy</h2>
-        </div>
+      {/* ========================================================
+          8. WHY LEARN AT THB ACADEMY
+          ======================================================== */}
+      <section className="py-20 lg:py-28 bg-white border-t border-[#E7E5DF]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#C58A19]">
+              Our Distinction
+            </span>
+            <h2 className="font-heading text-3xl sm:text-4xl font-bold text-[#142544]">
+              Why Choose THB Academy
+            </h2>
+            <p className="text-[#647084] text-base">
+              A distinctive learning environment built on discipline, authentic mentorship, and stage artistry.
+            </p>
+          </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { title: 'Expert Faculty', desc: 'Directed by Taiwo Toyinbo & accomplished music educators.' },
-            { title: 'Hands-on Practice', desc: 'Focus on instrumental mastery and practical performance skills.' },
-            { title: 'Flexible Schedule', desc: 'Classes tailored to fit student availability and skill levels.' },
-            { title: 'Concert Showcases', desc: 'Regular live performances to build stage confidence.' },
-          ].map((feature, i) => (
-            <div key={i} className="bg-navy-900/70 border border-navy-800 p-6 rounded-2xl space-y-3 hover:border-brand-500/30 transition-all">
-              <CheckCircle className="w-6 h-6 text-brand-400" />
-              <h4 className="font-heading font-bold text-lg text-white">{feature.title}</h4>
-              <p className="text-navy-300 text-xs leading-relaxed">{feature.desc}</p>
-            </div>
-          ))}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              {
+                title: 'Expert Faculty',
+                desc: 'Directed by Taiwo Toyinbo & accomplished music educators with performance backgrounds.',
+              },
+              {
+                title: 'Hands-on Practice',
+                desc: 'Instrumental mastery through individualized weekly lessons, ensemble practice, and technique labs.',
+              },
+              {
+                title: 'Flexible Schedules',
+                desc: 'Weekday and weekend cohorts tailored for working professionals, students, and children.',
+              },
+              {
+                title: 'Concert Showcases',
+                desc: 'Guaranteed stage recitals and live event collaborations to build stage presence and confidence.',
+              },
+            ].map((feature, i) => (
+              <div
+                key={i}
+                className="bg-[#F8F7F4] border border-[#E7E5DF] p-7 rounded-2xl space-y-3.5 hover:border-[#C58A19]/50 hover:bg-white transition-all shadow-xs"
+              >
+                <div className="w-10 h-10 rounded-xl bg-[#23845B]/10 text-[#23845B] flex items-center justify-center">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <h4 className="font-heading font-bold text-lg text-[#142544]">{feature.title}</h4>
+                <p className="text-xs sm:text-sm text-[#647084] leading-relaxed">{feature.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* 7. Bottom Registration CTA */}
-      <section className="py-20 px-4 max-w-5xl mx-auto text-center">
-        <div className="bg-gradient-to-r from-navy-900 via-navy-800 to-navy-900 border border-brand-500/30 rounded-3xl p-10 sm:p-16 space-y-6 shadow-2xl">
-          <h2 className="font-heading text-3xl sm:text-5xl font-bold text-white">
-            Ready to Begin Your Music Journey?
-          </h2>
-          <p className="text-navy-200 text-lg max-w-2xl mx-auto">
-            Register today and study under the mentorship of Taiwo Toyinbo & the THB faculty.
-          </p>
-          <div className="pt-4">
+      {/* ========================================================
+          9. BOTTOM REGISTRATION CALL TO ACTION
+          Luxury Navy + Gold container
+          ======================================================== */}
+      <section className="py-20 lg:py-24 px-4 max-w-7xl mx-auto">
+        <div className="bg-[#142544] rounded-3xl p-10 sm:p-16 lg:p-20 text-center text-white relative overflow-hidden shadow-2xl space-y-8">
+          {/* Subtle gold decorative radial */}
+          <div
+            aria-hidden="true"
+            className="absolute -top-24 -right-24 w-96 h-96 bg-[#C58A19]/20 rounded-full blur-[100px] pointer-events-none"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-24 -left-24 w-96 h-96 bg-[#243653] rounded-full blur-[100px] pointer-events-none"
+          />
+
+          <div className="max-w-3xl mx-auto space-y-4 relative z-10">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#C58A19]/20 border border-[#C58A19]/40 text-[#F8EBCB] text-xs font-bold uppercase tracking-widest">
+              <Sparkles className="w-3.5 h-3.5 text-[#C58A19]" />
+              Begin Your Musical Journey
+            </span>
+
+            <h2 className="font-heading text-3xl sm:text-5xl font-bold tracking-tight text-white leading-tight">
+              Ready to Master Your Instrument?
+            </h2>
+
+            <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto">
+              Join Triumphant Harmony Brass Music Academy today. Experience personal mentorship,
+              graded curricula, and real stage performance opportunities under Taiwo Toyinbo &amp; faculty.
+            </p>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
             <Link
               href="/register"
-              className="inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white font-bold px-10 py-4 rounded-xl transition-all shadow-glow text-lg"
+              className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-[#C58A19] hover:bg-[#b07b14] active:bg-[#9a680c] !text-white font-bold rounded-full text-base transition-all shadow-[0_4px_20px_rgba(197,138,25,0.35)] hover:shadow-[0_6px_25px_rgba(197,138,25,0.45)] transform hover:-translate-y-0.5 cursor-pointer w-full sm:w-auto"
             >
-              <span>Register Now</span>
-              <ArrowRight className="w-5 h-5" />
+              <span className="!text-white font-bold">Enroll / Register Now</span>
+              <ArrowRight className="w-5 h-5 !text-white" />
+            </Link>
+
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 hover:bg-white/20 !text-white border border-white/20 font-semibold rounded-full text-base transition-all backdrop-blur-sm w-full sm:w-auto"
+            >
+              <span className="!text-white font-semibold">Speak with Admissions</span>
             </Link>
           </div>
         </div>

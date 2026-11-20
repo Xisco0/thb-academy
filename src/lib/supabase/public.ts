@@ -8,12 +8,8 @@ import 'server-only';
  * Allows Vercel CDN to cache rendered public pages at the Edge.
  */
 export function createPublicClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !anonKey) {
-    throw new Error('Missing Supabase public configuration');
-  }
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-anon-key';
 
   return createSupabaseClient(supabaseUrl, anonKey, {
     auth: {

@@ -41,46 +41,46 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="bg-navy-900/90 border border-navy-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+    <div className="bg-white border border-[#E7E5DF] rounded-3xl p-7 sm:p-9 shadow-[0_12px_36px_-6px_rgba(20,37,68,0.08)]">
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-heading font-bold text-white mb-2">
+        <h1 className="text-2xl font-heading font-bold text-[#142544] mb-2">
           Forgot Password?
         </h1>
-        <p className="text-navy-300 text-sm">
-          Enter your email address below and we&apos;ll send you instructions to reset your password.
+        <p className="text-[#647084] text-xs sm:text-sm">
+          Enter your registered email address below and we&apos;ll send instructions to reset your password.
         </p>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-start gap-3 text-red-300 text-sm">
-          <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+        <div className="mb-6 p-4 bg-[#C74646]/10 border border-[#C74646]/25 rounded-2xl flex items-start gap-3 text-[#C74646] text-xs sm:text-sm">
+          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
           <span>{error}</span>
         </div>
       )}
 
       {success ? (
         <div className="text-center py-6 space-y-4">
-          <div className="w-12 h-12 bg-green-500/15 border border-green-500/30 rounded-full flex items-center justify-center mx-auto text-green-400">
+          <div className="w-12 h-12 bg-[#23845B]/15 border border-[#23845B]/30 rounded-full flex items-center justify-center mx-auto text-[#23845B]">
             <CheckCircle2 className="w-6 h-6" />
           </div>
-          <h2 className="text-lg font-semibold text-white">Reset Link Sent!</h2>
-          <p className="text-navy-300 text-sm leading-relaxed max-w-sm mx-auto">
-            We&apos;ve sent a password recovery link to <strong className="text-brand-400">{email}</strong>. Please check your inbox and follow the link to reset your password.
+          <h2 className="text-lg font-heading font-bold text-[#142544]">Reset Link Sent!</h2>
+          <p className="text-[#647084] text-xs sm:text-sm leading-relaxed max-w-sm mx-auto">
+            We&apos;ve sent a password recovery link to <strong className="text-[#C58A19]">{email}</strong>. Please check your inbox and follow the link to reset your password.
           </p>
           <div className="pt-4">
             <Link
               href="/login"
-              className="inline-flex items-center text-sm font-semibold text-brand-400 hover:text-brand-300 transition-colors"
+              className="inline-flex items-center text-xs sm:text-sm font-semibold text-[#142544] hover:text-[#C58A19] transition-colors"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Login
+              <span>Back to Login</span>
             </Link>
           </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-2">
-            <label htmlFor="reset-email" className="block text-sm font-medium text-navy-200">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="reset-email" className="block text-xs font-semibold text-[#142544] uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <div className="relative">
@@ -91,27 +91,29 @@ export default function ForgotPasswordPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 bg-navy-950/80 border-navy-700 text-white placeholder:text-navy-400 focus:border-brand-500"
+                className="pl-10 h-11"
               />
-              <Mail className="w-5 h-5 text-navy-400 absolute left-3 top-2.5" />
+              <Mail className="w-4 h-4 text-[#8896AB] absolute left-3.5 top-3.5" />
             </div>
           </div>
 
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-brand-500 hover:bg-brand-400 text-white font-bold py-3 rounded-xl transition-all shadow-glow"
-          >
-            {isLoading ? 'Sending Reset Link...' : 'Send Recovery Link'}
-          </Button>
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-11 bg-[#142544] hover:bg-[#243653] text-white font-semibold rounded-full transition-all shadow-xs text-sm cursor-pointer disabled:opacity-50"
+            >
+              {isLoading ? 'Sending Reset Link...' : 'Send Reset Link'}
+            </button>
+          </div>
 
           <div className="text-center pt-2">
             <Link
               href="/login"
-              className="inline-flex items-center text-sm font-medium text-navy-300 hover:text-white transition-colors"
+              className="inline-flex items-center text-xs font-semibold text-[#647084] hover:text-[#C58A19] transition-colors"
             >
-              <ArrowLeft className="w-4 h-4 mr-1.5" />
-              Back to Sign In
+              <ArrowLeft className="w-3.5 h-3.5 mr-1" />
+              <span>Back to Sign In</span>
             </Link>
           </div>
         </form>

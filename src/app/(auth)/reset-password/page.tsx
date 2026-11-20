@@ -55,88 +55,74 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="bg-navy-900/90 border border-navy-700/60 rounded-2xl p-6 sm:p-8 shadow-2xl backdrop-blur-xl">
+    <div className="bg-white border border-[#E7E5DF] rounded-3xl p-7 sm:p-9 shadow-[0_12px_36px_-6px_rgba(20,37,68,0.08)]">
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-heading font-bold text-white mb-2">
-          Reset Your Password
+        <h1 className="text-2xl font-heading font-bold text-[#142544] mb-2">
+          Set New Password
         </h1>
-        <p className="text-navy-300 text-sm">
-          Enter your new password below to secure your THB Academy account.
+        <p className="text-[#647084] text-xs sm:text-sm">
+          Please enter your new password to regain access to your THB student account.
         </p>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 bg-red-500/10 border border-red-500/30 rounded-xl flex items-start gap-3 text-red-300 text-sm">
-          <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+        <div className="mb-6 p-4 bg-[#C74646]/10 border border-[#C74646]/25 rounded-2xl flex items-start gap-3 text-[#C74646] text-xs sm:text-sm">
+          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
           <span>{error}</span>
         </div>
       )}
 
       {success ? (
         <div className="text-center py-6 space-y-4">
-          <div className="w-12 h-12 bg-green-500/15 border border-green-500/30 rounded-full flex items-center justify-center mx-auto text-green-400">
+          <div className="w-12 h-12 bg-[#23845B]/15 border border-[#23845B]/30 rounded-full flex items-center justify-center mx-auto text-[#23845B]">
             <CheckCircle2 className="w-6 h-6" />
           </div>
-          <h2 className="text-lg font-semibold text-white">Password Reset Successful!</h2>
-          <p className="text-navy-300 text-sm leading-relaxed max-w-sm mx-auto">
-            Your password has been updated. Redirecting you to the sign-in page...
+          <h2 className="text-lg font-heading font-bold text-[#142544]">Password Reset Successfully!</h2>
+          <p className="text-[#647084] text-xs sm:text-sm leading-relaxed max-w-sm mx-auto">
+            Your password has been updated. Redirecting you to login...
           </p>
-          <div className="pt-4">
-            <Link
-              href="/login"
-              className="inline-block px-6 py-2.5 bg-brand-500 text-white font-bold font-bold rounded-lg hover:bg-brand-400 transition-colors shadow-md"
-            >
-              Sign In Now
-            </Link>
-          </div>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-2">
-            <label htmlFor="new-password" className="block text-sm font-medium text-navy-200">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label htmlFor="new-password" className="block text-xs font-semibold text-[#142544] uppercase tracking-wider mb-1.5">
               New Password
             </label>
-            <div className="relative">
-              <Input
-                id="new-password"
-                type="password"
-                required
-                minLength={6}
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 bg-navy-950/80 border-navy-700 text-white placeholder:text-navy-400 focus:border-brand-500"
-              />
-              <Lock className="w-5 h-5 text-navy-400 absolute left-3 top-2.5" />
-            </div>
+            <Input
+              id="new-password"
+              type="password"
+              required
+              placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="h-11"
+            />
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="confirm-password" className="block text-sm font-medium text-navy-200">
+          <div>
+            <label htmlFor="confirm-password" className="block text-xs font-semibold text-[#142544] uppercase tracking-wider mb-1.5">
               Confirm New Password
             </label>
-            <div className="relative">
-              <Input
-                id="confirm-password"
-                type="password"
-                required
-                minLength={6}
-                placeholder="••••••••"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="pl-10 bg-navy-950/80 border-navy-700 text-white placeholder:text-navy-400 focus:border-brand-500"
-              />
-              <Lock className="w-5 h-5 text-navy-400 absolute left-3 top-2.5" />
-            </div>
+            <Input
+              id="confirm-password"
+              type="password"
+              required
+              placeholder="••••••••"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="h-11"
+            />
           </div>
 
-          <Button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-brand-500 hover:bg-brand-400 text-white font-bold py-3 rounded-xl transition-all shadow-glow"
-          >
-            {isLoading ? 'Updating Password...' : 'Update Password'}
-          </Button>
+          <div className="pt-2">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full h-11 bg-[#142544] hover:bg-[#243653] text-white font-semibold rounded-full transition-all shadow-xs text-sm cursor-pointer disabled:opacity-50"
+            >
+              {isLoading ? 'Updating Password...' : 'Reset Password'}
+            </button>
+          </div>
         </form>
       )}
     </div>

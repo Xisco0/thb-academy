@@ -214,21 +214,21 @@ export function EventsClient({ events }: { events: EventProps[] }) {
   return (
     <div className="space-y-6">
       {/* Search & Actions Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-[#E7E5DF] p-4 rounded-2xl shadow-sm">
         <div className="relative flex-1 w-full sm:max-w-md">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-navy-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#8896AB]" />
           <input
             type="text"
             placeholder="Search events by title or venue..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-navy-900 border border-navy-700/80 rounded-xl text-sm text-white focus:border-brand-500 focus:outline-none"
+            className="w-full pl-10 pr-4 py-2.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] focus:bg-white outline-none transition-all placeholder:text-[#8896AB]"
           />
         </div>
 
         <button
           onClick={openAddModal}
-          className="px-5 py-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl text-sm transition-all shadow-glow flex items-center gap-2 cursor-pointer shrink-0"
+          className="px-5 py-2.5 bg-[#C58A19] hover:bg-[#A37013] text-white font-semibold rounded-full text-sm transition-all shadow-sm flex items-center gap-2 cursor-pointer shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Create New Event</span>
@@ -243,10 +243,10 @@ export function EventsClient({ events }: { events: EventProps[] }) {
           return (
             <div
               key={event.id}
-              className="bg-navy-900/80 border border-navy-700/60 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between"
+              className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
-                <div className="h-44 bg-navy-950 relative overflow-hidden border-b border-navy-800">
+                <div className="h-44 bg-[#F8F7F4] relative overflow-hidden border-b border-[#E7E5DF]">
                   <img src={banner} alt={event.title} className="w-full h-full object-cover" />
                   <div className="absolute top-3 right-3">
                     <Badge variant={event.status === 'published' ? 'default' : 'info'}>
@@ -254,35 +254,35 @@ export function EventsClient({ events }: { events: EventProps[] }) {
                     </Badge>
                   </div>
                   {photos.length > 0 && (
-                    <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-black/80 backdrop-blur-md rounded-md text-[10px] font-bold text-brand-300 flex items-center gap-1">
-                      <ImageIcon className="w-3 h-3" />
-                      <span>{photos.length} Activity Photos</span>
+                    <div className="absolute bottom-3 left-3 px-2.5 py-1 bg-white/90 backdrop-blur-md rounded-md text-[10px] font-bold text-[#142544] flex items-center gap-1 shadow-sm">
+                      <ImageIcon className="w-3 h-3 text-[#C58A19]" />
+                      <span>{photos.length} Photos</span>
                     </div>
                   )}
                 </div>
 
                 <div className="p-5 space-y-3">
-                  <div className="flex items-center gap-2 text-xs text-brand-400 font-bold">
+                  <div className="flex items-center gap-2 text-xs text-[#C58A19] font-bold">
                     <Calendar className="w-3.5 h-3.5" />
                     <span>{formatDate(event.date)}</span>
                   </div>
 
-                  <h3 className="font-heading text-lg font-bold text-white line-clamp-1">{event.title}</h3>
-                  <p className="text-navy-300 text-xs line-clamp-2 leading-relaxed">{event.description}</p>
+                  <h3 className="font-heading text-lg font-bold text-[#142544] line-clamp-1">{event.title}</h3>
+                  <p className="text-[#647084] text-xs line-clamp-2 leading-relaxed">{event.description}</p>
 
                   {event.venue_name && (
-                    <div className="flex items-center gap-1.5 text-xs text-navy-400 pt-2 border-t border-navy-800">
-                      <MapPin className="w-3.5 h-3.5 text-brand-500 shrink-0" />
+                    <div className="flex items-center gap-1.5 text-xs text-[#8896AB] pt-2 border-t border-[#E7E5DF]">
+                      <MapPin className="w-3.5 h-3.5 text-[#C58A19] shrink-0" />
                       <span className="truncate">{event.venue_name}</span>
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="p-4 bg-navy-950/80 border-t border-navy-800 flex items-center justify-between gap-2">
+              <div className="p-4 bg-[#F8F7F4]/60 border-t border-[#E7E5DF] flex items-center justify-between gap-2">
                 <button
                   onClick={() => openEditModal(event)}
-                  className="flex-1 py-2 px-3 bg-navy-900 hover:bg-navy-800 border border-navy-700 text-navy-200 hover:text-white rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="flex-1 py-2 px-3 bg-white hover:bg-[#F8F7F4] border border-[#E7E5DF] text-[#142544] rounded-xl text-xs font-semibold transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
                   <span>Edit Event & Photos</span>
@@ -290,7 +290,7 @@ export function EventsClient({ events }: { events: EventProps[] }) {
 
                 <button
                   onClick={() => setDeletingId(event.id)}
-                  className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-xl border border-transparent hover:border-red-500/30 transition-colors cursor-pointer"
+                  className="p-2 text-[#DC2626] hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
                   title="Delete Event"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -303,10 +303,10 @@ export function EventsClient({ events }: { events: EventProps[] }) {
 
       {/* CREATE / EDIT MODAL */}
       {(isAddOpen || editingItem) && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in overflow-y-auto">
-          <div className="relative w-full max-w-2xl bg-navy-900 border border-navy-700 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 my-8">
-            <div className="flex items-center justify-between border-b border-navy-800 pb-4">
-              <h2 className="text-xl font-heading font-bold text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="relative w-full max-w-2xl bg-white border border-[#E7E5DF] rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 my-8">
+            <div className="flex items-center justify-between border-b border-[#E7E5DF] pb-4">
+              <h2 className="text-xl font-heading font-bold text-[#142544]">
                 {isAddOpen ? 'Create New Event' : 'Edit Event & Activity Photos'}
               </h2>
               <button
@@ -314,78 +314,78 @@ export function EventsClient({ events }: { events: EventProps[] }) {
                   setIsAddOpen(false);
                   setEditingItem(null);
                 }}
-                className="p-1 text-navy-400 hover:text-white rounded-lg hover:bg-navy-800"
+                className="p-1 text-[#647084] hover:text-[#142544] rounded-lg"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {errorMsg && (
-              <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3 text-red-300 text-sm">
-                <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+              <div className="p-4 rounded-xl bg-[#FEF2F2] border border-[#FECACA] flex items-start gap-3 text-[#991B1B] text-sm">
+                <AlertCircle className="w-5 h-5 text-[#DC2626] shrink-0 mt-0.5" />
                 <span>{errorMsg}</span>
               </div>
             )}
 
             {successMsg && (
-              <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-3 text-emerald-300 text-sm">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+              <div className="p-4 rounded-xl bg-[#F0FDF4] border border-[#BBF7D0] flex items-start gap-3 text-[#166534] text-sm">
+                <CheckCircle2 className="w-5 h-5 text-[#23845B] shrink-0 mt-0.5" />
                 <span>{successMsg}</span>
               </div>
             )}
 
             <form onSubmit={isAddOpen ? handleAddSubmit : handleEditSubmit} className="space-y-4 max-h-[75vh] overflow-y-auto pr-1">
               <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1">Event Title *</label>
+                <label className="block text-xs font-semibold text-[#142544] mb-1">Event Title *</label>
                 <input
                   type="text"
                   required
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                  className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] focus:bg-white outline-none"
                   placeholder="e.g. THB Grand Easter Live Concert"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Date *</label>
+                  <label className="block text-xs font-semibold text-[#142544] mb-1">Date *</label>
                   <input
                     type="date"
                     required
                     value={form.date}
                     onChange={(e) => setForm({ ...form, date: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                    className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Start Time</label>
+                  <label className="block text-xs font-semibold text-[#142544] mb-1">Start Time</label>
                   <input
                     type="time"
                     value={form.start_time}
                     onChange={(e) => setForm({ ...form, start_time: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                    className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Venue Name</label>
+                  <label className="block text-xs font-semibold text-[#142544] mb-1">Venue Name</label>
                   <input
                     type="text"
                     value={form.venue_name}
                     onChange={(e) => setForm({ ...form, venue_name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                    className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none"
                     placeholder="THB Concert Hall"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Status</label>
+                  <label className="block text-xs font-semibold text-[#142544] mb-1">Status</label>
                   <select
                     value={form.status}
                     onChange={(e) => setForm({ ...form, status: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                    className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none"
                   >
                     <option value="published">Published</option>
                     <option value="draft">Draft</option>
@@ -394,43 +394,43 @@ export function EventsClient({ events }: { events: EventProps[] }) {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1">Venue Address</label>
+                <label className="block text-xs font-semibold text-[#142544] mb-1">Venue Address</label>
                 <input
                   type="text"
                   value={form.venue_address}
                   onChange={(e) => setForm({ ...form, venue_address: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                  className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none"
                   placeholder="Ikeja, Lagos, Nigeria"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1">Event Overview & Description</label>
+                <label className="block text-xs font-semibold text-[#142544] mb-1">Event Overview & Description</label>
                 <textarea
                   rows={3}
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500 resize-none"
+                  className="w-full px-3.5 py-2.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] focus:bg-white outline-none resize-none"
                   placeholder="Overview of the event..."
                 />
               </div>
 
               {/* PRIMARY BANNER IMAGE */}
-              <div className="p-4 bg-navy-950 border border-navy-800 rounded-xl space-y-3">
-                <label className="block text-xs font-bold text-brand-400 uppercase tracking-wider">
+              <div className="p-4 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl space-y-3">
+                <label className="block text-xs font-bold text-[#C58A19] uppercase tracking-wider">
                   Primary Event Banner Image
                 </label>
 
                 {form.banner_url ? (
-                  <div className="relative w-full h-36 rounded-xl overflow-hidden border border-brand-500/40 bg-black">
+                  <div className="relative w-full h-36 rounded-xl overflow-hidden border border-[#E7E5DF] bg-white">
                     <img src={form.banner_url} alt="Banner Preview" className="w-full h-full object-cover" />
-                    <span className="absolute bottom-2 right-2 px-2.5 py-1 bg-black/80 text-brand-400 text-[10px] font-bold rounded-md flex items-center gap-1">
-                      <Star className="w-3 h-3 text-brand-400" />
+                    <span className="absolute bottom-2 right-2 px-2.5 py-1 bg-white/90 text-[#142544] text-[10px] font-bold rounded-md flex items-center gap-1 shadow-sm">
+                      <Star className="w-3 h-3 text-[#C58A19]" />
                       <span>Primary Social/Hero Banner</span>
                     </span>
                   </div>
                 ) : (
-                  <div className="p-4 rounded-xl border border-dashed border-navy-700 text-center text-xs text-navy-400">
+                  <div className="p-4 rounded-xl border border-dashed border-[#E7E5DF] text-center text-xs text-[#8896AB] bg-white">
                     No primary banner set. Upload photos below or select a file.
                   </div>
                 )}
@@ -449,17 +449,17 @@ export function EventsClient({ events }: { events: EventProps[] }) {
                       }
                     }
                   }}
-                  className="w-full text-xs text-navy-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-500 file:text-white hover:file:bg-brand-400 cursor-pointer"
+                  className="w-full text-xs text-[#647084] file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#142544] file:text-white hover:file:bg-[#243653] cursor-pointer"
                 />
               </div>
 
               {/* MULTIPLE EVENT ACTIVITY PHOTOS */}
-              <div className="p-4 bg-navy-950 border border-navy-800 rounded-xl space-y-4">
+              <div className="p-4 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl space-y-4">
                 <div className="flex items-center justify-between">
-                  <label className="block text-xs font-bold text-brand-400 uppercase tracking-wider">
+                  <label className="block text-xs font-bold text-[#C58A19] uppercase tracking-wider">
                     Event Activity Photos ({activityPhotos.length})
                   </label>
-                  <span className="text-[11px] text-navy-400">Upload multiple photos of event activities</span>
+                  <span className="text-[11px] text-[#8896AB]">Upload multiple photos of event activities</span>
                 </div>
 
                 {/* Upload File Button */}
@@ -468,33 +468,33 @@ export function EventsClient({ events }: { events: EventProps[] }) {
                   accept="image/*"
                   multiple
                   onChange={handleMultiplePhotoUpload}
-                  className="w-full text-xs text-navy-300 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-navy-900 file:text-brand-300 border border-navy-700 rounded-xl cursor-pointer hover:file:bg-navy-800"
+                  className="w-full text-xs text-[#647084] file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-[#142544] file:text-white border border-[#E7E5DF] rounded-xl cursor-pointer hover:file:bg-[#243653]"
                 />
 
                 {/* Activity Photos Grid */}
                 {activityPhotos.length > 0 && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
                     {activityPhotos.map((photo, idx) => (
-                      <div key={photo.id} className="relative bg-navy-900 border border-navy-800 rounded-xl p-3 space-y-2">
-                        <div className="h-28 relative rounded-lg overflow-hidden bg-black">
+                      <div key={photo.id} className="relative bg-white border border-[#E7E5DF] rounded-xl p-3 space-y-2 shadow-xs">
+                        <div className="h-28 relative rounded-lg overflow-hidden bg-[#F8F7F4]">
                           <img src={photo.url} alt={`Activity ${idx + 1}`} className="w-full h-full object-cover" />
                           <button
                             type="button"
                             onClick={() => removePhoto(photo.id)}
-                            className="absolute top-1.5 right-1.5 p-1 bg-red-500/80 hover:bg-red-600 text-white rounded-full transition-colors cursor-pointer"
+                            className="absolute top-1.5 right-1.5 p-1 bg-[#DC2626] text-white rounded-full transition-colors cursor-pointer shadow-sm"
                             title="Remove photo"
                           >
                             <X className="w-3.5 h-3.5" />
                           </button>
                           {form.banner_url === photo.url ? (
-                            <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 bg-brand-500 text-white text-[9px] font-bold rounded-md">
+                            <span className="absolute bottom-1.5 left-1.5 px-2 py-0.5 bg-[#C58A19] text-white text-[9px] font-bold rounded-md">
                               Primary Banner
                             </span>
                           ) : (
                             <button
                               type="button"
                               onClick={() => setAsPrimaryBanner(photo.url)}
-                              className="absolute bottom-1.5 left-1.5 px-2 py-0.5 bg-black/70 hover:bg-brand-500 text-navy-200 hover:text-white text-[9px] font-bold rounded-md transition-colors cursor-pointer"
+                              className="absolute bottom-1.5 left-1.5 px-2 py-0.5 bg-black/70 hover:bg-[#C58A19] text-white text-[9px] font-bold rounded-md transition-colors cursor-pointer"
                             >
                               Make Primary
                             </button>
@@ -506,7 +506,7 @@ export function EventsClient({ events }: { events: EventProps[] }) {
                           placeholder="Photo Caption (e.g. Keyboard Performance)..."
                           value={photo.caption}
                           onChange={(e) => updatePhotoCaption(photo.id, e.target.value)}
-                          className="w-full px-2.5 py-1.5 bg-navy-950 border border-navy-800 rounded-lg text-xs text-white placeholder:text-navy-500 focus:border-brand-500"
+                          className="w-full px-2.5 py-1.5 bg-[#F8F7F4] border border-[#E7E5DF] rounded-lg text-xs text-[#142544] placeholder:text-[#8896AB] focus:border-[#C58A19] outline-none"
                         />
                       </div>
                     ))}
@@ -514,21 +514,21 @@ export function EventsClient({ events }: { events: EventProps[] }) {
                 )}
               </div>
 
-              <div className="pt-4 border-t border-navy-800 flex justify-end gap-3">
+              <div className="pt-4 border-t border-[#E7E5DF] flex justify-end gap-3">
                 <button
                   type="button"
                   onClick={() => {
                     setIsAddOpen(false);
                     setEditingItem(null);
                   }}
-                  className="px-4 py-2 text-sm text-navy-300 hover:text-white"
+                  className="px-4 py-2 text-sm text-[#647084] hover:text-[#142544]"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl text-sm shadow-glow flex items-center gap-2 cursor-pointer"
+                  className="px-6 py-2.5 bg-[#C58A19] hover:bg-[#A37013] text-white font-semibold rounded-full text-sm shadow-sm flex items-center gap-2 cursor-pointer"
                 >
                   {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                   <span>{isAddOpen ? 'Create Event' : 'Save Changes'}</span>
@@ -541,22 +541,22 @@ export function EventsClient({ events }: { events: EventProps[] }) {
 
       {/* DELETE CONFIRMATION MODAL */}
       {deletingId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="bg-navy-900 border border-navy-700 rounded-2xl p-6 max-w-sm w-full space-y-4 text-center">
-            <Trash2 className="w-10 h-10 text-red-400 mx-auto" />
-            <h3 className="text-lg font-bold text-white">Delete Event?</h3>
-            <p className="text-xs text-navy-300">Are you sure you want to delete this event? This action cannot be undone.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white border border-[#E7E5DF] rounded-2xl p-6 max-w-sm w-full space-y-4 text-center shadow-2xl">
+            <Trash2 className="w-10 h-10 text-[#DC2626] mx-auto" />
+            <h3 className="text-lg font-bold text-[#142544] font-heading">Delete Event?</h3>
+            <p className="text-xs text-[#647084]">Are you sure you want to delete this event? This action cannot be undone.</p>
             <div className="flex gap-3 justify-center pt-2">
               <button
                 onClick={() => setDeletingId(null)}
-                className="px-4 py-2 bg-navy-950 border border-navy-700 text-navy-300 rounded-xl text-xs font-bold"
+                className="px-4 py-2 bg-[#F8F7F4] border border-[#E7E5DF] text-[#647084] hover:text-[#142544] rounded-full text-xs font-semibold"
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
                 disabled={loading}
-                className="px-5 py-2 bg-red-600 hover:bg-red-500 text-white rounded-xl text-xs font-bold"
+                className="px-5 py-2 bg-[#DC2626] hover:bg-[#B91C1C] text-white rounded-full text-xs font-semibold shadow-sm"
               >
                 {loading ? 'Deleting...' : 'Yes, Delete'}
               </button>

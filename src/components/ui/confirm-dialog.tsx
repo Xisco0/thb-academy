@@ -45,16 +45,16 @@ export function ConfirmDialog({
       ref={dialogRef}
       onClose={onClose}
       className={cn(
-        'bg-navy-800 border border-navy-700 rounded-xl p-0 max-w-md w-full',
-        'backdrop:bg-black/60 backdrop:backdrop-blur-sm',
-        'text-navy-100'
+        'bg-white border border-[#E7E5DF] rounded-2xl p-0 max-w-md w-full shadow-2xl',
+        'backdrop:bg-[#142544]/40 backdrop:backdrop-blur-xs',
+        'text-[#17243A]'
       )}
     >
       <div className="p-6">
-        <h3 className="text-lg font-semibold text-white mb-2">{title}</h3>
-        {description && <p className="text-navy-300 text-sm">{description}</p>}
+        <h3 className="text-lg font-heading font-bold text-[#142544] mb-2">{title}</h3>
+        {description && <p className="text-[#647084] text-sm leading-relaxed">{description}</p>}
       </div>
-      <div className="flex justify-end gap-3 px-6 py-4 border-t border-navy-700">
+      <div className="flex justify-end gap-3 px-6 py-4 border-t border-[#E7E5DF] bg-[#F8F7F4]/50 rounded-b-2xl">
         <Button variant="ghost" onClick={onClose} disabled={isLoading}>
           {cancelLabel}
         </Button>

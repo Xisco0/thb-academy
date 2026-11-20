@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { WebsiteSettings } from '@/types/database.types';
+import { MapPin, Phone, Mail, Award, ArrowUpRight } from 'lucide-react';
 
 interface FooterProps {
   settings: WebsiteSettings | null;
@@ -13,55 +14,84 @@ export function Footer({ settings }: FooterProps) {
   const quickLinks = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About Us' },
-    { href: '/programs', label: 'Music Programs' },
-    { href: '/events', label: 'Events & Performances' },
+    { href: '/programs', label: 'All Programs & Courses' },
+    { href: '/stage-performances', label: 'Stage Performances' },
+    { href: '/events', label: 'Events & Recitals' },
     { href: '/contact', label: 'Contact Us' },
   ];
 
-  const accountLinks = [
+  const programLinks = [
+    { href: '/programs?category=brass', label: 'Trumpet & Brass Ensemble' },
+    { href: '/programs?category=woodwinds', label: 'Saxophone & Woodwinds' },
+    { href: '/programs?category=strings', label: 'Piano & Master Keyboards' },
+    { href: '/programs?category=strings', label: 'Guitar & Violin Arts' },
+    { href: '/programs?category=percussion', label: 'Drums & African Percussion' },
+    { href: '/programs?category=voice', label: 'Vocal Performance & Choir' },
+  ];
+
+  const studentLinks = [
     { href: '/login', label: 'Student Sign In' },
-    { href: '/register', label: 'Register Account' },
-    { href: '/forgot-password', label: 'Forgot Password' },
+    { href: '/register', label: 'Enroll / Student Registration' },
+    { href: '/forgot-password', label: 'Password Recovery' },
+    { href: '/student', label: 'Student Learning Portal' },
   ];
 
   return (
-    <footer className="bg-navy-900 border-t border-navy-800/80 text-navy-200">
+    <footer className="bg-[#F8F7F4] border-t border-[#E7E5DF] text-[#17243A]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Footer */}
-        <div className="py-12 lg:py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Brand */}
-          <div className="lg:col-span-1 space-y-4">
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="relative w-12 h-12 rounded-xl p-0.5 bg-gradient-to-br from-brand-400 to-amber-600 shadow-glow transition-transform group-hover:scale-105 flex items-center justify-center">
-                <div className="w-full h-full bg-navy-950 rounded-[10px] p-1 flex items-center justify-center overflow-hidden">
+        {/* Main Footer Grid */}
+        <div className="py-14 lg:py-20 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
+          {/* Column 1: Brand & Founder (4 cols) */}
+          <div className="lg:col-span-4 space-y-5">
+            <Link href="/" className="flex items-center gap-3 group inline-flex">
+              <div className="relative w-11 h-11 rounded-xl p-0.5 bg-gradient-to-br from-[#C58A19] to-[#9A680C] shadow-sm transition-transform group-hover:scale-105 flex items-center justify-center shrink-0">
+                <div className="w-full h-full bg-[#142544] rounded-[10px] p-1 flex items-center justify-center overflow-hidden">
                   <Image
                     src="/images/logo.png"
                     alt="Triumphant Harmony Brass Logo"
-                    width={44}
-                    height={44}
+                    width={40}
+                    height={40}
                     className="w-full h-full object-contain"
                   />
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="text-white font-heading font-bold text-base leading-tight">
+                <span className="text-[#142544] font-heading font-bold text-base lg:text-lg leading-tight group-hover:text-[#C58A19] transition-colors">
                   Triumphant Harmony Brass
                 </span>
-                <span className="text-brand-400 text-[10px] font-bold tracking-widest uppercase">
+                <span className="text-[#C58A19] text-[9px] font-bold tracking-[0.2em] uppercase font-sans">
                   Music Academy
                 </span>
               </div>
             </Link>
-            <p className="text-navy-300 text-sm leading-relaxed">
-              {settings?.tagline || 'The sound of victory, The heart of harmony.'}
+
+            <p className="text-[#647084] text-sm leading-relaxed max-w-sm">
+              {settings?.tagline ||
+                'The sound of victory, The heart of harmony. Lagos premier music academy training disciplined instrumentalists and concert performers.'}
             </p>
-            <div className="p-3 bg-navy-950/60 border border-brand-500/20 rounded-xl">
-              <p className="text-xs text-brand-400 font-semibold">Founder & Music Director</p>
-              <p className="text-sm font-bold text-white">Taiwo Toyinbo</p>
+
+            {/* Founder Spotlight Card */}
+            <div className="p-4 bg-white border border-[#E7E5DF] rounded-2xl shadow-xs flex items-center gap-3.5">
+              <div className="relative w-12 h-12 rounded-xl overflow-hidden shrink-0 border border-[#C58A19]/30">
+                <Image
+                  src="/images/founder.jpg"
+                  alt="Taiwo Toyinbo"
+                  fill
+                  className="object-cover object-top"
+                />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 text-[11px] font-bold text-[#C58A19] uppercase tracking-wider">
+                  <Award className="w-3.5 h-3.5" />
+                  <span>Founder & Music Director</span>
+                </div>
+                <div className="text-sm font-bold text-[#142544] truncate">Taiwo Toyinbo</div>
+                <div className="text-[11px] text-[#647084] truncate">Leading Excellence in Music Education</div>
+              </div>
             </div>
 
             {/* Social Links */}
-            <div className="flex items-center gap-3 pt-2">
+            <div className="flex items-center gap-3 pt-1">
               {settings?.facebook_url && (
                 <SocialLink href={settings.facebook_url} label="Facebook">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
@@ -80,17 +110,17 @@ export function Footer({ settings }: FooterProps) {
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-white font-heading font-semibold text-sm uppercase tracking-wider mb-4 border-l-2 border-brand-500 pl-3">
-              Quick Links
+          {/* Column 2: Navigation Links (2.5 cols) */}
+          <div className="lg:col-span-2 space-y-4">
+            <h3 className="font-heading font-bold text-sm text-[#142544] uppercase tracking-wider border-l-2 border-[#C58A19] pl-3">
+              Explore
             </h3>
             <ul className="space-y-2.5 text-sm">
               {quickLinks.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-navy-300 hover:text-brand-400 transition-colors"
+                    className="text-[#647084] hover:text-[#C58A19] transition-colors inline-block"
                   >
                     {link.label}
                   </Link>
@@ -99,68 +129,88 @@ export function Footer({ settings }: FooterProps) {
             </ul>
           </div>
 
-          {/* Student Access */}
-          <div>
-            <h3 className="text-white font-heading font-semibold text-sm uppercase tracking-wider mb-4 border-l-2 border-brand-500 pl-3">
-              Student Portal
+          {/* Column 3: Programs (3 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h3 className="font-heading font-bold text-sm text-[#142544] uppercase tracking-wider border-l-2 border-[#C58A19] pl-3">
+              Academic Tracks
             </h3>
             <ul className="space-y-2.5 text-sm">
-              {accountLinks.map((link) => (
-                <li key={link.href}>
+              {programLinks.map((link, idx) => (
+                <li key={idx}>
                   <Link
                     href={link.href}
-                    className="text-navy-300 hover:text-brand-400 transition-colors"
+                    className="text-[#647084] hover:text-[#C58A19] transition-colors inline-flex items-center gap-1 group"
                   >
-                    {link.label}
+                    <span>{link.label}</span>
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-white font-heading font-semibold text-sm uppercase tracking-wider mb-4 border-l-2 border-brand-500 pl-3">
-              Academy Contact
+          {/* Column 4: Admissions & Contact (2.5 cols) */}
+          <div className="lg:col-span-3 space-y-4">
+            <h3 className="font-heading font-bold text-sm text-[#142544] uppercase tracking-wider border-l-2 border-[#C58A19] pl-3">
+              Contact & Portal
             </h3>
-            <ul className="space-y-3 text-sm text-navy-300">
-              {settings?.address && (
-                <li className="flex items-start gap-2.5">
-                  <svg className="w-4 h-4 mt-1 text-brand-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <span>{settings.address}{settings.city ? `, ${settings.city}` : ''}</span>
-                </li>
-              )}
-              {settings?.phone && (
-                <li className="flex items-center gap-2.5">
-                  <svg className="w-4 h-4 text-brand-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                  </svg>
-                  <a href={`tel:${settings.phone}`} className="hover:text-brand-400 transition-colors">
-                    {settings.phone}
-                  </a>
-                </li>
-              )}
-              {settings?.email && (
-                <li className="flex items-center gap-2.5">
-                  <svg className="w-4 h-4 text-brand-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  <a href={`mailto:${settings.email}`} className="hover:text-brand-400 transition-colors">
-                    {settings.email}
-                  </a>
-                </li>
-              )}
-            </ul>
+            <div className="space-y-3 text-sm text-[#647084]">
+              <div className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-[#C58A19] shrink-0 mt-0.5" />
+                <span className="text-xs leading-relaxed">
+                  {settings?.address || 'Lagos, Nigeria'}
+                </span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Phone className="w-4 h-4 text-[#C58A19] shrink-0" />
+                <a
+                  href={`tel:${settings?.contact_phone || '+2347038595356'}`}
+                  className="text-xs hover:text-[#C58A19] transition-colors"
+                >
+                  {settings?.contact_phone || '+234 703 859 5356'}
+                </a>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <Mail className="w-4 h-4 text-[#C58A19] shrink-0" />
+                <a
+                  href={`mailto:${settings?.contact_email || 'info@thbacademy.org'}`}
+                  className="text-xs hover:text-[#C58A19] transition-colors"
+                >
+                  {settings?.contact_email || 'info@thbacademy.org'}
+                </a>
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <Link
+                href="/register"
+                className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#142544] hover:bg-[#243653] !text-white text-xs font-semibold rounded-full shadow-xs transition-colors"
+              >
+                <span className="!text-white font-semibold">Enroll Online</span>
+                <ArrowUpRight className="w-3.5 h-3.5 !text-white" />
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="py-6 border-t border-navy-800/80 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-navy-400">
-          <p>© {currentYear} {settings?.academy_name || 'Triumphant Harmony Brass'}. All rights reserved.</p>
-          <p className="text-brand-400 font-medium">Founder & Music Director: Taiwo Toyinbo</p>
+        {/* Bottom Copyright & Legal Bar */}
+        <div className="py-6 border-t border-[#E7E5DF] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#647084]">
+          <div>
+            &copy; {currentYear} Triumphant Harmony Brass Music Academy. All rights reserved.
+          </div>
+          <div className="flex items-center gap-6">
+            <Link href="/about" className="hover:text-[#C58A19] transition-colors">
+              About Academy
+            </Link>
+            <Link href="/programs" className="hover:text-[#C58A19] transition-colors">
+              Curriculum
+            </Link>
+            <Link href="/contact" className="hover:text-[#C58A19] transition-colors">
+              Admissions
+            </Link>
+            <Link href="/login" className="hover:text-[#C58A19] transition-colors">
+              Student Sign In
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
@@ -182,9 +232,9 @@ function SocialLink({
       target="_blank"
       rel="noopener noreferrer"
       aria-label={label}
-      className="w-9 h-9 rounded-xl bg-navy-950 border border-navy-700/60 flex items-center justify-center text-navy-300 hover:text-brand-400 hover:border-brand-500/50 transition-all shadow-sm"
+      className="w-8 h-8 rounded-full bg-white border border-[#E7E5DF] text-[#647084] hover:text-[#C58A19] hover:border-[#C58A19] flex items-center justify-center transition-all shadow-xs hover:scale-105"
     >
-      <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+      <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
         {children}
       </svg>
     </a>

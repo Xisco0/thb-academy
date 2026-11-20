@@ -13,10 +13,10 @@ export interface EmptyStateProps {
 
 export function EmptyState({ icon, title, description, actionLabel, onAction, className }: EmptyStateProps) {
   return (
-    <div className={cn('flex flex-col items-center justify-center py-16 text-center', className)}>
-      {icon && <div className="text-navy-500 mb-4">{icon}</div>}
-      <h3 className="text-lg font-semibold text-navy-200 mb-1">{title}</h3>
-      {description && <p className="text-navy-400 text-sm max-w-md mb-6">{description}</p>}
+    <div className={cn('flex flex-col items-center justify-center py-16 px-4 text-center bg-[#F8F7F4]/60 rounded-2xl border border-dashed border-[#E7E5DF]', className)}>
+      {icon && <div className="text-[#C58A19] mb-4 p-4 rounded-full bg-[#F8EBCB]/50">{icon}</div>}
+      <h3 className="text-lg font-heading font-semibold text-[#142544] mb-1">{title}</h3>
+      {description && <p className="text-[#647084] text-sm max-w-md mb-6">{description}</p>}
       {actionLabel && onAction && (
         <Button variant="outline" onClick={onAction}>
           {actionLabel}

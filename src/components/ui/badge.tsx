@@ -2,12 +2,12 @@ import React from 'react';
 import { cn } from '@/lib/utils';
 
 const badgeVariants = {
-  success: 'bg-green-500/15 text-green-400 border-green-500/25',
-  warning: 'bg-amber-500/15 text-amber-400 border-amber-500/25',
-  danger: 'bg-red-500/15 text-red-400 border-red-500/25',
-  info: 'bg-blue-500/15 text-blue-400 border-blue-500/25',
-  default: 'bg-navy-600/50 text-navy-300 border-navy-500/25',
-  gold: 'bg-brand-500/15 text-brand-400 border-brand-500/25',
+  success: 'bg-[#23845B]/10 text-[#23845B] border-[#23845B]/25',
+  warning: 'bg-[#C58A19]/10 text-[#A76F14] border-[#C58A19]/30',
+  danger: 'bg-[#C74646]/10 text-[#C74646] border-[#C74646]/25',
+  info: 'bg-[#142544]/10 text-[#142544] border-[#142544]/20',
+  default: 'bg-[#F8F7F4] text-[#647084] border-[#E7E5DF]',
+  gold: 'bg-[#F8EBCB] text-[#9A680C] border-[#C58A19]/30 font-semibold',
 };
 
 export interface BadgeProps {
@@ -20,7 +20,7 @@ export function Badge({ variant = 'default', children, className }: BadgeProps) 
   return (
     <span
       className={cn(
-        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border',
+        'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium border tracking-wide',
         badgeVariants[variant],
         className
       )}

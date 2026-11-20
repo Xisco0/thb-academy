@@ -99,18 +99,18 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-navy-900/80 border border-navy-800 p-6 rounded-2xl">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white border border-[#E7E5DF] p-6 rounded-2xl shadow-sm">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-heading font-bold text-white tracking-tight">
-            My Payments & Enrollment Receipts
+          <h1 className="text-2xl sm:text-3xl font-heading font-bold text-[#142544] tracking-tight">
+            My Payments & Receipts
           </h1>
-          <p className="text-navy-300 text-sm mt-1">
-            Track your course tuition payment statuses and upload receipts for review.
+          <p className="text-[#647084] text-sm mt-1">
+            Track your course tuition payment statuses, verification history, and receipts.
           </p>
         </div>
         <Link
           href="/programs"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl transition-all shadow-glow text-sm"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#C58A19] hover:bg-[#A37013] text-white font-semibold rounded-full transition-all shadow-sm text-sm"
         >
           <Plus className="w-4 h-4" />
           <span>Enroll in New Program</span>
@@ -121,18 +121,18 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
       {payments.filter((p) => p.status === 'rejected').map((p) => (
         <div
           key={`rejected-alert-${p.id}`}
-          className="p-5 bg-red-500/10 border border-red-500/30 rounded-2xl space-y-3 animate-fade-in"
+          className="p-5 bg-[#FEF2F2] border border-[#FECACA] rounded-2xl space-y-3 animate-fade-in"
         >
           <div className="flex items-start gap-3">
-            <AlertTriangle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+            <AlertTriangle className="w-5 h-5 text-[#DC2626] shrink-0 mt-0.5" />
             <div className="grow space-y-1">
-              <h3 className="text-sm font-bold text-red-300">
+              <h3 className="text-sm font-bold text-[#991B1B]">
                 Payment Action Required — {p.enrollment?.course?.name || 'Program Payment'}
               </h3>
-              <p className="text-xs text-navy-200 leading-relaxed">
-                Your payment of <strong className="text-white">{formatCoursePrice(p.amount, p.currency)}</strong> was reviewed by administrators and marked as <strong className="text-red-400 uppercase">REJECTED</strong>.
+              <p className="text-xs text-[#7F1D1D] leading-relaxed">
+                Your payment of <strong className="text-[#142544]">{formatCoursePrice(p.amount, p.currency)}</strong> was reviewed by administrators and marked as <strong className="text-[#DC2626] uppercase">REJECTED</strong>.
               </p>
-              <div className="p-3 bg-navy-950/80 border border-red-500/20 rounded-xl text-xs text-red-300">
+              <div className="p-3 bg-white border border-[#FECACA] rounded-xl text-xs text-[#991B1B]">
                 <strong>Rejection Reason:</strong> {p.rejection_reason || 'Payment proof was unreadable or amount did not match.'}
               </div>
             </div>
@@ -143,26 +143,26 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
                 setErrorMsg('');
                 setSuccessMsg('');
               }}
-              className="px-4 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl text-xs transition-colors shrink-0 shadow-sm"
+              className="px-4 py-2 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-semibold rounded-xl text-xs transition-colors shrink-0 shadow-sm"
             >
-              Resubmit Payment Proof
+              Resubmit Proof
             </button>
           </div>
         </div>
       ))}
 
       {/* Payments Table */}
-      <div className="bg-navy-900/80 border border-navy-800 rounded-2xl overflow-hidden shadow-xl">
+      <div className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden shadow-sm">
         {payments.length === 0 ? (
           <div className="py-16 text-center space-y-3">
-            <CreditCard className="w-12 h-12 text-navy-400 mx-auto opacity-50" />
-            <p className="text-lg font-semibold text-white">No payment records found</p>
-            <p className="text-xs text-navy-400">Enroll in a program to get started.</p>
+            <CreditCard className="w-12 h-12 text-[#C58A19] mx-auto opacity-50" />
+            <p className="text-lg font-semibold text-[#142544]">No payment records found</p>
+            <p className="text-xs text-[#647084]">Enroll in an academy program to get started.</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse text-sm">
-              <thead className="bg-navy-950/80 text-xs font-semibold uppercase tracking-wider text-navy-300 border-b border-navy-800">
+              <thead className="bg-[#F8F7F4] text-xs font-semibold uppercase tracking-wider text-[#647084] border-b border-[#E7E5DF]">
                 <tr>
                   <th className="px-6 py-4">Program / Course</th>
                   <th className="px-6 py-4">Amount</th>
@@ -171,16 +171,16 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-navy-800/60">
+              <tbody className="divide-y divide-[#E7E5DF]">
                 {payments.map((p) => (
-                  <tr key={p.id} className="hover:bg-navy-800/40 transition-colors">
-                    <td className="px-6 py-4 font-semibold text-white">
+                  <tr key={p.id} className="hover:bg-[#F8F7F4]/60 transition-colors">
+                    <td className="px-6 py-4 font-semibold text-[#142544]">
                       <p>{p.enrollment?.course?.name || 'Music Course'}</p>
                       {p.transaction_reference && (
-                        <p className="text-xs font-normal text-navy-400 font-mono">Ref: {p.transaction_reference}</p>
+                        <p className="text-xs font-normal text-[#8896AB] font-mono mt-0.5">Ref: {p.transaction_reference}</p>
                       )}
                     </td>
-                    <td className="px-6 py-4 font-bold text-brand-400">
+                    <td className="px-6 py-4 font-bold text-[#C58A19]">
                       {formatCoursePrice(p.amount, p.currency)}
                     </td>
                     <td className="px-6 py-4">
@@ -188,7 +188,7 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
                         {p.status === 'approved' ? 'APPROVED' : p.status === 'pending' ? 'PENDING REVIEW' : 'REJECTED'}
                       </Badge>
                     </td>
-                    <td className="px-6 py-4 text-navy-300 text-xs">{formatDate(p.created_at)}</td>
+                    <td className="px-6 py-4 text-[#647084] text-xs">{formatDate(p.created_at)}</td>
                     <td className="px-6 py-4 text-right">
                       {p.status === 'rejected' && (
                         <button
@@ -198,16 +198,16 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
                             setErrorMsg('');
                             setSuccessMsg('');
                           }}
-                          className="px-3 py-1.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-lg text-xs transition-colors"
+                          className="px-3.5 py-1.5 bg-[#C58A19] hover:bg-[#A37013] text-white font-medium rounded-lg text-xs transition-colors shadow-sm"
                         >
                           Resubmit Proof
                         </button>
                       )}
                       {p.status === 'pending' && (
-                        <span className="text-xs text-amber-400 font-medium">Awaiting Admin Verification</span>
+                        <span className="text-xs text-[#D97706] font-medium">Awaiting Admin Review</span>
                       )}
                       {p.status === 'approved' && (
-                        <span className="text-xs text-green-400 font-medium flex items-center justify-end gap-1">
+                        <span className="text-xs text-[#23845B] font-medium flex items-center justify-end gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>Verified & Active</span>
                         </span>
@@ -223,64 +223,64 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
 
       {/* Resubmit Payment Proof Modal */}
       {resubmittingPayment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="bg-navy-900 border border-navy-700 rounded-2xl w-full max-w-lg p-6 space-y-5 shadow-2xl relative">
-            <div className="flex items-center justify-between border-b border-navy-800 pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white border border-[#E7E5DF] rounded-2xl w-full max-w-lg p-6 space-y-5 shadow-2xl relative">
+            <div className="flex items-center justify-between border-b border-[#E7E5DF] pb-3">
               <div>
-                <h3 className="text-lg font-bold text-white font-heading">Resubmit Payment Proof</h3>
-                <p className="text-xs text-brand-400 font-semibold">{resubmittingPayment.enrollment?.course?.name}</p>
+                <h3 className="text-lg font-bold text-[#142544] font-heading">Resubmit Payment Proof</h3>
+                <p className="text-xs text-[#C58A19] font-medium">{resubmittingPayment.enrollment?.course?.name}</p>
               </div>
               <button
                 onClick={() => setResubmittingPayment(null)}
-                className="text-navy-400 hover:text-white p-1"
+                className="text-[#647084] hover:text-[#142544] p-1 rounded-lg hover:bg-[#F8F7F4] transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {errorMsg && (
-              <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs">
+              <div className="p-3.5 rounded-xl bg-[#FEF2F2] border border-[#FECACA] text-[#991B1B] text-xs">
                 {errorMsg}
               </div>
             )}
 
             {successMsg && (
-              <div className="p-3.5 rounded-xl bg-green-500/10 border border-green-500/30 text-green-300 text-xs">
+              <div className="p-3.5 rounded-xl bg-[#F0FDF4] border border-[#BBF7D0] text-[#166534] text-xs">
                 {successMsg}
               </div>
             )}
 
-            <div className="p-3.5 bg-navy-950/80 border border-navy-800 rounded-xl text-xs space-y-1">
-              <span className="text-navy-400 font-semibold">Previous Rejection Reason:</span>
-              <p className="text-red-300">{resubmittingPayment.rejection_reason || 'Proof unreadable.'}</p>
+            <div className="p-3.5 bg-[#FEF2F2]/50 border border-[#FECACA] rounded-xl text-xs space-y-1">
+              <span className="text-[#991B1B] font-semibold">Previous Rejection Reason:</span>
+              <p className="text-[#7F1D1D]">{resubmittingPayment.rejection_reason || 'Proof unreadable or amount mismatch.'}</p>
             </div>
 
             <form onSubmit={handleResubmit} className="space-y-4">
               {/* File Selector */}
               <div className="space-y-2">
-                <label className="block text-xs font-semibold text-navy-200">
+                <label className="block text-xs font-semibold text-[#142544]">
                   Select New Payment Proof File from Device *
                 </label>
 
                 {proofPreview ? (
-                  <div className="p-4 bg-navy-950 border border-brand-500/40 rounded-xl flex items-center justify-between">
+                  <div className="p-4 bg-[#F8F7F4] border border-[#C58A19]/40 rounded-xl flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <img src={proofPreview} alt="Preview" className="w-12 h-12 object-cover rounded-lg border border-brand-500/30" />
+                      <img src={proofPreview} alt="Preview" className="w-12 h-12 object-cover rounded-lg border border-[#C58A19]/30" />
                       <div className="text-xs">
-                        <p className="text-white font-semibold truncate">{proofFile?.name || 'New Payment Proof'}</p>
-                        <p className="text-green-400 text-[11px]">Ready to upload</p>
+                        <p className="text-[#142544] font-semibold truncate">{proofFile?.name || 'New Payment Proof'}</p>
+                        <p className="text-[#23845B] text-[11px] font-medium">Ready to upload</p>
                       </div>
                     </div>
                     <button
                       type="button"
                       onClick={() => { setProofFile(null); setProofPreview(null); }}
-                      className="px-2.5 py-1 text-xs text-red-400 hover:bg-red-500/10 rounded-lg"
+                      className="px-2.5 py-1 text-xs text-[#DC2626] hover:bg-red-50 rounded-lg transition-colors"
                     >
                       Remove
                     </button>
                   </div>
                 ) : (
-                  <div className="border-2 border-dashed border-navy-700 hover:border-brand-500/60 bg-navy-950/60 rounded-xl p-5 text-center space-y-2 transition-colors cursor-pointer relative">
+                  <div className="border-2 border-dashed border-[#E7E5DF] hover:border-[#C58A19] bg-[#F8F7F4] rounded-xl p-5 text-center space-y-2 transition-colors cursor-pointer relative">
                     <input
                       type="file"
                       accept="image/*,application/pdf"
@@ -290,20 +290,21 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
                       }}
                       className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                     />
-                    <Upload className="w-6 h-6 text-brand-400 mx-auto" />
-                    <p className="text-xs text-navy-200 font-semibold">Tap to select clear payment photo from device</p>
+                    <Upload className="w-6 h-6 text-[#C58A19] mx-auto" />
+                    <p className="text-xs text-[#142544] font-semibold">Tap to select clear payment photo from device</p>
+                    <p className="text-[11px] text-[#8896AB]">PNG, JPG, or PDF up to 5MB</p>
                   </div>
                 )}
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1">Transaction Reference / Teller No.</label>
+                <label className="block text-xs font-semibold text-[#142544] mb-1">Transaction Reference / Teller No.</label>
                 <input
                   type="text"
                   value={transactionRef}
                   onChange={(e) => setTransactionRef(e.target.value)}
                   placeholder="e.g. FBN-REF-123456"
-                  className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                  className="w-full px-3 py-2 bg-white border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] focus:ring-1 focus:ring-[#C58A19] outline-none transition-all placeholder:text-[#8896AB]"
                 />
               </div>
 
@@ -311,14 +312,14 @@ export function StudentPaymentsClient({ payments }: { payments: StudentPayment[]
                 <button
                   type="button"
                   onClick={() => setResubmittingPayment(null)}
-                  className="px-4 py-2 text-xs text-navy-300 hover:text-white font-medium"
+                  className="px-4 py-2 text-xs text-[#647084] hover:text-[#142544] font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-5 py-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl text-xs shadow-glow flex items-center gap-1.5"
+                  className="px-5 py-2.5 bg-[#C58A19] hover:bg-[#A37013] text-white font-semibold rounded-full text-xs shadow-sm flex items-center gap-1.5 transition-all"
                 >
                   {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <FileCheck className="w-3.5 h-3.5" />}
                   <span>{loading ? 'Submitting...' : 'Submit New Payment Proof'}</span>

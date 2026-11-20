@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import { Poppins, Inter } from 'next/font/google';
+import { Playfair_Display, Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
 import './globals.css';
 import { Analytics } from "@vercel/analytics/next";
 
-const titleFont = Poppins({
+const playfair = Playfair_Display({
   subsets: ['latin'],
-  weight: ['600'],
+  weight: ['400', '500', '600', '700', '800', '900'],
   display: 'swap',
-  variable: '--font-title',
+  variable: '--font-heading',
 });
 
 const inter = Inter({
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     default: 'Triumphant Harmony Brass | Music Academy in Lagos, Nigeria',
   },
   description:
-    'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
+    'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice under Music Director Taiwo Toyinbo.',
   openGraph: {
     locale: 'en_NG',
     type: 'website',
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     title: 'Triumphant Harmony Brass | Music Academy in Lagos, Nigeria',
     description:
-      'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in keyboard, guitar, trumpet, saxophone, violin, drums, and voice.',
+      'Learn music at Triumphant Harmony Brass (THB) Music Academy in Lagos, Nigeria. Professional training in trumpet, saxophone, keyboard, guitar, violin, drums, and voice.',
     images: [
       {
         url: `${siteUrl}/images/image.png`,
@@ -64,11 +64,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${titleFont.variable} ${inter.variable}`}>
-      <body className="min-h-screen font-body antialiased transition-colors duration-300">
-        <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark" enableSystem={false}>
+    <html lang="en" suppressHydrationWarning className={`${playfair.variable} ${inter.variable}`}>
+      <body className="min-h-screen bg-white text-[#17243A] font-body antialiased transition-colors duration-200">
+        <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light" enableSystem={false}>
           {children}
-          <Analytics/>
+          <Analytics />
         </ThemeProvider>
       </body>
     </html>

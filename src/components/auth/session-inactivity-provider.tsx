@@ -91,20 +91,20 @@ export function SessionInactivityProvider({ children }: { children: React.ReactN
 
       {/* 1. Manual Logout Confirmation Modal */}
       {showLogoutModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="bg-navy-900 border border-navy-700/80 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-5 animate-slide-up">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white border border-[#E7E5DF] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-5">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-red-500/15 border border-red-500/30 flex items-center justify-center text-red-400 shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-red-50 border border-red-100 flex items-center justify-center text-[#DC2626] shrink-0">
                 <LogOut className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-heading text-lg font-bold text-white">Confirm Sign Out</h3>
-                <p className="text-navy-300 text-xs mt-0.5">Are you sure you want to end your current session?</p>
+                <h3 className="font-heading text-lg font-bold text-[#142544]">Confirm Sign Out</h3>
+                <p className="text-[#647084] text-xs mt-0.5">Are you sure you want to end your current session?</p>
               </div>
             </div>
 
-            <p className="text-navy-200 text-sm leading-relaxed bg-navy-950/80 p-3.5 rounded-xl border border-navy-800">
-              You will be signed out of THB Academy Portal and will need to log in again to access your dashboard.
+            <p className="text-[#647084] text-sm leading-relaxed bg-[#F8F7F4] p-3.5 rounded-xl border border-[#E7E5DF]">
+              You will be signed out of the THB Academy Portal and will need to log in again to access your dashboard.
             </p>
 
             <div className="flex items-center justify-end gap-3 pt-2">
@@ -112,7 +112,7 @@ export function SessionInactivityProvider({ children }: { children: React.ReactN
                 type="button"
                 disabled={isLoggingOut}
                 onClick={() => setShowLogoutModal(false)}
-                className="px-4 py-2.5 rounded-xl text-sm font-semibold text-navy-300 hover:text-white hover:bg-navy-800 transition-colors"
+                className="px-4 py-2 rounded-full text-sm font-semibold text-[#647084] hover:text-[#142544] hover:bg-[#F8F7F4] transition-colors"
               >
                 Cancel
               </button>
@@ -120,7 +120,7 @@ export function SessionInactivityProvider({ children }: { children: React.ReactN
                 type="button"
                 disabled={isLoggingOut}
                 onClick={performLogout}
-                className="px-5 py-2.5 rounded-xl text-sm font-bold bg-red-600 hover:bg-red-500 text-white shadow-glow flex items-center gap-2 transition-all cursor-pointer"
+                className="px-5 py-2.5 rounded-full text-sm font-semibold bg-[#DC2626] hover:bg-[#B91C1C] text-white shadow-sm flex items-center gap-2 transition-all cursor-pointer"
               >
                 {isLoggingOut && <Loader2 className="w-4 h-4 animate-spin" />}
                 <span>Yes, Sign Out</span>
@@ -132,20 +132,20 @@ export function SessionInactivityProvider({ children }: { children: React.ReactN
 
       {/* 2. Automatic 10-Minute Inactivity Expiration Modal */}
       {showExpiredModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-fade-in">
-          <div className="bg-navy-900 border border-amber-500/40 rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-5 animate-slide-up">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white border border-[#E7E5DF] rounded-2xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-5">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shrink-0">
+              <div className="w-12 h-12 rounded-xl bg-[#F5F0E6] border border-[#C58A19]/30 flex items-center justify-center text-[#C58A19] shrink-0">
                 <Clock className="w-6 h-6 animate-pulse" />
               </div>
               <div>
-                <h3 className="font-heading text-lg font-bold text-white">Session Expired</h3>
-                <p className="text-amber-400 text-xs font-semibold mt-0.5">Inactive for 10 minutes</p>
+                <h3 className="font-heading text-lg font-bold text-[#142544]">Session Expired</h3>
+                <p className="text-[#C58A19] text-xs font-semibold mt-0.5">Inactive for 10 minutes</p>
               </div>
             </div>
 
-            <div className="space-y-2 bg-navy-950/80 p-4 rounded-xl border border-navy-800 text-xs text-navy-200 leading-relaxed">
-              <div className="flex items-center gap-2 text-amber-400 font-bold text-sm">
+            <div className="space-y-2 bg-[#F8F7F4] p-4 rounded-xl border border-[#E7E5DF] text-xs text-[#647084] leading-relaxed">
+              <div className="flex items-center gap-2 text-[#C58A19] font-bold text-sm">
                 <AlertTriangle className="w-4 h-4 shrink-0" />
                 <span>Automatic Security Timeout</span>
               </div>
@@ -159,7 +159,7 @@ export function SessionInactivityProvider({ children }: { children: React.ReactN
                 type="button"
                 disabled={isLoggingOut}
                 onClick={performLogout}
-                className="w-full sm:w-auto px-6 py-2.5 rounded-xl text-sm font-bold bg-amber-500 hover:bg-amber-400 text-white shadow-glow flex items-center justify-center gap-2 transition-all cursor-pointer"
+                className="w-full sm:w-auto px-6 py-2.5 rounded-full text-sm font-semibold bg-[#C58A19] hover:bg-[#A37013] text-white shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 {isLoggingOut && <Loader2 className="w-4 h-4 animate-spin" />}
                 <span>Sign In Again</span>

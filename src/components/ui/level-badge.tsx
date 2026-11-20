@@ -8,10 +8,10 @@ const levelLabels: Record<string, string> = {
 };
 
 const levelStyles: Record<string, string> = {
-  beginner: 'bg-navy-950/90 text-emerald-400 border-emerald-500/60 shadow-lg',
-  intermediate: 'bg-navy-950/90 text-amber-400 border-amber-500/60 shadow-lg',
-  advanced: 'bg-navy-950/90 text-purple-400 border-purple-500/60 shadow-lg',
-  all_levels: 'bg-navy-950/90 text-brand-400 border-brand-500/60 shadow-lg',
+  beginner: 'bg-[#23845B]/10 text-[#23845B] border-[#23845B]/30',
+  intermediate: 'bg-[#F8EBCB] text-[#9A680C] border-[#C58A19]/30',
+  advanced: 'bg-[#142544]/10 text-[#142544] border-[#142544]/30',
+  all_levels: 'bg-[#F8F7F4] text-[#17243A] border-[#E7E5DF]',
 };
 
 export function LevelBadge({ level, className = '' }: { level: string; className?: string }) {
@@ -21,7 +21,7 @@ export function LevelBadge({ level, className = '' }: { level: string; className
 
   return (
     <span
-      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border backdrop-blur-md ${style} ${className}`}
+      className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider border shadow-xs backdrop-blur-sm ${style} ${className}`}
     >
       {label}
     </span>

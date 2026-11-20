@@ -4,13 +4,14 @@ import { cn, formatTime } from '@/lib/utils';
 import { getPublishedEvents } from '@/lib/queries/public';
 import { breadcrumbSchema, JsonLd } from '@/lib/seo';
 import type { Event } from '@/types/database.types';
+import { Calendar, Clock, MapPin, Sparkles, ArrowRight } from 'lucide-react';
 
 const siteUrl = 'https://www.thbacademy.org';
 
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: 'Events, Recitals & Masterclasses in Lagos',
+  title: 'Events, Recitals & Masterclasses in Lagos | THB Academy',
   description: 'Join us for upcoming music recitals, concerts, and brass masterclasses at Triumphant Harmony Brass Music Academy in Lagos, Nigeria.',
   alternates: {
     canonical: `${siteUrl}/events`,
@@ -44,7 +45,6 @@ export default async function EventsPage() {
   
   const now = new Date();
   
-  // An event is active/upcoming if its date + 30 days (for multi-week programs) is >= now
   const upcomingEvents = events.filter(e => {
     const startDate = new Date(e.date);
     const endDate = new Date(startDate.getTime() + 30 * 24 * 60 * 60 * 1000);
@@ -58,7 +58,7 @@ export default async function EventsPage() {
   }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <main className="min-h-screen bg-navy-950 text-slate-300">
+    <main className="min-h-screen bg-white text-[#17243A] pt-24 pb-20">
       <JsonLd
         data={breadcrumbSchema([
           { name: 'Home', url: '/' },
@@ -66,46 +66,61 @@ export default async function EventsPage() {
         ])}
       />
 
-      <section className="pt-32 pb-16 px-4 bg-gradient-to-b from-navy-950 to-navy-900">
-        <div className="max-w-6xl mx-auto text-center space-y-4">
-          <span className="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-brand-500/10 border border-brand-500/20 text-brand-400 uppercase tracking-widest">
-            Community & Concerts
+      {/* 1. Header / Hero */}
+      <section className="relative py-16 md:py-24 px-4 bg-gradient-to-b from-[#F8F7F4] via-white to-white border-b border-[#E7E5DF]">
+        <div className="max-w-5xl mx-auto text-center space-y-4">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#F8EBCB] text-[#9A680C] text-xs font-bold uppercase tracking-widest">
+            <Sparkles className="w-3.5 h-3.5 text-[#C58A19]" />
+            Community &amp; Concert Showcases
           </span>
-          <h1 className="font-heading text-4xl md:text-5xl text-white font-bold">
-            Events & Music Programs
+          <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl font-extrabold text-[#142544] tracking-tight leading-tight">
+            Academy Events &amp; <br />
+            <span className="text-[#C58A19] font-normal italic">
+              Concert Recitals
+            </span>
           </h1>
-          <p className="text-lg text-slate-400 max-w-2xl mx-auto">
-            Experience live music recitals, community impact programs, and brass masterclasses at Triumphant Harmony Brass.
+          <p className="text-base sm:text-lg text-[#647084] max-w-2xl mx-auto leading-relaxed pt-2">
+            Experience live student recitals, brass masterclasses, and community impact training at Triumphant Harmony Brass.
           </p>
         </div>
       </section>
 
-      <section className="py-16 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="font-heading text-3xl text-white mb-8 border-b border-navy-800 pb-4 flex items-center gap-3">
-            <span>Active & Upcoming Events</span>
-            <span className="text-xs px-3 py-1 bg-green-500/15 border border-green-500/30 text-green-400 rounded-full font-bold">Live</span>
-          </h2>
+      {/* 2. Events Grid */}
+      <section className="py-16 px-4 max-w-7xl mx-auto space-y-16">
+        <div>
+          <div className="flex items-center justify-between border-b border-[#E7E5DF] pb-4 mb-8">
+            <h2 className="font-heading text-2xl sm:text-3xl text-[#142544] font-bold flex items-center gap-3">
+              <span>Active &amp; Upcoming Events</span>
+              <span className="text-xs px-3 py-1 bg-[#23845B]/15 text-[#23845B] border border-[#23845B]/30 rounded-full font-bold">
+                Live
+              </span>
+            </h2>
+          </div>
           
           {upcomingEvents.length === 0 ? (
-            <p className="text-slate-500 italic mb-16 bg-navy-900/50 p-6 rounded-xl border border-navy-800">
+            <div className="text-center py-12 bg-[#F8F7F4] rounded-2xl border border-[#E7E5DF] p-6 text-[#647084] text-sm">
               No upcoming events scheduled at the moment. Check back soon!
-            </p>
+            </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {upcomingEvents.map(event => (
                 <EventCard key={event.id} event={event} />
               ))}
             </div>
           )}
+        </div>
 
-          <h2 className="font-heading text-3xl text-white mb-8 border-b border-navy-800 pb-4">Past Events</h2>
+        {/* Past Events */}
+        <div>
+          <h2 className="font-heading text-2xl sm:text-3xl text-[#142544] font-bold border-b border-[#E7E5DF] pb-4 mb-8">
+            Past Events &amp; Archives
+          </h2>
           {pastEvents.length === 0 ? (
-            <p className="text-slate-500 italic bg-navy-900/50 p-6 rounded-xl border border-navy-800">
+            <div className="text-center py-12 bg-[#F8F7F4] rounded-2xl border border-[#E7E5DF] p-6 text-[#647084] text-sm">
               No past events recorded.
-            </p>
+            </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {pastEvents.map(event => (
                 <EventCard key={event.id} event={event} />
               ))}
@@ -134,49 +149,56 @@ function EventCard({ event }: { event: Event }) {
   return (
     <Link
       href={`/events/${event.slug}`}
-      className="group bg-navy-800/80 border border-navy-700/50 rounded-xl overflow-hidden hover:-translate-y-1 hover:shadow-[0_0_20px_rgba(245,158,11,0.2)] transition-all duration-300 flex flex-col"
+      className="group bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden hover:-translate-y-1 hover:shadow-[0_16px_36px_-6px_rgba(20,37,68,0.1)] hover:border-[#C58A19]/50 transition-all duration-300 flex flex-col shadow-xs"
     >
       {event.banner_url ? (
-        <div className="aspect-video w-full overflow-hidden bg-navy-900 relative">
-          <img src={event.banner_url} alt={`${event.title} Banner`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        <div className="aspect-video w-full overflow-hidden bg-[#F8F7F4] relative border-b border-[#E7E5DF]">
+          <img
+            src={event.banner_url}
+            alt={`${event.title} Banner`}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
         </div>
       ) : (
-        <div className="h-2 bg-brand-500 w-full" />
+        <div className="h-3 bg-[#C58A19] w-full" />
       )}
-      <div className="p-6 flex-1 flex flex-col">
-        <div className="flex justify-between items-start mb-4">
+      <div className="p-6 flex-1 flex flex-col justify-between space-y-4">
+        <div className="space-y-3">
           <span
             className={cn(
               'inline-block px-3 py-1 text-xs font-bold rounded-full border',
               isOngoing
-                ? 'bg-green-500/20 text-green-400 border-green-500/40 animate-pulse'
+                ? 'bg-[#23845B]/15 text-[#23845B] border-[#23845B]/30'
                 : isPast
-                ? 'bg-navy-900/50 text-navy-400 border-navy-700/50'
-                : 'bg-brand-500/10 text-brand-400 border-brand-500/20'
+                ? 'bg-[#F8F7F4] text-[#647084] border-[#E7E5DF]'
+                : 'bg-[#F8EBCB] text-[#9A680C] border-[#C58A19]/30'
             )}
           >
             {isOngoing ? '● Active & Ongoing' : isPast ? 'Completed' : 'Upcoming Event'}
           </span>
+          <h3 className="font-heading text-xl text-[#142544] font-bold group-hover:text-[#C58A19] transition-colors line-clamp-2">
+            {event.title}
+          </h3>
         </div>
-        <h3 className="font-heading text-xl text-white font-bold mb-2 group-hover:text-brand-400 transition-colors line-clamp-2">
-          {event.title}
-        </h3>
-        <div className="mt-auto pt-4 space-y-2 text-sm text-navy-400">
+
+        <div className="pt-4 border-t border-[#E7E5DF] space-y-2 text-xs text-[#647084]">
           <div className="flex items-center gap-2">
-            <span className="text-brand-500">📅</span>
-            <span>{formattedDate} {isOngoing && '(4-Week Active Program)'}</span>
+            <Calendar className="w-4 h-4 text-[#C58A19] shrink-0" />
+            <span>{formattedDate} {isOngoing && '(Active Program)'}</span>
           </div>
           {event.start_time && (
             <div className="flex items-center gap-2">
-              <span className="text-brand-500">⏰</span>
-              {formatTime(event.start_time)}
-              {event.end_time ? ` - ${formatTime(event.end_time)}` : ''}
+              <Clock className="w-4 h-4 text-[#C58A19] shrink-0" />
+              <span>
+                {formatTime(event.start_time)}
+                {event.end_time ? ` - ${formatTime(event.end_time)}` : ''}
+              </span>
             </div>
           )}
           {event.venue_name && (
             <div className="flex items-center gap-2 line-clamp-1">
-              <span className="text-brand-500">📍</span>
-              {event.venue_name}
+              <MapPin className="w-4 h-4 text-[#C58A19] shrink-0" />
+              <span className="truncate">{event.venue_name}</span>
             </div>
           )}
         </div>

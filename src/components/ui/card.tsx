@@ -12,9 +12,9 @@ export function Card({ children, className, hover = false, glow = false }: CardP
   return (
     <div
       className={cn(
-        'bg-navy-800/80 border border-navy-700/50 rounded-xl backdrop-blur-sm',
-        hover && 'transition-all duration-300 hover:shadow-card-hover hover:border-navy-600/50 hover:-translate-y-0.5',
-        glow && 'shadow-glow',
+        'bg-white border border-[#E7E5DF] rounded-2xl shadow-[0_2px_12px_-2px_rgba(20,37,68,0.05)]',
+        hover && 'transition-all duration-300 hover:shadow-[0_12px_28px_-4px_rgba(20,37,68,0.1)] hover:border-[#C58A19]/40 hover:-translate-y-1',
+        glow && 'shadow-[0_0_25px_rgba(197,138,25,0.18)]',
         className
       )}
     >
@@ -25,19 +25,19 @@ export function Card({ children, className, hover = false, glow = false }: CardP
 
 export function CardHeader({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('px-6 py-4 border-b border-navy-700/50', className)}>
+    <div className={cn('px-6 py-4 border-b border-[#E7E5DF]', className)}>
       {children}
     </div>
   );
 }
 
 export function CardContent({ children, className }: { children: React.ReactNode; className?: string }) {
-  return <div className={cn('px-6 py-4', className)}>{children}</div>;
+  return <div className={cn('px-6 py-5', className)}>{children}</div>;
 }
 
 export function CardFooter({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn('px-6 py-4 border-t border-navy-700/50', className)}>
+    <div className={cn('px-6 py-4 border-t border-[#E7E5DF] bg-[#F8F7F4]/50 rounded-b-2xl', className)}>
       {children}
     </div>
   );

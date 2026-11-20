@@ -49,22 +49,22 @@ export function EnrollmentsClient({ enrollments }: { enrollments: EnrollmentProp
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-navy-900/80 border border-navy-800 p-4 rounded-2xl">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white border border-[#E7E5DF] p-4 rounded-2xl shadow-sm">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-navy-400 absolute left-3 top-3" />
+            <Search className="w-4 h-4 text-[#8896AB] absolute left-3 top-3" />
             <input
               type="text"
               placeholder="Search enrollments by student or course..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-navy-950/80 border border-navy-700/60 rounded-xl text-sm text-white placeholder:text-navy-400 focus:border-brand-500"
+              className="w-full pl-9 pr-4 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] placeholder:text-[#8896AB] focus:border-[#C58A19] focus:bg-white outline-none transition-all"
             />
           </div>
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="px-3 py-2 bg-navy-950/80 border border-navy-700/60 rounded-xl text-sm text-white focus:border-brand-500"
+            className="px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none"
           >
             <option value="all">All Statuses</option>
             <option value="pending">Pending</option>
@@ -75,16 +75,16 @@ export function EnrollmentsClient({ enrollments }: { enrollments: EnrollmentProp
         </div>
       </div>
 
-      <div className="bg-navy-900/80 border border-navy-800 rounded-2xl overflow-hidden shadow-xl">
+      <div className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden shadow-sm">
         {filtered.length === 0 ? (
           <div className="py-16 text-center space-y-3">
-            <BookOpen className="w-12 h-12 text-navy-400 mx-auto opacity-50" />
-            <p className="text-lg font-semibold text-white">No enrollments found</p>
+            <BookOpen className="w-12 h-12 text-[#C58A19] mx-auto opacity-40" />
+            <p className="text-lg font-bold text-[#142544] font-heading">No enrollments found</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
-              <thead className="bg-navy-950/80 text-xs font-semibold uppercase tracking-wider text-navy-300 border-b border-navy-800">
+              <thead className="bg-[#F8F7F4] text-xs font-semibold uppercase tracking-wider text-[#647084] border-b border-[#E7E5DF]">
                 <tr>
                   <th className="px-6 py-4">Student</th>
                   <th className="px-6 py-4">Course</th>
@@ -94,41 +94,41 @@ export function EnrollmentsClient({ enrollments }: { enrollments: EnrollmentProp
                   <th className="px-6 py-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-navy-800/60 text-sm">
+              <tbody className="divide-y divide-[#E7E5DF] text-sm">
                 {filtered.map((e) => {
                   const p = (e.student?.profile || {}) as { first_name?: string; last_name?: string; email?: string };
                   return (
-                    <tr key={e.id} className="hover:bg-navy-800/40 transition-colors">
-                      <td className="px-6 py-4 font-semibold text-white">
+                    <tr key={e.id} className="hover:bg-[#F8F7F4]/60 transition-colors">
+                      <td className="px-6 py-4 font-semibold text-[#142544]">
                         <div className="flex items-center gap-2">
-                          <User className="w-4 h-4 text-brand-400" />
+                          <User className="w-4 h-4 text-[#C58A19]" />
                           <div>
                             <p>{p.first_name || 'Student'} {p.last_name || ''}</p>
-                            <p className="text-xs font-normal text-navy-300">{p.email}</p>
+                            <p className="text-xs font-normal text-[#647084]">{p.email}</p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 font-semibold text-brand-300">
+                      <td className="px-6 py-4 font-semibold text-[#142544]">
                         <p>{e.course?.name || 'Music Program'}</p>
                         {e.course?.level && (
-                          <span className="text-[11px] font-normal text-navy-400 uppercase tracking-wider block mt-0.5">
+                          <span className="text-[11px] font-normal text-[#8896AB] uppercase tracking-wider block mt-0.5">
                             Level: {e.course.level.replace('_', ' ')}
                           </span>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-white font-bold">{formatCurrency(e.price_at_enrollment || 0)}</td>
+                      <td className="px-6 py-4 text-[#C58A19] font-bold">{formatCurrency(e.price_at_enrollment || 0)}</td>
                       <td className="px-6 py-4">
                         <Badge variant={e.status === 'active' ? 'default' : e.status === 'pending' ? 'info' : 'default'}>
                           {e.status}
                         </Badge>
                       </td>
-                      <td className="px-6 py-4 text-navy-300">{formatDate(e.created_at)}</td>
+                      <td className="px-6 py-4 text-[#8896AB] text-xs">{formatDate(e.created_at)}</td>
                       <td className="px-6 py-4 text-right space-x-2">
                         {e.status !== 'active' && (
                           <button
                             onClick={() => handleStatusUpdate(e.id, 'active')}
                             disabled={loadingId === e.id}
-                            className="px-3 py-1.5 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-xs transition-colors inline-flex items-center gap-1 shadow-sm"
+                            className="px-3.5 py-1.5 bg-[#23845B] hover:bg-[#1E6F4D] text-white font-medium rounded-full text-xs transition-colors inline-flex items-center gap-1 shadow-sm"
                           >
                             {loadingId === e.id ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <CheckCircle2 className="w-3.5 h-3.5" />}
                             <span>Approve</span>
@@ -138,7 +138,7 @@ export function EnrollmentsClient({ enrollments }: { enrollments: EnrollmentProp
                           <button
                             onClick={() => handleStatusUpdate(e.id, 'cancelled')}
                             disabled={loadingId === e.id}
-                            className="px-3 py-1.5 bg-red-600/80 hover:bg-red-500 text-white font-bold rounded-lg text-xs transition-colors inline-flex items-center gap-1 shadow-sm"
+                            className="px-3.5 py-1.5 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-medium rounded-full text-xs transition-colors inline-flex items-center gap-1 shadow-sm"
                           >
                             <XCircle className="w-3.5 h-3.5" />
                             <span>Cancel</span>

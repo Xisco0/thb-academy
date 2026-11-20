@@ -5,7 +5,7 @@ export function Spinner({ className, size = 'md' }: { className?: string; size?:
   const sizeClasses = { sm: 'h-4 w-4', md: 'h-6 w-6', lg: 'h-10 w-10' };
   return (
     <svg
-      className={cn('animate-spin text-brand-500', sizeClasses[size], className)}
+      className={cn('animate-spin text-[#C58A19]', sizeClasses[size], className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
@@ -25,7 +25,7 @@ export function PageLoading() {
     <div className="flex items-center justify-center min-h-[60vh]">
       <div className="text-center">
         <Spinner size="lg" className="mx-auto mb-4" />
-        <p className="text-navy-400 text-sm">Loading...</p>
+        <p className="text-[#647084] text-sm font-medium">Loading academy content...</p>
       </div>
     </div>
   );
@@ -35,11 +35,11 @@ export function CardSkeleton({ count = 3 }: { count?: number }) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="bg-navy-800/50 border border-navy-700/30 rounded-xl p-6 animate-pulse">
-          <div className="h-40 bg-navy-700/50 rounded-lg mb-4" />
-          <div className="h-4 bg-navy-700/50 rounded w-3/4 mb-2" />
-          <div className="h-3 bg-navy-700/50 rounded w-1/2 mb-4" />
-          <div className="h-8 bg-navy-700/50 rounded w-1/3" />
+        <div key={i} className="bg-white border border-[#E7E5DF] rounded-2xl p-6 animate-pulse shadow-sm">
+          <div className="h-40 bg-[#F8F7F4] rounded-xl mb-4" />
+          <div className="h-4 bg-[#F8F7F4] rounded w-3/4 mb-2" />
+          <div className="h-3 bg-[#F8F7F4] rounded w-1/2 mb-4" />
+          <div className="h-8 bg-[#F8F7F4] rounded-full w-1/3" />
         </div>
       ))}
     </div>
@@ -48,19 +48,19 @@ export function CardSkeleton({ count = 3 }: { count?: number }) {
 
 export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
-    <div className="bg-navy-800/50 border border-navy-700/30 rounded-xl overflow-hidden animate-pulse">
-      <div className="px-6 py-3 border-b border-navy-700/30">
+    <div className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden animate-pulse shadow-sm">
+      <div className="px-6 py-4 border-b border-[#E7E5DF] bg-[#F8F7F4]">
         <div className="flex gap-4">
           {Array.from({ length: cols }).map((_, i) => (
-            <div key={i} className="h-4 bg-navy-700/50 rounded flex-1" />
+            <div key={i} className="h-4 bg-[#E7E5DF] rounded flex-1" />
           ))}
         </div>
       </div>
       {Array.from({ length: rows }).map((_, i) => (
-        <div key={i} className="px-6 py-4 border-b border-navy-700/20 last:border-0">
+        <div key={i} className="px-6 py-4 border-b border-[#E7E5DF] last:border-0">
           <div className="flex gap-4">
             {Array.from({ length: cols }).map((_, j) => (
-              <div key={j} className="h-3 bg-navy-700/30 rounded flex-1" />
+              <div key={j} className="h-3 bg-[#F8F7F4] rounded flex-1" />
             ))}
           </div>
         </div>

@@ -29,7 +29,7 @@ export default async function StudentLayout({
 
   return (
     <SessionInactivityProvider>
-      <div className="min-h-screen bg-navy-950 text-slate-200">
+      <div className="min-h-screen bg-[#F8F7F4] text-[#17243A]">
         <NavBar user={user} />
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
           {children}

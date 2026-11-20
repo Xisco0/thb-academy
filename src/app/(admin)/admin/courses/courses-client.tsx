@@ -165,22 +165,22 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
   return (
     <div className="space-y-6">
       {/* Top Filter & Add Bar */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-navy-900/80 border border-navy-800 p-4 rounded-2xl">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white border border-[#E7E5DF] p-4 rounded-2xl shadow-sm">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 text-navy-400 absolute left-3 top-3" />
+            <Search className="w-4 h-4 text-[#8896AB] absolute left-3 top-3" />
             <input
               type="text"
               placeholder="Search courses by name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-navy-950/80 border border-navy-700/60 rounded-xl text-sm text-white placeholder:text-navy-400 focus:border-brand-500"
+              className="w-full pl-9 pr-4 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] placeholder:text-[#8896AB] focus:border-[#C58A19] focus:bg-white outline-none transition-all"
             />
           </div>
           <select
             value={levelFilter}
             onChange={(e) => setLevelFilter(e.target.value)}
-            className="px-3 py-2 bg-navy-950/80 border border-navy-700/60 rounded-xl text-sm text-white focus:border-brand-500"
+            className="px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none"
           >
             <option value="all">All Levels</option>
             <option value="beginner">Beginner</option>
@@ -191,7 +191,7 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
 
         <button
           onClick={openAddModal}
-          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl text-sm transition-all shadow-glow cursor-pointer shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-[#C58A19] hover:bg-[#A37013] text-white font-semibold rounded-full text-sm transition-all shadow-sm cursor-pointer shrink-0"
         >
           <Plus className="w-4 h-4" />
           <span>Add New Course</span>
@@ -201,16 +201,16 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
       {/* Courses Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map((course) => (
-          <div key={course.id} className="bg-navy-900/80 border border-navy-800 rounded-2xl overflow-hidden flex flex-col justify-between hover:border-brand-500/30 transition-all shadow-lg group">
+          <div key={course.id} className="bg-white border border-[#E7E5DF] rounded-2xl overflow-hidden flex flex-col justify-between hover:border-[#C58A19] transition-all shadow-sm hover:shadow-md group">
             <div className="space-y-4 p-5">
-              <div className="h-40 bg-navy-950 rounded-xl overflow-hidden relative border border-navy-800">
+              <div className="h-44 bg-[#F8F7F4] rounded-xl overflow-hidden relative border border-[#E7E5DF]">
                 {course.image_url ? (
                   <img src={course.image_url} alt={course.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center text-4xl text-brand-500/40 font-heading">🎶</div>
+                  <div className="w-full h-full flex items-center justify-center text-4xl text-[#C58A19]/40 font-heading">🎶</div>
                 )}
                 {course.is_featured && (
-                  <span className="absolute top-2.5 right-2.5 px-2.5 py-1 bg-amber-500 text-white text-[10px] font-bold rounded-full flex items-center gap-1 shadow-md">
+                  <span className="absolute top-2.5 right-2.5 px-2.5 py-1 bg-[#C58A19] text-white text-[10px] font-bold rounded-full flex items-center gap-1 shadow-sm">
                     <Sparkles className="w-3 h-3" /> Featured
                   </span>
                 )}
@@ -218,25 +218,25 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
 
               <div>
                 <div className="flex items-center justify-between text-xs mb-2">
-                  <span className="text-brand-400 font-bold uppercase tracking-wider">{course.instrument?.name || 'Music Course'}</span>
+                  <span className="text-[#C58A19] font-bold uppercase tracking-wider">{course.instrument?.name || 'Music Course'}</span>
                   <LevelBadge level={course.level} />
                 </div>
-                <h3 className="text-lg font-bold font-heading text-white">{course.name}</h3>
-                <p className="text-xs text-navy-300 line-clamp-2 mt-1">{course.description || 'Professional music training module.'}</p>
+                <h3 className="text-lg font-bold font-heading text-[#142544]">{course.name}</h3>
+                <p className="text-xs text-[#647084] line-clamp-2 mt-1">{course.description || 'Professional music training module.'}</p>
               </div>
 
-              <div className="flex items-center justify-between pt-2 text-sm border-t border-navy-800">
-                <span className="text-xs text-navy-300 font-medium">Duration: <strong className="text-white">{course.duration || '4 Weeks'}</strong></span>
-                <span className="font-bold text-brand-400 font-heading">{formatCoursePrice(course.price)}</span>
+              <div className="flex items-center justify-between pt-3 text-sm border-t border-[#E7E5DF]">
+                <span className="text-xs text-[#647084] font-medium">Duration: <strong className="text-[#142544]">{course.duration || '4 Weeks'}</strong></span>
+                <span className="font-bold text-[#C58A19] font-heading">{formatCoursePrice(course.price)}</span>
               </div>
             </div>
 
-            <div className="px-5 py-3 bg-navy-950/60 border-t border-navy-800 flex items-center justify-end gap-2">
-              <button onClick={() => openEditModal(course)} className="p-2 text-navy-300 hover:text-white hover:bg-navy-700/60 rounded-lg transition-colors inline-flex items-center gap-1 text-xs">
+            <div className="px-5 py-3 bg-[#F8F7F4]/60 border-t border-[#E7E5DF] flex items-center justify-end gap-2">
+              <button onClick={() => openEditModal(course)} className="p-2 text-[#647084] hover:text-[#142544] hover:bg-white rounded-lg transition-colors inline-flex items-center gap-1 text-xs">
                 <Edit2 className="w-3.5 h-3.5" />
                 <span>Edit</span>
               </button>
-              <button onClick={() => setDeletingId(course.id)} className="p-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 rounded-lg transition-colors inline-flex items-center gap-1 text-xs">
+              <button onClick={() => setDeletingId(course.id)} className="p-2 text-[#DC2626] hover:bg-red-50 rounded-lg transition-colors inline-flex items-center gap-1 text-xs">
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Delete</span>
               </button>
@@ -247,49 +247,49 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
 
       {/* Add / Edit Course Modal */}
       {(isAddOpen || editingItem) && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="bg-navy-900 border border-navy-700/80 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between px-6 py-4 border-b border-navy-800 bg-navy-950/60">
-              <h3 className="font-heading text-lg font-bold text-white">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white border border-[#E7E5DF] rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[#E7E5DF] bg-[#F8F7F4]/60">
+              <h3 className="font-heading text-lg font-bold text-[#142544]">
                 {isAddOpen ? 'Add New Course' : 'Edit Course'}
               </h3>
-              <button onClick={() => { setIsAddOpen(false); setEditingItem(null); }} className="text-navy-400 hover:text-white p-1 rounded-lg">
+              <button onClick={() => { setIsAddOpen(false); setEditingItem(null); }} className="text-[#647084] hover:text-[#142544] p-1 rounded-lg">
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <form onSubmit={isAddOpen ? handleAddSubmit : handleEditSubmit} className="p-6 space-y-4 overflow-y-auto flex-1">
               {errorMsg && (
-                <div className="p-3.5 bg-red-500/15 border border-red-500/30 rounded-xl text-red-300 text-xs flex items-center gap-2">
+                <div className="p-3.5 bg-[#FEF2F2] border border-[#FECACA] rounded-xl text-[#991B1B] text-xs flex items-center gap-2">
                   <AlertCircle className="w-4 h-4 shrink-0" />
                   <span>{errorMsg}</span>
                 </div>
               )}
               {successMsg && (
-                <div className="p-3.5 bg-green-500/15 border border-green-500/30 rounded-xl text-green-300 text-xs flex items-center gap-2">
+                <div className="p-3.5 bg-[#F0FDF4] border border-[#BBF7D0] rounded-xl text-[#166534] text-xs flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 shrink-0" />
                   <span>{successMsg}</span>
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1">Course Name *</label>
-                <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500" placeholder="Keyboard Masterclass" />
+                <label className="block text-xs font-semibold text-[#142544] mb-1">Course Name *</label>
+                <input type="text" required value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] focus:bg-white outline-none" placeholder="Keyboard Masterclass" />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs font-semibold text-navy-200">Instrument *</label>
-                    <a href="/admin/instruments" target="_blank" rel="noreferrer" className="text-[10px] text-brand-400 hover:underline">
-                      + Add New Instrument
+                    <label className="block text-xs font-semibold text-[#142544]">Instrument *</label>
+                    <a href="/admin/instruments" target="_blank" rel="noreferrer" className="text-[10px] text-[#C58A19] hover:underline">
+                      + Add Instrument
                     </a>
                   </div>
                   <select
                     required
                     value={form.instrument_id}
                     onChange={(e) => setForm({ ...form, instrument_id: e.target.value })}
-                    className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500"
+                    className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none"
                   >
                     {instruments.length === 0 ? (
                       <option value="">No instruments found (Add instrument first)</option>
@@ -303,8 +303,8 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Instructor</label>
-                  <select value={form.instructor_id} onChange={(e) => setForm({ ...form, instructor_id: e.target.value })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500">
+                  <label className="block text-xs font-semibold text-[#142544] mb-1">Instructor</label>
+                  <select value={form.instructor_id} onChange={(e) => setForm({ ...form, instructor_id: e.target.value })} className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none">
                     <option value="">None Assigned</option>
                     {instructors.map((inst) => (
                       <option key={inst.id} value={inst.id}>{inst.first_name} {inst.last_name}</option>
@@ -315,8 +315,8 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Skill Level *</label>
-                  <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500">
+                  <label className="block text-xs font-semibold text-[#142544] mb-1">Skill Level *</label>
+                  <select value={form.level} onChange={(e) => setForm({ ...form, level: e.target.value })} className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] outline-none">
                     <option value="beginner">Beginner</option>
                     <option value="intermediate">Intermediate</option>
                     <option value="advanced">Advanced</option>
@@ -324,20 +324,20 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Tuition Fee (NGN) *</label>
-                  <input type="number" required value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500" placeholder="50000" />
+                  <label className="block text-xs font-semibold text-[#142544] mb-1">Tuition Fee (NGN) *</label>
+                  <input type="number" required value={form.price} onChange={(e) => setForm({ ...form, price: Number(e.target.value) })} className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] focus:bg-white outline-none" placeholder="50000" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-navy-200 mb-1">Duration *</label>
-                  <input type="text" required value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500" placeholder="e.g. 4 Weeks" />
+                  <label className="block text-xs font-semibold text-[#142544] mb-1">Duration *</label>
+                  <input type="text" required value={form.duration} onChange={(e) => setForm({ ...form, duration: e.target.value })} className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] focus:bg-white outline-none" placeholder="e.g. 4 Weeks" />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1">Course Banner Image (Choose File from Device)</label>
+                <label className="block text-xs font-semibold text-[#142544] mb-1">Course Banner Image (Choose File from Device)</label>
                 <div className="flex items-center gap-3">
                   {form.image_url && (
-                    <img src={form.image_url} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-brand-500/40 shrink-0" />
+                    <img src={form.image_url} alt="Preview" className="w-12 h-12 rounded-xl object-cover border border-[#E7E5DF] shrink-0" />
                   )}
                   <input
                     type="file"
@@ -354,24 +354,24 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
                         }
                       }
                     }}
-                    className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-xs text-navy-300 file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-500 file:text-white hover:file:bg-brand-400 cursor-pointer"
+                    className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-xs text-[#647084] file:mr-3 file:py-1 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#142544] file:text-white hover:file:bg-[#243653] cursor-pointer"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-navy-200 mb-1">Course Description</label>
-                <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 bg-navy-950 border border-navy-700 rounded-xl text-sm text-white focus:border-brand-500 resize-none" placeholder="Course overview..." />
+                <label className="block text-xs font-semibold text-[#142544] mb-1">Course Description</label>
+                <textarea rows={3} value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="w-full px-3 py-2 bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl text-sm text-[#142544] focus:border-[#C58A19] focus:bg-white outline-none resize-none" placeholder="Course overview..." />
               </div>
 
               <div className="flex items-center gap-2 pt-2">
-                <input type="checkbox" id="is_featured" checked={form.is_featured} onChange={(e) => setForm({ ...form, is_featured: e.target.checked })} className="w-4 h-4 rounded text-amber-500 focus:ring-amber-500" />
-                <label htmlFor="is_featured" className="text-xs font-semibold text-white">Feature on Homepage</label>
+                <input type="checkbox" id="is_featured" checked={form.is_featured} onChange={(e) => setForm({ ...form, is_featured: e.target.checked })} className="w-4 h-4 rounded text-[#C58A19] focus:ring-[#C58A19]" />
+                <label htmlFor="is_featured" className="text-xs font-semibold text-[#142544]">Feature on Homepage</label>
               </div>
 
-              <div className="pt-4 border-t border-navy-800 flex justify-end gap-3">
-                <button type="button" onClick={() => { setIsAddOpen(false); setEditingItem(null); }} className="px-4 py-2 text-sm text-navy-300 hover:text-white">Cancel</button>
-                <button type="submit" disabled={loading} className="px-6 py-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl text-sm shadow-glow flex items-center gap-2">
+              <div className="pt-4 border-t border-[#E7E5DF] flex justify-end gap-3">
+                <button type="button" onClick={() => { setIsAddOpen(false); setEditingItem(null); }} className="px-4 py-2 text-sm text-[#647084] hover:text-[#142544]">Cancel</button>
+                <button type="submit" disabled={loading} className="px-6 py-2.5 bg-[#C58A19] hover:bg-[#A37013] text-white font-semibold rounded-full text-sm shadow-sm flex items-center gap-2">
                   {loading && <Loader2 className="w-4 h-4 animate-spin" />}
                   <span>{isAddOpen ? 'Create Course' : 'Save Changes'}</span>
                 </button>
@@ -383,16 +383,16 @@ export function CoursesClient({ courses, instruments, instructors }: { courses: 
 
       {/* Delete Confirmation Modal */}
       {deletingId && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-fade-in">
-          <div className="bg-navy-900 border border-navy-800 rounded-2xl w-full max-w-sm p-6 text-center space-y-4 shadow-2xl">
-            <div className="w-12 h-12 rounded-full bg-red-500/15 text-red-400 flex items-center justify-center mx-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white border border-[#E7E5DF] rounded-2xl w-full max-w-sm p-6 text-center space-y-4 shadow-2xl">
+            <div className="w-12 h-12 rounded-full bg-red-50 text-[#DC2626] flex items-center justify-center mx-auto">
               <Trash2 className="w-6 h-6" />
             </div>
-            <h3 className="text-lg font-bold text-white font-heading">Delete Course Record?</h3>
-            <p className="text-xs text-navy-300 leading-relaxed">Are you sure you want to delete this course? This action cannot be undone.</p>
+            <h3 className="text-lg font-bold text-[#142544] font-heading">Delete Course Record?</h3>
+            <p className="text-xs text-[#647084] leading-relaxed">Are you sure you want to delete this course? This action cannot be undone.</p>
             <div className="flex items-center justify-center gap-3 pt-2">
-              <button onClick={() => setDeletingId(null)} className="px-4 py-2 text-sm text-navy-300 hover:text-white">Cancel</button>
-              <button onClick={handleDelete} disabled={loading} className="px-5 py-2 bg-red-600 hover:bg-red-500 text-white font-bold rounded-xl text-sm shadow-md">{loading ? 'Deleting...' : 'Delete'}</button>
+              <button onClick={() => setDeletingId(null)} className="px-4 py-2 text-sm text-[#647084] hover:text-[#142544]">Cancel</button>
+              <button onClick={handleDelete} disabled={loading} className="px-5 py-2 bg-[#DC2626] hover:bg-[#B91C1C] text-white font-semibold rounded-full text-sm shadow-sm">{loading ? 'Deleting...' : 'Delete'}</button>
             </div>
           </div>
         </div>

@@ -75,15 +75,15 @@ export function PerformanceGalleryManager({ initialPhotos }: PerformanceGalleryC
   };
 
   return (
-    <div className="bg-navy-900/90 border border-navy-700/80 rounded-2xl p-6 sm:p-8 space-y-6 shadow-xl">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-navy-800 pb-4">
+    <div className="bg-white border border-[#E7E5DF] rounded-2xl p-6 sm:p-8 space-y-6 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#E7E5DF] pb-5">
         <div>
-          <div className="flex items-center gap-2 text-brand-400 font-bold text-xs uppercase tracking-widest mb-1">
+          <div className="flex items-center gap-2 text-[#C58A19] font-bold text-xs uppercase tracking-widest mb-1">
             <Sparkles className="w-4 h-4" />
             <span>Service Gallery Management</span>
           </div>
-          <h2 className="text-xl font-heading font-bold text-white">Stage & Event Performance Gallery</h2>
-          <p className="text-xs text-navy-300">
+          <h2 className="text-xl font-heading font-bold text-[#142544]">Stage & Event Performance Gallery</h2>
+          <p className="text-xs text-[#647084] mt-1">
             Upload and organize performance photos that appear on the public Stage Performances page.
           </p>
         </div>
@@ -91,33 +91,33 @@ export function PerformanceGalleryManager({ initialPhotos }: PerformanceGalleryC
         <button
           onClick={handleSave}
           disabled={loading}
-          className="px-6 py-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold rounded-xl text-xs uppercase tracking-wider transition-all shadow-glow flex items-center justify-center gap-2 cursor-pointer shrink-0"
+          className="px-6 py-2.5 bg-[#C58A19] hover:bg-[#A37013] text-white font-semibold rounded-full text-xs uppercase tracking-wider transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer shrink-0"
         >
           {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-          <span>Save Performance Gallery</span>
+          <span>Save Gallery</span>
         </button>
       </div>
 
       {errorMsg && (
-        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-start gap-3 text-red-300 text-sm">
-          <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-[#FEF2F2] border border-[#FECACA] flex items-start gap-3 text-[#991B1B] text-sm">
+          <AlertCircle className="w-5 h-5 text-[#DC2626] shrink-0 mt-0.5" />
           <span>{errorMsg}</span>
         </div>
       )}
 
       {successMsg && (
-        <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-start gap-3 text-emerald-300 text-sm">
-          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" />
+        <div className="p-4 rounded-xl bg-[#F0FDF4] border border-[#BBF7D0] flex items-start gap-3 text-[#166534] text-sm">
+          <CheckCircle2 className="w-5 h-5 text-[#23845B] shrink-0 mt-0.5" />
           <span>{successMsg}</span>
         </div>
       )}
 
       {/* Upload Zone */}
-      <div className="p-6 bg-navy-950 border border-dashed border-navy-700 rounded-2xl text-center space-y-3">
-        <Upload className="w-8 h-8 text-brand-400 mx-auto" />
+      <div className="p-8 bg-[#F8F7F4] border border-dashed border-[#E7E5DF] hover:border-[#C58A19] rounded-2xl text-center space-y-3 transition-colors">
+        <Upload className="w-8 h-8 text-[#C58A19] mx-auto" />
         <div>
-          <h4 className="text-sm font-bold text-white">Upload Performance Photos from Device</h4>
-          <p className="text-xs text-navy-400">Support JPG, PNG, WEBP. Photos will be automatically compressed for optimal speed.</p>
+          <h4 className="text-sm font-bold text-[#142544]">Upload Performance Photos from Device</h4>
+          <p className="text-xs text-[#647084] mt-0.5">Support JPG, PNG, WEBP. Photos will be automatically compressed for optimal speed.</p>
         </div>
         <input
           type="file"
@@ -129,9 +129,9 @@ export function PerformanceGalleryManager({ initialPhotos }: PerformanceGalleryC
         />
         <label
           htmlFor="admin-performance-upload"
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-navy-900 hover:bg-navy-800 border border-navy-700 text-brand-300 text-xs font-bold rounded-xl cursor-pointer transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-white hover:bg-[#F5F0E6] border border-[#E7E5DF] text-[#142544] text-xs font-semibold rounded-full cursor-pointer transition-colors shadow-xs"
         >
-          <ImageIcon className="w-4 h-4" />
+          <ImageIcon className="w-4 h-4 text-[#C58A19]" />
           <span>Choose Photos to Add</span>
         </label>
       </div>
@@ -140,13 +140,13 @@ export function PerformanceGalleryManager({ initialPhotos }: PerformanceGalleryC
       {photos.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
           {photos.map((photo) => (
-            <div key={photo.id} className="bg-navy-950 border border-navy-800 rounded-xl p-3 space-y-3 relative group">
-              <div className="h-40 relative rounded-lg overflow-hidden bg-black">
+            <div key={photo.id} className="bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl p-3 space-y-3 relative group">
+              <div className="h-40 relative rounded-lg overflow-hidden bg-white">
                 <img src={photo.image_url} alt={photo.title} className="w-full h-full object-cover" />
                 <button
                   type="button"
                   onClick={() => removePhoto(photo.id)}
-                  className="absolute top-2 right-2 p-1.5 bg-red-500/80 hover:bg-red-600 text-white rounded-full transition-colors cursor-pointer"
+                  className="absolute top-2 right-2 p-1.5 bg-[#DC2626] text-white rounded-full transition-colors cursor-pointer shadow-sm"
                   title="Remove photo"
                 >
                   <X className="w-4 h-4" />
@@ -159,15 +159,15 @@ export function PerformanceGalleryManager({ initialPhotos }: PerformanceGalleryC
                   placeholder="Title (e.g. Wedding Brass Fanfare)..."
                   value={photo.title}
                   onChange={(e) => updatePhotoField(photo.id, 'title', e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-navy-900 border border-navy-800 rounded-lg text-xs text-white placeholder:text-navy-500 focus:border-brand-500 font-bold"
+                  className="w-full px-2.5 py-1.5 bg-white border border-[#E7E5DF] rounded-lg text-xs text-[#142544] placeholder:text-[#8896AB] focus:border-[#C58A19] font-semibold outline-none"
                 />
 
                 <div className="flex items-center gap-2">
-                  <span className="text-[10px] text-navy-400 font-bold uppercase shrink-0">Category:</span>
+                  <span className="text-[10px] text-[#647084] font-bold uppercase shrink-0">Category:</span>
                   <select
                     value={photo.category}
                     onChange={(e) => updatePhotoField(photo.id, 'category', e.target.value as any)}
-                    className="w-full px-2 py-1 bg-navy-900 border border-navy-800 rounded-lg text-xs text-brand-300 focus:border-brand-500 font-medium"
+                    className="w-full px-2 py-1 bg-white border border-[#E7E5DF] rounded-lg text-xs text-[#142544] focus:border-[#C58A19] font-medium outline-none"
                   >
                     <option value="wedding">Wedding</option>
                     <option value="church">Church Event</option>
@@ -182,14 +182,14 @@ export function PerformanceGalleryManager({ initialPhotos }: PerformanceGalleryC
                   placeholder="Caption (e.g. Performed live in Lagos)..."
                   value={photo.caption}
                   onChange={(e) => updatePhotoField(photo.id, 'caption', e.target.value)}
-                  className="w-full px-2.5 py-1.5 bg-navy-900 border border-navy-800 rounded-lg text-xs text-navy-200 placeholder:text-navy-500 focus:border-brand-500"
+                  className="w-full px-2.5 py-1.5 bg-white border border-[#E7E5DF] rounded-lg text-xs text-[#647084] placeholder:text-[#8896AB] focus:border-[#C58A19] outline-none"
                 />
               </div>
             </div>
           ))}
         </div>
       ) : (
-        <div className="p-8 text-center text-navy-400 text-xs bg-navy-950/60 rounded-xl border border-navy-800">
+        <div className="p-8 text-center text-[#8896AB] text-xs bg-[#F8F7F4] rounded-xl border border-[#E7E5DF]">
           No performance photos added yet. Upload photos above to build the gallery.
         </div>
       )}

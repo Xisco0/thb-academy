@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import { getEventBySlug, getWebsiteSettings, getAllEventSlugs } from '@/lib/queries/public';
 import { eventSchema as eventJsonLd, JsonLd, breadcrumbSchema } from '@/lib/seo';
 import { formatDate, formatTime } from '@/lib/utils';
-import { Phone, MessageCircle } from 'lucide-react';
+import { Phone, MessageCircle, Calendar, Clock, MapPin, ArrowRight } from 'lucide-react';
 import { parseEventActivityPhotos } from '@/lib/event-gallery-utils';
 import { EventActivityGallery } from './event-gallery-client';
 
@@ -96,7 +96,7 @@ export default async function EventDetailsPage({ params }: Props) {
   const isPast = now > endDate;
 
   return (
-    <>
+    <main className="min-h-screen bg-white text-[#17243A] pt-24 pb-20">
       <JsonLd data={eventJsonLd(event, settings)} />
       <JsonLd
         data={breadcrumbSchema([
@@ -106,126 +106,102 @@ export default async function EventDetailsPage({ params }: Props) {
         ])}
       />
 
-      {/* Hero */}
-      <section className="pt-32 pb-12 px-4 bg-navy-900 border-b border-navy-800/50">
-        <div className="max-w-4xl mx-auto">
-          <nav className="text-sm text-navy-400 mb-6 flex items-center gap-2">
-            <Link href="/" className="hover:text-brand-400 transition-colors">Home</Link>
-            <span>›</span>
-            <Link href="/events" className="hover:text-brand-400 transition-colors">Events</Link>
-            <span>›</span>
-            <span className="text-navy-200 truncate">{event.title}</span>
+      {/* 1. Header / Hero */}
+      <section className="py-12 px-4 bg-gradient-to-b from-[#F8F7F4] via-white to-white border-b border-[#E7E5DF]">
+        <div className="max-w-5xl mx-auto space-y-6">
+          <nav className="text-xs sm:text-sm text-[#647084] flex items-center gap-2">
+            <Link href="/" className="hover:text-[#C58A19] transition-colors">Home</Link>
+            <span>&rsaquo;</span>
+            <Link href="/events" className="hover:text-[#C58A19] transition-colors">Events</Link>
+            <span>&rsaquo;</span>
+            <span className="text-[#142544] font-medium truncate max-w-xs">{event.title}</span>
           </nav>
 
-          <div className="mb-4">
+          <div className="flex flex-wrap items-center gap-3">
             <span
               className={`inline-flex items-center px-3.5 py-1 text-xs font-bold rounded-full border ${
                 isOngoing
-                  ? 'bg-green-500/20 text-green-400 border-green-500/40 animate-pulse'
+                  ? 'bg-[#23845B]/15 text-[#23845B] border-[#23845B]/30'
                   : isPast
-                  ? 'bg-navy-700/50 text-navy-400 border-navy-600/50'
-                  : 'bg-brand-500/10 text-brand-400 border-brand-500/20'
+                  ? 'bg-[#F8F7F4] text-[#647084] border-[#E7E5DF]'
+                  : 'bg-[#F8EBCB] text-[#9A680C] border-[#C58A19]/30'
               }`}
             >
               {isOngoing ? '● Active & Ongoing Program' : isPast ? 'Completed' : 'Upcoming Event'}
             </span>
           </div>
 
-          <h1 className="font-heading text-3xl md:text-5xl text-white font-bold mb-8 leading-tight">
+          <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl text-[#142544] font-bold leading-tight">
             {event.title}
           </h1>
 
-          <div className="grid sm:grid-cols-3 gap-6 bg-navy-800/80 p-6 rounded-xl border border-navy-700/50">
+          {/* Quick Schedule Overview Bar */}
+          <div className="grid sm:grid-cols-3 gap-6 bg-white p-6 rounded-2xl border border-[#E7E5DF] shadow-xs">
             <div>
-              <p className="text-xs text-navy-400 font-semibold mb-1 uppercase tracking-wider">Start Date</p>
-              <p className="text-white font-bold text-lg">{formatDate(event.date)}</p>
+              <p className="text-[11px] text-[#647084] font-bold uppercase tracking-wider mb-1">Date</p>
+              <p className="text-[#142544] font-heading font-bold text-base">{formatDate(event.date)}</p>
             </div>
             <div>
-              <p className="text-xs text-navy-400 font-semibold mb-1 uppercase tracking-wider">Daily Session Time</p>
-              <p className="text-white font-bold text-lg">
+              <p className="text-[11px] text-[#647084] font-bold uppercase tracking-wider mb-1">Session Time</p>
+              <p className="text-[#142544] font-heading font-bold text-base">
                 {event.start_time ? formatTime(event.start_time) : 'TBD'}
                 {event.end_time ? ` - ${formatTime(event.end_time)}` : ''}
               </p>
             </div>
             <div>
-              <p className="text-xs text-navy-400 font-semibold mb-1 uppercase tracking-wider">Venue Location</p>
-              <p className="text-white font-bold text-lg">
-                {event.venue_name || 'TBD'}
+              <p className="text-[11px] text-[#647084] font-bold uppercase tracking-wider mb-1">Location / Venue</p>
+              <p className="text-[#142544] font-heading font-bold text-base truncate">
+                {event.venue_name || 'Lagos, Nigeria'}
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Content */}
-      <section className="py-12 px-4">
-        <div className="max-w-4xl mx-auto space-y-10">
-          {event.banner_url && (
-            <div className="w-full bg-navy-950 rounded-2xl overflow-hidden border border-navy-800 p-2 shadow-2xl flex justify-center">
-              <img
-                src={event.banner_url}
-                alt={`${event.title} Banner`}
-                className="max-h-[650px] w-auto h-auto object-contain rounded-xl"
-              />
-            </div>
-          )}
+      {/* 2. Banner & Content */}
+      <section className="py-12 px-4 max-w-5xl mx-auto space-y-10">
+        {event.banner_url && (
+          <div className="rounded-2xl overflow-hidden border border-[#E7E5DF] shadow-sm bg-[#F8F7F4]">
+            <img src={event.banner_url} alt={event.title} className="w-full h-auto object-cover max-h-[500px]" />
+          </div>
+        )}
 
-          {event.description && (
-            <div className="bg-navy-900/80 p-6 rounded-2xl border border-navy-800 text-navy-200 leading-relaxed text-lg">
-              {event.description}
-            </div>
-          )}
+        {/* Detailed Event Text */}
+        <div className="bg-[#F8F7F4] border border-[#E7E5DF] rounded-2xl p-8 space-y-4">
+          <h2 className="font-heading text-2xl font-bold text-[#142544]">
+            Event Details &amp; Overview
+          </h2>
+          <div className="text-[#647084] leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
+            {cleanContent || event.description}
+          </div>
+        </div>
 
-          {cleanContent && (
-            <div className="prose prose-invert max-w-none bg-navy-900/60 p-8 rounded-2xl border border-navy-800 text-navy-200 whitespace-pre-wrap leading-relaxed">
-              {cleanContent}
-            </div>
-          )}
+        {/* Activity Photos Gallery if present */}
+        {photos && photos.length > 0 && (
+          <div className="space-y-6">
+            <h2 className="font-heading text-2xl font-bold text-[#142544]">
+              Program Activity Highlights
+            </h2>
+            <EventActivityGallery photos={photos} />
+          </div>
+        )}
 
-          {/* Event Activities & Photos Gallery */}
-          <EventActivityGallery photos={photos} />
-
-          {event.venue_address && (
-            <div className="p-6 bg-navy-900/80 border border-navy-700/50 rounded-2xl space-y-2">
-              <h3 className="text-white font-bold text-lg">Venue & Address</h3>
-              <p className="text-brand-400 font-semibold">{event.venue_name}</p>
-              <p className="text-navy-300 text-sm">{event.venue_address}</p>
-            </div>
-          )}
-
-          {!isPast && (
-            <div className="p-8 bg-gradient-to-br from-navy-900 to-navy-950 border border-brand-500/30 rounded-2xl shadow-glow text-center space-y-6">
-              <div>
-                <h3 className="font-heading text-3xl text-white font-bold mb-2">
-                  Register for this Free Impact Program
-                </h3>
-                <p className="text-navy-300 text-sm max-w-xl mx-auto">
-                  Limited slots available! First come, first served. Contact program coordinators directly to reserve your slot.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                <a
-                  href="tel:07038595356"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-brand-500 hover:bg-brand-400 text-white font-bold px-8 py-3.5 rounded-xl transition-all shadow-glow cursor-pointer"
-                >
-                  <Phone className="w-5 h-5" />
-                  <span>Call: 070 3859 5356</span>
-                </a>
-                <a
-                  href="https://wa.me/2348077566475?text=Hello%2C%20I%20want%20to%20register%20for%20the%201-Month%20Free%20Music%20Training"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-green-600 hover:bg-green-500 text-white font-bold px-8 py-3.5 rounded-xl transition-all cursor-pointer"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  <span>WhatsApp: 0807 756 6475</span>
-                </a>
-              </div>
-            </div>
-          )}
+        {/* Contact Admissions CTA */}
+        <div className="bg-white border border-[#E7E5DF] rounded-2xl p-8 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div className="space-y-1">
+            <h3 className="font-heading font-bold text-xl text-[#142544]">Have Questions About This Event?</h3>
+            <p className="text-[#647084] text-xs sm:text-sm">Contact our admissions coordinator for participation and seat reservations.</p>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <Link
+              href="/contact"
+              className="px-6 py-3 bg-[#142544] hover:bg-[#243653] text-white font-semibold rounded-full text-xs sm:text-sm transition-all"
+            >
+              Contact Us
+            </Link>
+          </div>
         </div>
       </section>
-    </>
+    </main>
   );
 }

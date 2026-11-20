@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { Menu, X, LogOut } from 'lucide-react';
 import { useSessionAuth } from '@/components/auth/session-inactivity-provider';
 
@@ -81,52 +80,50 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
   return (
     <>
       {/* Mobile Bar Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-navy-900 border-b border-navy-800 px-4 z-40 flex items-center justify-between shadow-md">
+      <div className="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-[#E7E5DF] px-4 z-40 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="p-2 text-white bg-navy-800 border border-navy-700 rounded-xl"
+            className="p-2 text-[#142544] bg-[#F8F7F4] border border-[#E7E5DF] rounded-xl hover:bg-white transition-colors"
             aria-label="Toggle Navigation Drawer"
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
           <Link href="/admin" className="flex items-center gap-2">
             <Image src="/images/logo.png" alt="THB Logo" width={28} height={28} className="w-7 h-7 object-contain" />
-            <span className="text-white font-heading font-bold text-sm">THB Admin</span>
+            <span className="text-[#142544] font-heading font-bold text-sm">THB Admin</span>
           </Link>
         </div>
-
-        <ThemeToggle />
       </div>
 
       {/* Backdrop overlay for mobile */}
       {mobileOpen && (
         <div
           onClick={() => setMobileOpen(false)}
-          className="lg:hidden fixed inset-0 bg-black/70 backdrop-blur-sm z-40 animate-fade-in"
+          className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40 animate-fade-in"
         />
       )}
 
       {/* Sidebar Navigation Container */}
       <aside
         className={cn(
-          'fixed left-0 top-0 h-screen w-64 bg-navy-900 border-r border-navy-800/80 z-50 flex flex-col transition-transform duration-300',
+          'fixed left-0 top-0 h-screen w-64 bg-white border-r border-[#E7E5DF] z-50 flex flex-col transition-transform duration-300 shadow-sm',
           mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         )}
       >
         {/* Top Branding */}
-        <div className="h-16 flex items-center justify-between px-5 border-b border-navy-800">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-[#E7E5DF]">
           <Link href="/admin" className="flex items-center gap-3" onClick={() => setMobileOpen(false)}>
-            <div className="relative w-8 h-8 rounded-xl p-0.5 bg-gradient-to-br from-brand-400 to-amber-500 flex items-center justify-center overflow-hidden shrink-0 shadow-glow">
+            <div className="relative w-8 h-8 rounded-xl p-0.5 bg-[#142544] flex items-center justify-center overflow-hidden shrink-0 shadow-sm">
               <Image src="/images/logo.png" alt="THB Logo" width={28} height={28} className="w-full h-full object-contain" />
             </div>
             <div>
-              <span className="text-white font-heading font-bold text-sm block">THB Academy</span>
-              <span className="text-[10px] text-brand-400 font-semibold uppercase tracking-wider block">Admin Portal</span>
+              <span className="text-[#142544] font-heading font-bold text-sm block tracking-tight">THB Academy</span>
+              <span className="text-[10px] text-[#C58A19] font-bold uppercase tracking-wider block">Admin Portal</span>
             </div>
           </Link>
 
-          <button onClick={() => setMobileOpen(false)} className="lg:hidden p-1.5 text-navy-400 hover:text-white">
+          <button onClick={() => setMobileOpen(false)} className="lg:hidden p-1.5 text-[#647084] hover:text-[#142544]">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -135,7 +132,7 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
         <nav className="flex-1 overflow-y-auto py-5 px-3 space-y-6">
           {navSections.map((section) => (
             <div key={section.title}>
-              <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-navy-400 mb-2">
+              <p className="px-3 text-[10px] font-bold uppercase tracking-widest text-[#8896AB] mb-2">
                 {section.title}
               </p>
               <div className="space-y-1">
@@ -149,8 +146,8 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
                       className={cn(
                         'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-150',
                         isActive
-                          ? 'bg-brand-500/15 text-brand-400 font-bold border border-brand-500/30 shadow-sm'
-                          : 'text-navy-200 hover:text-white hover:bg-navy-800/60'
+                          ? 'bg-[#F5F0E6] text-[#C58A19] font-bold border border-[#C58A19]/30 shadow-sm'
+                          : 'text-[#647084] hover:text-[#142544] hover:bg-[#F8F7F4]'
                       )}
                     >
                       <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,33 +162,28 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
           ))}
         </nav>
 
-        {/* Bottom User Bar & Theme Toggle */}
-        <div className="border-t border-navy-800 p-4 space-y-3 bg-navy-950/60">
+        {/* Bottom User Bar */}
+        <div className="border-t border-[#E7E5DF] p-4 space-y-3 bg-[#F8F7F4]/50">
           <div className="flex items-center justify-between">
             <Link href="/admin/profile" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5 group cursor-pointer hover:opacity-90">
-              <div className="w-8 h-8 rounded-full bg-brand-500/20 border border-brand-500/40 text-brand-400 flex items-center justify-center text-xs font-bold shrink-0 group-hover:border-brand-400 transition-colors">
+              <div className="w-8 h-8 rounded-full bg-[#F5F0E6] border border-[#C58A19]/30 text-[#C58A19] flex items-center justify-center text-xs font-bold shrink-0 group-hover:border-[#C58A19] transition-colors font-heading">
                 {user.firstName.charAt(0)}{user.lastName.charAt(0)}
               </div>
               <div className="min-w-0">
-                <p className="text-white text-xs font-bold truncate group-hover:text-brand-400 transition-colors">
+                <p className="text-[#142544] text-xs font-bold truncate group-hover:text-[#C58A19] transition-colors">
                   {user.firstName} {user.lastName}
                 </p>
-                <p className="text-navy-400 text-[10px] truncate">{user.email}</p>
+                <p className="text-[#8896AB] text-[10px] truncate">{user.email}</p>
               </div>
             </Link>
 
             <button
               onClick={handleLogout}
-              className="p-2 text-navy-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
+              className="p-2 text-[#647084] hover:text-[#DC2626] hover:bg-red-50 rounded-lg transition-colors"
               title="Sign Out"
             >
               <LogOut className="w-4 h-4" />
             </button>
-          </div>
-
-          <div className="pt-2 border-t border-navy-800/60 flex items-center justify-between">
-            <span className="text-[11px] text-navy-400 font-medium">Appearance</span>
-            <ThemeToggle />
           </div>
         </div>
       </aside>
