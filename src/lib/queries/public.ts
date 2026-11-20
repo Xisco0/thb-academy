@@ -25,7 +25,7 @@ export const getWebsiteSettings = unstable_cache(
       const supabase = createPublicClient();
       const { data } = await supabase
         .from('website_settings')
-        .select('id, site_name, tagline, contact_email, contact_phone, address, whatsapp_number, hero_title, hero_subtitle, logo_url')
+        .select('*')
         .single();
       return data as unknown as WebsiteSettings | null;
     } catch (err) {

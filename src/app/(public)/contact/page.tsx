@@ -43,9 +43,9 @@ export const metadata: Metadata = {
 
 export default async function ContactPage() {
   const settings = await getWebsiteSettings();
-  const phone = settings?.contact_phone || '+234 703 859 5356';
+  const phone = settings?.phone || settings?.contact_phone || '+234 703 859 5356';
   const cleanPhone = phone.replace(/\s+/g, '');
-  const email = settings?.contact_email || 'info@thbacademy.org';
+  const email = settings?.email || settings?.contact_email || 'info@thbacademy.org';
   const address = settings?.address || 'Lagos, Nigeria';
 
   return (

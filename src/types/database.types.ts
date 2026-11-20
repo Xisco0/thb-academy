@@ -274,6 +274,13 @@ export interface WebsiteSettings {
   default_seo_description: string | null;
   updated_at: string;
   updated_by: string | null;
+  // Aliases for backwards compatibility
+  contact_phone?: string | null;
+  contact_email?: string | null;
+  whatsapp_number?: string | null;
+  site_name?: string | null;
+  hero_title?: string | null;
+  hero_subtitle?: string | null;
 }
 
 export interface WebsiteContent {
@@ -289,6 +296,13 @@ export interface WebsiteContent {
   is_active: boolean;
   updated_at: string;
   updated_by: string | null;
+  // Aliases for backwards compatibility
+  contact_phone?: string | null;
+  contact_email?: string | null;
+  whatsapp_number?: string | null;
+  site_name?: string | null;
+  hero_title?: string | null;
+  hero_subtitle?: string | null;
 }
 
 export interface UrlRedirect {

@@ -163,19 +163,19 @@ export function Footer({ settings }: FooterProps) {
               <div className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-[#C58A19] shrink-0" />
                 <a
-                  href={`tel:${settings?.contact_phone || '+2347038595356'}`}
+                  href={`tel:${settings?.phone || settings?.contact_phone || '+2347038595356'}`}
                   className="text-xs hover:text-[#C58A19] transition-colors"
                 >
-                  {settings?.contact_phone || '+234 703 859 5356'}
+                  {settings?.phone || settings?.contact_phone || '+234 703 859 5356'}
                 </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-[#C58A19] shrink-0" />
                 <a
-                  href={`mailto:${settings?.contact_email || 'info@thbacademy.org'}`}
+                  href={`mailto:${settings?.email || settings?.contact_email || 'info@thbacademy.org'}`}
                   className="text-xs hover:text-[#C58A19] transition-colors"
                 >
-                  {settings?.contact_email || 'info@thbacademy.org'}
+                  {settings?.email || settings?.contact_email || 'info@thbacademy.org'}
                 </a>
               </div>
             </div>

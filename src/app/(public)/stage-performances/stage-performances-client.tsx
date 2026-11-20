@@ -18,7 +18,7 @@ export function StagePerformancesClient({
 
   const displayGallery = initialGalleryPhotos;
 
-  const phoneNum = settings?.contact_phone || '070 3859 5356';
+  const phoneNum = settings?.phone || settings?.contact_phone || '070 3859 5356';
   const cleanPhone = phoneNum.replace(/\s+/g, '');
 
   const whatsappMsg = encodeURIComponent(
