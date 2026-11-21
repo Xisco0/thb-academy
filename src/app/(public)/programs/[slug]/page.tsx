@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   let imageUrl = `${baseUrl}/images/image.png`;
   if (course.image_url && course.image_url.trim()) {
     const rawImage = course.image_url.trim();
-    if (rawImage.startsWith('data:image')) {
+    if (rawImage.startsWith('data:') || rawImage.includes('base64')) {
       imageUrl = `${baseUrl}/images/image.png`;
     } else if (rawImage.startsWith('http://') || rawImage.startsWith('https://')) {
       imageUrl = rawImage;

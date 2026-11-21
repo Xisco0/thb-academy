@@ -1,4 +1,4 @@
-import { getFeaturedCourses, getUpcomingEvents, getWebsiteSettings } from '@/lib/queries/public';
+import { getFeaturedCourses, getPublishedCourses, getUpcomingEvents, getWebsiteSettings } from '@/lib/queries/public';
 import { formatCoursePrice } from '@/lib/utils';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -62,7 +62,10 @@ export const metadata: Metadata = {
 
 export default async function HomePage() {
   const settings = await getWebsiteSettings();
-  const featuredCourses = await getFeaturedCourses();
+  let featuredCourses = await getFeaturedCourses();
+  if (!featuredCourses || featuredCourses.length === 0) {
+    featuredCourses = await getPublishedCourses();
+  }
   const upcomingEvents = await getUpcomingEvents(3);
 
   const instruments = [
@@ -537,10 +540,17 @@ export default async function HomePage() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#F8F7F4] to-[#F5F0E6] p-6 text-center">
-                      <Music className="w-10 h-10 text-[#C58A19]/50 mb-2" />
-                      <span className="text-xs font-semibold text-[#647084]">THB Music Track</span>
-                    </div>
+                    <img
+                      src={
+                        course.name?.toLowerCase().includes('keyboard') || course.name?.toLowerCase().includes('piano')
+                          ? '/images/programs-keyboards-v2.jpg'
+                          : course.name?.toLowerCase().includes('guitar') || course.name?.toLowerCase().includes('string')
+                          ? '/images/programs-live-v2.jpg'
+                          : '/images/programs-brass-v2.jpg'
+                      }
+                      alt={course.name}
+                      className="w-full h-full object-cover"
+                    />
                   )}
                   <div className="absolute top-3.5 right-3.5 z-10">
                     <LevelBadge level={course.level} />

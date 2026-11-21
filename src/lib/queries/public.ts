@@ -113,30 +113,43 @@ export const getActiveInstruments = unstable_cache(
 function sanitizeCourse<T extends Partial<CourseWithRelations> | null>(course: T): T {
   if (!course) return course;
 
-  // Sanitize oversized base64 image_url
-  if (course.image_url && course.image_url.startsWith('data:image') && course.image_url.length > 50000) {
-    const instSlug = course.instrument?.slug || '';
-    if (instSlug.includes('brass') || instSlug.includes('trumpet') || instSlug.includes('horn')) {
-      course.image_url = '/images/programs-brass-v2.jpg';
-    } else if (instSlug.includes('keyboard') || instSlug.includes('piano')) {
-      course.image_url = '/images/programs-keyboards-v2.jpg';
-    } else {
-      course.image_url = '/images/image.png';
+  // Clone object to avoid mutating frozen/cached references
+  const cloned = { ...course };
+
+  // 1. Sanitize oversized base64 or large inline image_url
+  if (cloned.image_url) {
+    const raw = cloned.image_url.trim();
+    if (raw.startsWith('data:') || raw.includes(';base64,') || (raw.length > 1000 && !raw.startsWith('http'))) {
+      const instSlug = (cloned.instrument && typeof cloned.instrument === 'object' && 'slug' in cloned.instrument)
+        ? (cloned.instrument as any).slug || ''
+        : '';
+      const courseName = (cloned.name || '').toLowerCase();
+
+      if (instSlug.includes('brass') || instSlug.includes('trumpet') || instSlug.includes('horn') || courseName.includes('trumpet') || courseName.includes('brass')) {
+        cloned.image_url = '/images/programs-brass-v2.jpg';
+      } else if (instSlug.includes('keyboard') || instSlug.includes('piano') || courseName.includes('keyboard') || courseName.includes('piano')) {
+        cloned.image_url = '/images/programs-keyboards-v2.jpg';
+      } else if (instSlug.includes('guitar') || instSlug.includes('string') || courseName.includes('guitar')) {
+        cloned.image_url = '/images/programs-live-v2.jpg';
+      } else {
+        cloned.image_url = '/images/image.png';
+      }
     }
   }
 
+  // 2. Sanitize rich text / HTML content that may contain embedded data URLs
   const sanitizeText = (str?: string | null): string | null | undefined => {
     if (!str || typeof str !== 'string') return str;
-    if (str.length < 50000 && !str.includes('data:image/')) return str;
-    return str.replace(/data:image\/[a-zA-Z+]+;base64,[A-Za-z0-9+/=]{10000,}/g, '/images/image.png');
+    if (str.length < 5000 && !str.includes('base64')) return str;
+    return str.replace(/data:[^"'\s\)]+base64,[^"'\s\)]+/gi, '/images/image.png');
   };
 
-  if (course.description) course.description = sanitizeText(course.description);
-  if (course.detailed_content) course.detailed_content = sanitizeText(course.detailed_content);
-  if (course.what_you_learn) course.what_you_learn = sanitizeText(course.what_you_learn);
-  if (course.who_can_join) course.who_can_join = sanitizeText(course.who_can_join);
+  if (cloned.description) cloned.description = sanitizeText(cloned.description);
+  if (cloned.detailed_content) cloned.detailed_content = sanitizeText(cloned.detailed_content);
+  if (cloned.what_you_learn) cloned.what_you_learn = sanitizeText(cloned.what_you_learn);
+  if (cloned.who_can_join) cloned.who_can_join = sanitizeText(cloned.who_can_join);
 
-  return course;
+  return cloned as T;
 }
 
 function sanitizeCourses(courses: CourseWithRelations[]): CourseWithRelations[] {
@@ -147,7 +160,7 @@ export const getPublishedCourses = unstable_cache(
   async (): Promise<CourseWithRelations[]> => {
     try {
       const supabase = createPublicClient();
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('courses')
         .select(`
           id,
@@ -168,13 +181,41 @@ export const getPublishedCourses = unstable_cache(
         `)
         .eq('status', 'published')
         .order('sort_order', { ascending: true });
-      return sanitizeCourses((data as unknown as CourseWithRelations[]) || []);
+
+      let courses = (data as unknown as CourseWithRelations[]) || [];
+
+      // Resilient fallback: If no courses with status='published', try fetching all active courses
+      if (!error && courses.length === 0) {
+        const { data: allData } = await supabase
+          .from('courses')
+          .select(`
+            id,
+            name,
+            slug,
+            description,
+            image_url,
+            level,
+            price,
+            currency,
+            status,
+            is_featured,
+            sort_order,
+            instrument_id,
+            seo_title,
+            seo_description,
+            instrument:instruments(id, name, slug)
+          `)
+          .order('sort_order', { ascending: true });
+        courses = (allData as unknown as CourseWithRelations[]) || [];
+      }
+
+      return sanitizeCourses(courses);
     } catch (err) {
       console.error('getPublishedCourses error:', err);
       return [];
     }
   },
-  ['published-courses'],
+  ['published-courses-v2'],
   { revalidate: CACHE_REVALIDATE_SECONDS, tags: ['courses'] }
 );
 
@@ -182,7 +223,7 @@ export const getFeaturedCourses = unstable_cache(
   async (): Promise<CourseWithRelations[]> => {
     try {
       const supabase = createPublicClient();
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('courses')
         .select(`
           id,
@@ -203,14 +244,67 @@ export const getFeaturedCourses = unstable_cache(
         .eq('is_featured', true)
         .order('sort_order', { ascending: true })
         .limit(6);
-      return sanitizeCourses((data as unknown as CourseWithRelations[]) || []);
+
+      let courses = (data as unknown as CourseWithRelations[]) || [];
+
+      // Resilient fallback: If no courses are explicitly marked is_featured=true,
+      // fallback to the first 6 published courses so the homepage is never empty!
+      if (!error && courses.length === 0) {
+        const { data: fallbackData } = await supabase
+          .from('courses')
+          .select(`
+            id,
+            name,
+            slug,
+            description,
+            image_url,
+            level,
+            price,
+            currency,
+            status,
+            is_featured,
+            sort_order,
+            instrument_id,
+            instrument:instruments(id, name, slug)
+          `)
+          .eq('status', 'published')
+          .order('sort_order', { ascending: true })
+          .limit(6);
+        courses = (fallbackData as unknown as CourseWithRelations[]) || [];
+      }
+
+      // Secondary fallback: If status is not strictly 'published'
+      if (courses.length === 0) {
+        const { data: anyData } = await supabase
+          .from('courses')
+          .select(`
+            id,
+            name,
+            slug,
+            description,
+            image_url,
+            level,
+            price,
+            currency,
+            status,
+            is_featured,
+            sort_order,
+            instrument_id,
+            instrument:instruments(id, name, slug)
+          `)
+          .order('sort_order', { ascending: true })
+          .limit(6);
+        courses = (anyData as unknown as CourseWithRelations[]) || [];
+      }
+
+      return sanitizeCourses(courses);
     } catch (err) {
       console.error('getFeaturedCourses error:', err);
       return [];
     }
   },
-  ['featured-courses'],
-  { revalidate: CACHE_REVALIDATE_SECONDS, tags: ['courses'] }
+  ['featured-courses-v2'],
+  { revalidate: CACHE_REVALIDATE_SECONDS, tags: ['courses', 'featured-courses'] }
 );
 
 export const getCourseBySlug = (slug: string): Promise<CourseWithRelations | null> =>
@@ -261,7 +355,7 @@ export const getCourseBySlug = (slug: string): Promise<CourseWithRelations | nul
           return sanitizeCourse(fallbackData as unknown as CourseWithRelations);
         }
 
-        // 3. Case-insensitive fallback
+        // 3. Case-insensitive slug fallback
         const { data: ilikeData } = await supabase
           .from('courses')
           .select(`
@@ -271,7 +365,28 @@ export const getCourseBySlug = (slug: string): Promise<CourseWithRelations | nul
           .ilike('slug', cleanSlug)
           .maybeSingle();
 
-        return sanitizeCourse(ilikeData as unknown as CourseWithRelations | null);
+        if (ilikeData) {
+          return sanitizeCourse(ilikeData as unknown as CourseWithRelations);
+        }
+
+        // 4. Fuzzy title match fallback (e.g. if slug is trumpet-training but DB slug is keyboard-masterclass)
+        const titleKeywords = cleanSlug.replace(/-/g, ' ').trim();
+        if (titleKeywords.length > 3) {
+          const { data: titleData } = await supabase
+            .from('courses')
+            .select(`
+              *,
+              instrument:instruments(id, name, slug)
+            `)
+            .ilike('name', `%${titleKeywords}%`)
+            .maybeSingle();
+
+          if (titleData) {
+            return sanitizeCourse(titleData as unknown as CourseWithRelations);
+          }
+        }
+
+        return null;
       } catch (err) {
         console.error(`getCourseBySlug(${slug}) error:`, err);
         return null;

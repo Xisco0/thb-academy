@@ -5,6 +5,7 @@ const SITE_URL = 'https://www.thbacademy.org';
 function toAbsoluteUrl(url: string | null | undefined): string | undefined {
   if (!url || !url.trim()) return undefined;
   const trimmed = url.trim();
+  if (trimmed.startsWith('data:') || trimmed.includes('base64')) return undefined;
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
   return `${SITE_URL}${trimmed.startsWith('/') ? '' : '/'}${trimmed}`;
 }
@@ -52,7 +53,10 @@ export function organizationSchema(settings: WebsiteSettings | null) {
 }
 
 export function courseSchema(course: Course, settings: WebsiteSettings | null) {
-  const courseImage = toAbsoluteUrl(course.image_url) || `${SITE_URL}/images/image.png`;
+  let courseImage = `${SITE_URL}/images/image.png`;
+  if (course.image_url && !course.image_url.startsWith('data:') && !course.image_url.includes('base64')) {
+    courseImage = toAbsoluteUrl(course.image_url) || courseImage;
+  }
 
   return {
     '@context': 'https://schema.org',

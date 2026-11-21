@@ -113,10 +113,17 @@ export default async function ProgramsPage() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-[#F8F7F4] to-[#F5F0E6] p-6 text-center">
-                      <Music className="w-12 h-12 text-[#C58A19]/40 mb-2" />
-                      <span className="text-xs font-semibold text-[#647084]">THB Music Track</span>
-                    </div>
+                    <img
+                      src={
+                        course.name?.toLowerCase().includes('keyboard') || course.name?.toLowerCase().includes('piano')
+                          ? '/images/programs-keyboards-v2.jpg'
+                          : course.name?.toLowerCase().includes('guitar') || course.name?.toLowerCase().includes('string')
+                          ? '/images/programs-live-v2.jpg'
+                          : '/images/programs-brass-v2.jpg'
+                      }
+                      alt={`${course.name} Banner`}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
                   )}
                   {/* Level Badge */}
                   <div className="absolute top-3.5 right-3.5 z-10">
