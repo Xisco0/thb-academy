@@ -116,38 +116,23 @@ function sanitizeCourse<T extends Partial<CourseWithRelations> | null>(course: T
   // Clone object to avoid mutating frozen/cached references
   const cloned = { ...course };
 
-  // 1. Sanitize oversized base64 or large inline image_url
-  if (cloned.image_url) {
-    const raw = cloned.image_url.trim();
-    if (raw.startsWith('data:') || raw.includes(';base64,') || (raw.length > 1000 && !raw.startsWith('http'))) {
-      const instSlug = (cloned.instrument && typeof cloned.instrument === 'object' && 'slug' in cloned.instrument)
-        ? (cloned.instrument as any).slug || ''
-        : '';
-      const courseName = (cloned.name || '').toLowerCase();
+  // If course does not have an image_url, assign a relevant default instrument banner
+  if (!cloned.image_url || !cloned.image_url.trim()) {
+    const instSlug = (cloned.instrument && typeof cloned.instrument === 'object' && 'slug' in cloned.instrument)
+      ? (cloned.instrument as any).slug || ''
+      : '';
+    const courseName = (cloned.name || '').toLowerCase();
 
-      if (instSlug.includes('brass') || instSlug.includes('trumpet') || instSlug.includes('horn') || courseName.includes('trumpet') || courseName.includes('brass')) {
-        cloned.image_url = '/images/programs-brass-v2.jpg';
-      } else if (instSlug.includes('keyboard') || instSlug.includes('piano') || courseName.includes('keyboard') || courseName.includes('piano')) {
-        cloned.image_url = '/images/programs-keyboards-v2.jpg';
-      } else if (instSlug.includes('guitar') || instSlug.includes('string') || courseName.includes('guitar')) {
-        cloned.image_url = '/images/programs-live-v2.jpg';
-      } else {
-        cloned.image_url = '/images/image.png';
-      }
+    if (instSlug.includes('brass') || instSlug.includes('trumpet') || instSlug.includes('horn') || courseName.includes('trumpet') || courseName.includes('brass')) {
+      cloned.image_url = '/images/programs-brass-v2.jpg';
+    } else if (instSlug.includes('keyboard') || instSlug.includes('piano') || courseName.includes('keyboard') || courseName.includes('piano')) {
+      cloned.image_url = '/images/programs-keyboards-v2.jpg';
+    } else if (instSlug.includes('guitar') || instSlug.includes('string') || courseName.includes('guitar')) {
+      cloned.image_url = '/images/programs-live-v2.jpg';
+    } else {
+      cloned.image_url = '/images/image.png';
     }
   }
-
-  // 2. Sanitize rich text / HTML content that may contain embedded data URLs
-  const sanitizeText = (str?: string | null): string | null | undefined => {
-    if (!str || typeof str !== 'string') return str;
-    if (str.length < 5000 && !str.includes('base64')) return str;
-    return str.replace(/data:[^"'\s\)]+base64,[^"'\s\)]+/gi, '/images/image.png');
-  };
-
-  if (cloned.description) cloned.description = sanitizeText(cloned.description);
-  if (cloned.detailed_content) cloned.detailed_content = sanitizeText(cloned.detailed_content);
-  if (cloned.what_you_learn) cloned.what_you_learn = sanitizeText(cloned.what_you_learn);
-  if (cloned.who_can_join) cloned.who_can_join = sanitizeText(cloned.who_can_join);
 
   return cloned as T;
 }

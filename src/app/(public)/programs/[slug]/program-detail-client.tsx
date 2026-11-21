@@ -159,17 +159,15 @@ export function ProgramDetailClient({ initialCourse, siblingCourses }: ProgramDe
               </div>
             )}
 
-            {/* Detailed Content */}
-            {activeCourse.detailed_content && (
-              <div className="bg-[#F8F7F4] border border-[#E7E5DF] rounded-2xl p-7 space-y-4">
-                <h2 className="text-2xl font-heading font-bold text-[#142544]">
-                  About This Course
-                </h2>
-                <div className="text-[#647084] leading-relaxed whitespace-pre-wrap text-sm sm:text-base">
-                  {activeCourse.detailed_content}
-                </div>
+            {/* Program Overview & Detailed Curriculum */}
+            <div className="bg-[#F8F7F4] border border-[#E7E5DF] rounded-2xl p-7 sm:p-8 space-y-4">
+              <h2 className="text-2xl font-heading font-bold text-[#142544]">
+                Program Overview &amp; Curriculum Details
+              </h2>
+              <div className="text-[#647084] leading-relaxed whitespace-pre-wrap text-base sm:text-lg">
+                {activeCourse.detailed_content || activeCourse.description || 'Comprehensive practical course designed to build musical excellence and stage confidence.'}
               </div>
-            )}
+            </div>
 
             {/* What You'll Learn */}
             {activeCourse.what_you_learn && (
